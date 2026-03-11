@@ -9,11 +9,33 @@ Aplicacao Flask local para controle de horas extras com SQLite, cadastro aberto 
 
 ## Como rodar
 
+Criação do Venv
 ```bash
 python3 -m venv .venv
+```
+
+Ativação do Venv
+```bash
+# Mac / Linux
 source .venv/bin/activate
+# Windows
+.venv\Scripts\Activate.ps1
+# Windows (CMD)
+.venv\Scripts\activate
+```
+
+Instalação de Requerimentos
+```bash
 pip install -r requirements.txt
+```
+
+Flask Init
+```bash
 flask --app app init-db
+```
+
+Flask Start
+```bash
 flask --app app run --debug
 ```
 
