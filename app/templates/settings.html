@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}Configuracoes | Horas Extras{% endblock %}
+
+{% block content %}
+  <section class="form-shell">
+    <div class="panel-heading">
+      <div>
+        <p class="eyebrow">Perfil de calculo</p>
+        <h1>Configuracoes pessoais</h1>
+      </div>
+    </div>
+
+    <div class="preview-grid">
+      <article class="summary-card">
+        <span class="card-label">Salario bruto</span>
+        <strong data-preview-salary>{{ settings.salary_label }}</strong>
+      </article>
+      <article class="summary-card">
+        <span class="card-label">Carga mensal</span>
+        <strong data-preview-monthly>{{ settings.monthly_workload_label }}</strong>
+      </article>
+      <article class="summary-card">
+        <span class="card-label">Valor/hora</span>
+        <strong data-preview-hourly-rate>{{ hourly_rate_label }}</strong>
+      </article>
+      <article class="summary-card">
+        <span class="card-label">Sabado</span>
+        <strong data-preview-saturday>{{ saturday_multiplier_label }}</strong>
+      </article>
+    </div>
+
+    <div class="info-banner">
+      <strong>Como o sistema usa essas configuracoes</strong>
+      <span>O valor/hora usa sempre a carga mensal como fonte de verdade.</span>
+      <span>A jornada semanal funciona como helper opcional para preencher ou revisar a carga mensal.</span>
+      <span>{{ schedule_help }}</span>
+    </div>
+
+    <form class="panel" method="post" data-settings-form>
+      {{ form.hidden_tag() }}
+
+      <fieldset class="form-section">
+        <legend>Financeiro</legend>
+        <div class="form-grid">
+          <div class="field">
+            {{ form.gross_salary.label }}
+            {{ form.gross_salary(class_="input", data_salary_input="true") }}
+            {% for error in form.gross_salary.errors %}
+              <span class="error-text">{{ error }}</span>
+            {% endfor %}
+          </div>
+
+          <div class="field">
+            {{ form.monthly_workload.label }}
+            {{ form.monthly_workload(class_="input", data_monthly_input="true") }}
+            <span class="field-help">Ex.: 173:20. Este valor define o calculo de R$/hora.</span>
+            {% for error in form.monthly_workload.errors %}
+              <span class="error-text">{{ error }}</span>
+            {% endfor %}
+          </div>
+
+          <div class="field field-span-2">
+            {{ form.weekly_workload.label }}
+            {{ form.weekly_workload(class_="input", data_weekly_input="true") }}
+            <span class="field-help" data-weekly-helper>Se a carga mensal estiver vazia, a jornada semanal pode sugerir o valor mensal.</span>
+            {% for error in form.weekly_workload.errors %}
+              <span class="error-text">{{ error }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-section">
+        <legend>Horas normais por lancamento</legend>
+        <div class="form-grid">
+          <div class="field">
+            {{ form.weekday_expected_duration.label }}
+            {{ form.weekday_expected_duration(class_="input") }}
+            {% for error in form.weekday_expected_duration.errors %}
+              <span class="error-text">{{ error }}</span>
+            {% endfor %}
+          </div>
+
+          <div class="field">
+            {{ form.saturday_expected_duration.label }}
+            {{ form.saturday_expected_duration(class_="input") }}
+            {% for error in form.saturday_expected_duration.errors %}
+              <span class="error-text">{{ error }}</span>
+            {% endfor %}
+          </div>
+
+          <div class="field">
+            {{ form.sunday_expected_duration.label }}
+            {{ form.sunday_expected_duration(class_="input") }}
+            {% for error in form.sunday_expected_duration.errors %}
+              <span class="error-text">{{ error }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-section">
+        <legend>Multiplicadores</legend>
+        <div class="form-grid">
+          <div class="field">
+            {{ form.weekday_overtime_multiplier.label }}
+            {{ form.weekday_overtime_multiplier(class_="input") }}
+            <span class="field-help">Use 1.50 para +50%.</span>
+            {% for error in form.weekday_overtime_multiplier.errors %}
+              <span class="error-text">{{ error }}</span>
+            {% endfor %}
+          </div>
+
+          <div class="field">
+            {{ form.saturday_overtime_multiplier.label }}
+            {{ form.saturday_overtime_multiplier(class_="input", data_saturday_multiplier="true") }}
+            <span class="field-help">No seu caso atual, sabado esta configurado como hora extra de 50%.</span>
+            {% for error in form.saturday_overtime_multiplier.errors %}
+              <span class="error-text">{{ error }}</span>
+            {% endfor %}
+          </div>
+
+          <div class="field">
+            {{ form.sunday_work_multiplier.label }}
+            {{ form.sunday_work_multiplier(class_="input") }}
+            <span class="field-help">Use 2.00 para trabalho em dobro.</span>
+            {% for error in form.sunday_work_multiplier.errors %}
+              <span class="error-text">{{ error }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="form-actions">
+        {{ form.submit(class_="button button-primary") }}
+      </div>
+    </form>
+  </section>
+{% endblock %}

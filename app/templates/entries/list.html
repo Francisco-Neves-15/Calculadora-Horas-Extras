@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}Lancamentos | Horas Extras{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="panel-heading">
+      <div>
+        <p class="eyebrow">Historico</p>
+        <h1>Seus lancamentos</h1>
+      </div>
+      <a class="button button-primary" href="{{ url_for('web.create_entry') }}">Novo lancamento</a>
+    </div>
+
+    <form class="filters" method="get" aria-label="Filtrar lancamentos">
+      <div class="field">
+        <label for="month">Mes</label>
+        <select class="input" id="month" name="month">
+          <option value="">Todos</option>
+          {% for month_value, month_name in months %}
+            <option value="{{ month_value }}" {% if filters.month == month_value %}selected{% endif %}>{{ month_name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="year">Ano</label>
+        <select class="input" id="year" name="year">
+          <option value="">Todos</option>
+          {% for year_option in years %}
+            <option value="{{ year_option }}" {% if filters.year == year_option %}selected{% endif %}>{{ year_option }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="category">Categoria</label>
+        <select class="input" id="category" name="category">
+          <option value="">Todas</option>
+          {% for category_option in categories %}
+            <option value="{{ category_option }}" {% if filters.category == category_option %}selected{% endif %}>{{ category_option }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="filters-actions">
+        <button class="button button-primary" type="submit">Filtrar</button>
+        <a class="button" href="{{ url_for('web.list_entries') }}">Limpar</a>
+      </div>
+    </form>
+
+    <div class="list-summary">
+      <span>{{ entries|length }} resultado(s)</span>
+      <strong>Saldo: {{ format_signed_minutes(filtered_balance) }}</strong>
+      <strong>Noturnas: {{ format_minutes(filtered_night_minutes) }}</strong>
+      <strong>Sab/dom: {{ format_minutes(filtered_weekend_credit) }}</strong>
+      <strong>Valor: {{ format_currency(filtered_estimated_value) }}</strong>
+    </div>
+
+    {% if entries %}
+      <div class="table-wrap desktop-only">
+        <table class="data-table">
+          <caption class="sr-only">Lancamentos do colaborador autenticado</caption>
+          <thead>
+            <tr>
+              <th scope="col">Data</th>
+              <th scope="col">Categoria</th>
+              <th scope="col">Modo</th>
+              <th scope="col">Apuracao</th>
+              <th scope="col">Credito</th>
+              <th scope="col">Valor</th>
+              <th scope="col">Acoes</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for entry in entries %}
+              <tr>
+                <td>{{ entry.entry_date.strftime("%d/%m/%Y") }}</td>
+                <td>
+                  <strong>{{ entry.category }}</strong>
+                  <div class="meta-copy">{{ entry.notes or "Sem observacao." }}</div>
+                </td>
+                <td>
+                  <span class="badge badge-mode">{{ entry.entry_mode_label }}</span>
+                  <div class="meta-copy">{{ entry.movement_label }}</div>
+                </td>
+                <td class="details-cell">
+                  {% include "entries/_calculation_details.html" %}
+                </td>
+                <td>{{ entry.signed_duration_label }}</td>
+                <td>{{ entry.estimated_value_label }}</td>
+                <td class="actions">
+                  <a class="button button-small" href="{{ url_for('web.edit_entry', entry_id=entry.id) }}">Editar</a>
+                  <form method="post" action="{{ url_for('web.delete_entry_view', entry_id=entry.id) }}">
+                    {{ delete_form.hidden_tag() }}
+                    <button class="button button-small button-danger" type="submit">Excluir</button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mobile-only mobile-card-list">
+        {% for entry in entries %}
+          <article class="activity-card">
+            <div class="activity-top">
+              <div>
+                <p class="activity-date">{{ entry.entry_date.strftime("%d/%m/%Y") }}</p>
+                <h3>{{ entry.category }}</h3>
+                <p class="meta-copy">{{ entry.notes or "Sem observacao." }}</p>
+              </div>
+              <div class="activity-tags">
+                <span class="badge badge-mode">{{ entry.entry_mode_label }}</span>
+                <span class="badge badge-neutral">{{ entry.movement_label }}</span>
+              </div>
+            </div>
+            <div class="activity-metrics">
+              <div class="metric-chip">
+                <span>Credito</span>
+                <strong>{{ entry.signed_duration_label }}</strong>
+              </div>
+              <div class="metric-chip">
+                <span>Valor</span>
+                <strong>{{ entry.estimated_value_label }}</strong>
+              </div>
+            </div>
+            {% include "entries/_calculation_details.html" %}
+            <div class="inline-actions">
+              <a class="button button-small" href="{{ url_for('web.edit_entry', entry_id=entry.id) }}">Editar</a>
+              <form method="post" action="{{ url_for('web.delete_entry_view', entry_id=entry.id) }}">
+                {{ delete_form.hidden_tag() }}
+                <button class="button button-small button-danger" type="submit">Excluir</button>
+              </form>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-card">
+        <p>Nenhum lancamento encontrado para os filtros selecionados.</p>
+        <a class="button button-primary" href="{{ url_for('web.create_entry') }}">Adicionar lancamento</a>
+      </div>
+    {% endif %}
+  </section>
+{% endblock %}

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Horas Extras{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <div class="brand-block">
+          <a class="brand" href="{{ url_for('web.dashboard') if current_user else url_for('web.login') }}">
+            Horas Extras
+          </a>
+          <p class="subtitle">Controle acessivel de horas extras, calculo noturno e configuracao por colaborador.</p>
+        </div>
+
+        <nav class="site-nav" aria-label="Navegacao principal">
+          {% if current_user %}
+            <a href="{{ url_for('web.dashboard') }}">Painel</a>
+            <a href="{{ url_for('web.list_entries') }}">Lancamentos</a>
+            <a href="{{ url_for('web.settings') }}">Configuracoes</a>
+            <a class="button button-primary" href="{{ url_for('web.create_entry') }}">Novo lancamento</a>
+            <div class="user-chip">
+              <span>{{ current_user.first_name }}</span>
+              {% if current_user.is_admin %}
+                <strong>Admin</strong>
+              {% endif %}
+            </div>
+            <form method="post" action="{{ url_for('web.logout') }}">
+              {{ logout_form.hidden_tag() }}
+              <button class="button" type="submit">Sair</button>
+            </form>
+          {% else %}
+            <a href="{{ url_for('web.login') }}">Entrar</a>
+            <a class="button button-primary" href="{{ url_for('web.register') }}">Criar conta</a>
+          {% endif %}
+        </nav>
+      </header>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <section class="flash-stack" aria-label="Mensagens do sistema">
+            {% for category, message in messages %}
+              <div class="flash flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+          </section>
+        {% endif %}
+      {% endwith %}
+
+      <main>
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </body>
+</html>

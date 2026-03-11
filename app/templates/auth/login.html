@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Entrar | Horas Extras{% endblock %}
+
+{% block content %}
+  <section class="auth-shell">
+    <article class="auth-card">
+      <p class="eyebrow">Acesso</p>
+      <h1>Entrar na sua conta</h1>
+      <p class="hero-copy">
+        Cada colaborador enxerga apenas os proprios lancamentos, valores e regras de calculo.
+      </p>
+
+      {% if not users_exist %}
+        <div class="info-banner">
+          <strong>Nenhuma conta criada ainda</strong>
+          <span>Crie a primeira conta para assumir o historico legado e iniciar o ambiente da equipe.</span>
+        </div>
+      {% endif %}
+
+      <form class="auth-form" method="post">
+        {{ form.hidden_tag() }}
+        <input type="hidden" name="next" value="{{ request.args.get('next', '') }}">
+
+        <div class="field">
+          {{ form.email.label }}
+          {{ form.email(class_="input") }}
+          {% for error in form.email.errors %}
+            <span class="error-text">{{ error }}</span>
+          {% endfor %}
+        </div>
+
+        <div class="field">
+          {{ form.password.label }}
+          {{ form.password(class_="input") }}
+          {% for error in form.password.errors %}
+            <span class="error-text">{{ error }}</span>
+          {% endfor %}
+        </div>
+
+        <div class="form-actions">
+          {{ form.submit(class_="button button-primary") }}
+          <a class="button" href="{{ url_for('web.register') }}">Criar conta</a>
+        </div>
+      </form>
+    </article>
+  </section>
+{% endblock %}
