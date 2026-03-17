@@ -1,0 +1,8 @@
+Flask==3.1.0
+Flask-Cors==6.0.0
+Flask-SQLAlchemy==3.1.1
+Flask-WTF==1.2.2
+alembic==1.18.4
+flasgger==0.9.7.1
+pydantic==2.12.5
+pytest==8.3.5

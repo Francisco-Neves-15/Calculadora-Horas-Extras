@@ -1,0 +1,87 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="false" level="WARNING" enabled_by_default="false">
+      <option name="ignoredPackages">
+        <list>
+          <option value="attrs" />
+          <option value="bcrypt" />
+          <option value="blinker" />
+          <option value="boto3" />
+          <option value="botocore" />
+          <option value="Brotli" />
+          <option value="cachetools" />
+          <option value="certifi" />
+          <option value="cffi" />
+          <option value="charset-normalizer" />
+          <option value="cryptography" />
+          <option value="et_xmlfile" />
+          <option value="exceptiongroup" />
+          <option value="google-api-core" />
+          <option value="google-api-python-client" />
+          <option value="google-auth" />
+          <option value="google-auth-httplib2" />
+          <option value="google-auth-oauthlib" />
+          <option value="googleapis-common-protos" />
+          <option value="h11" />
+          <option value="h2" />
+          <option value="hpack" />
+          <option value="httplib2" />
+          <option value="hyperframe" />
+          <option value="idna" />
+          <option value="jmespath" />
+          <option value="kaitaistruct" />
+          <option value="keyboard" />
+          <option value="numpy" />
+          <option value="oauthlib" />
+          <option value="openpyxl" />
+          <option value="outcome" />
+          <option value="pandas" />
+          <option value="paramiko" />
+          <option value="proto-plus" />
+          <option value="protobuf" />
+          <option value="psycopg2-binary" />
+          <option value="pyasn1" />
+          <option value="pyasn1_modules" />
+          <option value="pycparser" />
+          <option value="pydivert" />
+          <option value="PyNaCl" />
+          <option value="pyOpenSSL" />
+          <option value="pyotp" />
+          <option value="pyparsing" />
+          <option value="PySocks" />
+          <option value="python-dateutil" />
+          <option value="python-dotenv" />
+          <option value="pytweening" />
+          <option value="pytz" />
+          <option value="requests" />
+          <option value="requests-oauthlib" />
+          <option value="rsa" />
+          <option value="s3transfer" />
+          <option value="selenium" />
+          <option value="selenium-wire" />
+          <option value="six" />
+          <option value="slack_sdk" />
+          <option value="sniffio" />
+          <option value="sortedcontainers" />
+          <option value="trio" />
+          <option value="trio-websocket" />
+          <option value="typing_extensions" />
+          <option value="tzdata" />
+          <option value="uritemplate" />
+          <option value="urllib3" />
+          <option value="websocket-client" />
+          <option value="wsproto" />
+          <option value="zstandard" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="tuple.*" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
