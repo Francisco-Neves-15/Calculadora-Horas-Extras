@@ -1,7 +1,11 @@
 .pytest_cache/
 .venv/
-_pycache_/
 __pycache__/
 instance/*.db
+backend/instance/*.db
 *.pyc
+.idea/
+.DS_Store
+Arquivo.zip
 __MACOSX/
+Calculadora-Horas-Extras/

@@ -79,7 +79,7 @@ def attach_api_csrf_token(response):
         "csrf_token",
         token,
         httponly=False,
-        samesite="Lax",
+        samesite=current_app.config["SESSION_COOKIE_SAMESITE"],
         secure=bool(current_app.config.get("SESSION_COOKIE_SECURE")),
     )
     return response

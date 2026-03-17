@@ -1,4 +1,4 @@
-from datetime import date, time
+from datetime import date
 
 from sqlalchemy import select
 
@@ -142,7 +142,7 @@ def test_entries_api_crud_with_filters_pagination_and_snapshot(client):
     assert delete_response.get_json()["deleted"] is True
 
 
-def test_entry_ownership_and_web_smoke_flow(client, app):
+def test_entry_ownership_and_html_routes_are_not_available(client, app):
     owner_id = create_user(app, email="owner@example.com", display_name="Owner", password="senha12345")
     guest_id = create_user(app, email="guest@example.com", display_name="Guest", password="senha12345")
 
@@ -176,17 +176,10 @@ def test_entry_ownership_and_web_smoke_flow(client, app):
     forbidden_response = guest_client.get(f"/api/v1/entries/{entry_id}")
     assert forbidden_response.status_code == 404
 
-    web_client = app.test_client()
-    login_response = web_client.post(
-        "/login",
-        data={"email": "owner@example.com", "password": "senha12345"},
-        follow_redirects=True,
-    )
-    assert login_response.status_code == 200
-    assert "Sessao iniciada com sucesso." in login_response.get_data(as_text=True)
-    assert web_client.get("/").status_code == 200
-    assert web_client.get("/entries").status_code == 200
-    assert web_client.get("/settings").status_code == 200
+    assert client.get("/").status_code == 404
+    assert client.get("/login").status_code == 404
+    assert client.get("/entries").status_code == 404
+    assert client.get("/settings").status_code == 404
 
 
 def test_invalid_entry_payload_returns_structured_error(client):

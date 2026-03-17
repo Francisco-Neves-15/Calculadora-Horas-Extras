@@ -1,27 +1,37 @@
+import os
 from pathlib import Path
 
 import click
 from flasgger import Swagger
 from flask import Flask
 from flask.cli import with_appcontext
+from flask_cors import CORS
 
 from .auth import load_current_user
 from .api.v1.docs import SWAGGER_CONFIG, SWAGGER_TEMPLATE
 from .extensions import csrf, db
 from .migrations import upgrade_database
-from .utils import (
-    format_currency,
-    format_minutes,
-    format_multiplier_label,
-    format_signed_minutes,
-    format_time_value,
-    month_label,
-)
+
+
+def _env_bool(name, default):
+    value = os.getenv(name)
+    if value is None:
+        return default
+    return value.strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _env_csv(name, default):
+    value = os.getenv(name)
+    raw = default if value is None else value
+    items = [item.strip() for item in raw.split(",")]
+    return [item for item in items if item]
 
 
 def create_app(test_config=None):
     config_overrides = dict(test_config or {})
     instance_path = config_overrides.pop("INSTANCE_PATH", None)
+    app_env = os.getenv("APP_ENV", "development").strip().lower()
+    is_production = app_env == "production"
 
     app = Flask(
         __name__,
@@ -40,6 +50,12 @@ def create_app(test_config=None):
         DEFAULT_WEEKDAY_OVERTIME_MULTIPLIER=1.5,
         DEFAULT_SATURDAY_OVERTIME_MULTIPLIER=1.5,
         DEFAULT_SUNDAY_WORK_MULTIPLIER=2.0,
+        APP_ENV=app_env,
+        ENABLE_SWAGGER=_env_bool("ENABLE_SWAGGER", not is_production),
+        CORS_ALLOWED_ORIGINS=_env_csv("CORS_ALLOWED_ORIGINS", "http://localhost:5173"),
+        SESSION_COOKIE_HTTPONLY=True,
+        SESSION_COOKIE_SECURE=_env_bool("SESSION_COOKIE_SECURE", is_production),
+        SESSION_COOKIE_SAMESITE=os.getenv("SESSION_COOKIE_SAMESITE", "None" if is_production else "Lax"),
     )
     app.config.update(config_overrides)
 
@@ -50,25 +66,22 @@ def create_app(test_config=None):
 
     from . import models  # noqa: F401
     from .api.v1 import bp as api_v1_bp
-    from .web import bp as web_bp
 
-    Swagger(app, config=SWAGGER_CONFIG, template=SWAGGER_TEMPLATE)
+    if app.config["ENABLE_SWAGGER"]:
+        Swagger(app, config=SWAGGER_CONFIG, template=SWAGGER_TEMPLATE)
+
+    CORS(
+        app,
+        resources={r"/api/*": {"origins": app.config["CORS_ALLOWED_ORIGINS"]}},
+        supports_credentials=True,
+        allow_headers=["Content-Type", "X-CSRF-Token"],
+        methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    )
+
     app.before_request(load_current_user)
-    app.register_blueprint(web_bp)
     app.register_blueprint(api_v1_bp)
     csrf.exempt(api_v1_bp)
     app.cli.add_command(init_db_command)
-
-    @app.context_processor
-    def inject_template_helpers():
-        return {
-            "format_currency": format_currency,
-            "format_minutes": format_minutes,
-            "format_multiplier_label": format_multiplier_label,
-            "format_signed_minutes": format_signed_minutes,
-            "format_time_value": format_time_value,
-            "month_label": month_label,
-        }
 
     return app
 

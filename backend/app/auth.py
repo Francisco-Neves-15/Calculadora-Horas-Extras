@@ -1,7 +1,6 @@
 from datetime import datetime
-from functools import wraps
 
-from flask import flash, g, redirect, request, session, url_for
+from flask import g, session
 
 from .errors import AuthenticationError
 from .extensions import db
@@ -38,14 +37,3 @@ def require_authenticated_user():
             code="authentication_required",
         )
     return user
-
-
-def login_required(view):
-    @wraps(view)
-    def wrapped_view(*args, **kwargs):
-        if current_user() is None:
-            flash("Entre na sua conta para continuar.", "warning")
-            return redirect(url_for("web.login", next=request.path))
-        return view(*args, **kwargs)
-
-    return wrapped_view
