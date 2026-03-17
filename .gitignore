@@ -1,6 +1,7 @@
 .pytest_cache/
 .venv/
 _pycache_/
+__pycache__/
 instance/*.db
 *.pyc
 __MACOSX/

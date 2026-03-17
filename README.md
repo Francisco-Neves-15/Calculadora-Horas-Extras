@@ -29,12 +29,12 @@ Instalação de Requerimentos
 pip install -r requirements.txt
 ```
 
-Flask Init
+Flask Init DB
 ```bash
 flask --app app init-db
 ```
 
-Flask Start
+Flask Start App (debug)
 ```bash
 flask --app app run --debug
 ```
