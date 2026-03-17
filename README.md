@@ -5,7 +5,7 @@ Repositorio separado em backend e frontend.
 ## Estrutura
 
 - `backend/`: API Flask (`/api/v1`), migrations Alembic, testes e SQLite local.
-- `frontend/`: placeholder 
+- `frontend/`: placeholder para app React (sem scaffold nesta etapa).
 
 ## Backend rapido
 

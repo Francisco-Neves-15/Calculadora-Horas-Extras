@@ -7,3 +7,5 @@ backend/instance/*.db
 .idea/
 .DS_Store
 Arquivo.zip
+__MACOSX/
+Calculadora-Horas-Extras/
