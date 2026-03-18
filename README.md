@@ -1,19 +1,48 @@
 # Horas Extras Monorepo
+# kda: Gerente Horas Extras
 
-Repositorio separado em backend e frontend.
+Repositório único para frontend e backend
 
 ## Estrutura
 
 - `backend/`: API Flask (`/api/v1`), migrations Alembic, testes e SQLite local.
-- `frontend/`: placeholder para app React (sem scaffold nesta etapa).
+- `frontend/`: React Next.
 
 ## Backend rapido
 
+### Init venv
 ```bash
 python3 -m venv .venv
+```
+
+### Active venv
+
+- Mac & Linux
+```bash
 source .venv/bin/activate
+```
+
+- Windows
+```bash
+.\.venv\Scripts\activate
+```
+or
+```bash
+.\.venv\Scripts\activate.ps1
+```
+
+### Install Reqs
+```bash
 pip install -r backend/requirements.txt
+```
+
+### Install Init Db
+```bash
 flask --app backend/app init-db
+```
+
+### Init Back
+```bash
 flask --app backend/app run --debug
 ```
 
