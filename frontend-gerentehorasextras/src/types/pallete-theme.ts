@@ -1,3 +1,14 @@
+// Availables themes
+export const THEMES = {
+  light: "light",
+  dark: "dark",
+  system: "system",
+} as const;
+
+export type ThemeOption = keyof typeof THEMES; 
+export type ThemeResolved = Exclude<ThemeOption, "system">;
+
+// Pallete/Colors types
 export default interface IPalleteTheme {
 // AUTO-GENERATED--PALLETE-THEME START
   "primary": string;

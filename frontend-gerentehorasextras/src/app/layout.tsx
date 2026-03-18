@@ -4,6 +4,8 @@ import { Urbanist, Sora } from "next/font/google";
 import "./globals.css";
 import "../style/pallete-theme.scss"
 
+import { ThemeProvider } from "@/hooks/useThemeContext"
+
 const urbanist = Urbanist({
   variable: "--font-urbanist-sans",
   subsets: ["latin"],
@@ -17,6 +19,12 @@ const sora = Sora({
 export const metadata: Metadata = {
   title: "Gerente de Horas Extras",
   description: "Gerenciamento pessoal de Horas Extras",
+  // icons: {
+  //   icon: [
+  //     { url: "/favicon/favicon-dark.ico", media: "(prefers-color-scheme: light)" },
+  //     { url: "/favicon/favicon-light.ico", media: "(prefers-color-scheme: dark)" },
+  //   ],
+  // },
 };
 
 export default function RootLayout({
@@ -25,11 +33,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html data-theme="light" lang="en-US">
+    <html data-theme="light" lang="en-US" dir="ltr">
       <body
         className={`${urbanist.variable} ${sora.variable} antialiased`}
       >
-        {children}
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
