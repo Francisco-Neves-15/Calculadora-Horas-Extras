@@ -100,9 +100,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const handleChangeFavicon = (resolved: ThemeResolved) => {
       const link = document.querySelector("link[rel='icon']") as HTMLLinkElement;
       if (link) {
-        link.href = resolved === "dark" ? 
-          `/favicon/favicon-light.ico?v=${Date.now()}` : 
-          `/favicon/favicon-dark.ico?v=${Date.now()}`;
+        link.href = resolved === "dark" ?
+          `/favicon/favicon-v2/favicon-v2-white.ico?v=${Date.now()}` : 
+          `/favicon/favicon-v2/favicon-v2-black.ico?v=${Date.now()}`;
       }
     }
 

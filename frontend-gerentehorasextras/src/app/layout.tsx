@@ -21,8 +21,8 @@ export const metadata: Metadata = {
   description: "Gerenciamento pessoal de Horas Extras",
   // icons: {
   //   icon: [
-  //     { url: "/favicon/favicon-dark.ico", media: "(prefers-color-scheme: light)" },
-  //     { url: "/favicon/favicon-light.ico", media: "(prefers-color-scheme: dark)" },
+  //     { url: "/favicon/favicon-v2/favicon-v2-white.ico", media: "(prefers-color-scheme: dark)" },
+  //     { url: "/favicon/favicon-v2/favicon-v2-black.ico", media: "(prefers-color-scheme: light)" },
   //   ],
   // },
 };
