@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Urbanist, Sora } from "next/font/google";
 
 import "./globals.css";
-import "../style/pallete-theme.scss"
+import "../styles/pallete-theme.scss"
 
 import { ThemeProvider } from "@/hooks/useThemeContext"
 
