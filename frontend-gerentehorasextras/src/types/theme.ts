@@ -1,6 +1,6 @@
 // Palette/Colors types
 export interface IPaletteColors {
-// AUTO-GENERATED--THEME-COLORS START
+// AUTO-GENERATED--PALETTE-COLORS START
   "primary": string;
   "primaryContrast": string;
   "link": string;
@@ -23,5 +23,5 @@ export interface IPaletteColors {
   "muted": string;
   "mutedInverted": string;
   "border": string;
-// AUTO-GENERATED--THEME-COLORS END
+// AUTO-GENERATED--PALETTE-COLORS END
 }

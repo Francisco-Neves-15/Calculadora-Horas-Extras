@@ -4,7 +4,7 @@ import { IPaletteColors } from "@/types/theme"
 
 function useGlobalStyles() {
   return {
-// AUTO-GENERATED--THEME-COLORS START
+// AUTO-GENERATED--PALETTE-COLORS START
     gColors: {
       "primary": "var(--color-primary)",
       "primaryContrast": "var(--color-primaryContrast)",
@@ -29,7 +29,7 @@ function useGlobalStyles() {
       "mutedInverted": "var(--color-mutedInverted)",
       "border": "var(--color-border)",
     } as IPaletteColors,
-// AUTO-GENERATED--THEME-COLORS END
+// AUTO-GENERATED--PALETTE-COLORS END
   };
 }
 

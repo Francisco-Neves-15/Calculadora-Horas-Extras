@@ -1,4 +1,4 @@
-// *-script-* as "theme-colors-dontchange" - START | Don't change
+// *-script-* as "palette-colors-dontchange" - START | Don't change
 :root {
   --color-primary: #27427F;
   --color-primaryContrast: #ffffff;
@@ -16,9 +16,9 @@
   --color-successBg: #12794941;
   --color-neutralBg: #7f7f7f41;
 }
-// *-script-* as "theme-colors-dontchange" - END | Don't change
+// *-script-* as "palette-colors-dontchange" - END | Don't change
 
-// *-script-* as "theme-colors-default" - START | Default
+// *-script-* as "palette-colors-default" - START | Default
 :root {
   // Typography
   --color-text: #090909;
@@ -32,7 +32,7 @@
   --color-mutedInverted: #666666;
   --color-border: #999999;
 }
-// *-script-* as "theme-colors-default" - END | Default
+// *-script-* as "palette-colors-default" - END | Default
 
 [data-theme="dark"] {
   // Typography

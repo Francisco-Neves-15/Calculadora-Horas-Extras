@@ -17,8 +17,8 @@ function toCamelCase(str) {
 // Extrai blocos marcados'
 function extractMarkedBlocks(content) {
   const blockNames = [
-    "theme-colors-dontchange",
-    "theme-colors-default",
+    "palette-colors-dontchange",
+    "palette-colors-default",
   ];
 
   const blocks = [];
@@ -61,7 +61,7 @@ function extractColors(blocks) {
 
 function replaceAutoBlock(content, newInnerContent) {
   return content.replace(
-    /(\/\/ AUTO-GENERATED--THEME-COLORS START)([\s\S]*?)(\/\/ AUTO-GENERATED--THEME-COLORS END)/,
+    /(\/\/ AUTO-GENERATED--PALETTE-COLORS START)([\s\S]*?)(\/\/ AUTO-GENERATED--PALETTE-COLORS END)/,
     (_, start, _old, end) => {
       return `${start}\n${newInnerContent}\n${end}`;
     }
