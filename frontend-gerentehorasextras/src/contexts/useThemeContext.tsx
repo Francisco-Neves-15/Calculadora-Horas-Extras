@@ -5,10 +5,14 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { 
   ThemeModeOptions,
   ThemeModeResolved,
-  ThemePaletteOptions
-} from "@/configs/theme.metadata"
+} from "@/configs/theme-mode.metadata"
 
-import { getResolvedThemeMode } from "@/utils/theme"
+import { 
+  ThemePaletteOptions,
+  ThemePaletteResolved,
+} from "@/configs/theme-palette.metadata"
+
+import { getResolvedThemeMode, getResolvedThemePalette, getDefaultThemePalette } from "@/utils/theme"
 
 // context
 const ThemeContext = createContext({} as ThemeContextType);
@@ -24,10 +28,11 @@ const HTML_KEY_PALETTE = "data-theme-palette";
 
 type ThemeContextType = {
   themeMode: ThemeModeOptions;
-  resolvedTheme: ThemeModeResolved;
+  resolvedThemeMode: ThemeModeResolved;
   setThemeMode: (t: ThemeModeOptions) => void;
 
   themePalette: ThemePaletteOptions;
+  resolvedThemePalette: ThemePaletteResolved;
   setThemePalette: (t: ThemePaletteOptions) => void;
 
   // transformar em objeto?
@@ -39,7 +44,7 @@ type ThemeContextType = {
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [themeMode, setThemeModeState] = useState<ThemeModeOptions>("system");
-  const [themePalette, setThemePaletteState] = useState<ThemePaletteOptions>("blue");
+  const [themePalette, setThemePaletteState] = useState<ThemePaletteOptions>("default");
 
   const [colorPrimary, setColorPrimary] = useState("#27427F");
   const [colorPrimaryContrast, setColorPrimaryContrast] = useState("#ffffff");
@@ -58,7 +63,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     if (savedPalette) {
       setThemePaletteState(savedPalette);
     } else {
-      setThemePaletteState("blue");
+      setThemePaletteState("default");
     }
 
   }, []);
@@ -109,7 +114,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   // listern when change the theme palette
   useEffect(() => {
-    // if (themePalette !== "defaukt") return;
+    if (themePalette !== "default") return;
 
     // main
     const handleChangeThemePalette = () => {
@@ -132,20 +137,27 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem(STORAGE_KEY_MODE, t);
     }
   };
-
+  
   const setThemePalette = (t: ThemePaletteOptions) => {
     setThemePaletteState(t);
-    localStorage.setItem(STORAGE_KEY_PALETTE, t);
+
+    // if system theme remove the current resolved palette
+    if (t === "default") {
+      localStorage.removeItem(STORAGE_KEY_PALETTE);
+    } else {
+      localStorage.setItem(STORAGE_KEY_PALETTE, t);
+    }
   };
 
   return (
     <ThemeContext.Provider
       value={{
         themeMode,
-        resolvedTheme: getResolvedThemeMode(themeMode),
+        resolvedThemeMode: getResolvedThemeMode(themeMode),
         setThemeMode,
-
+        
         themePalette,
+        resolvedThemePalette: getResolvedThemePalette(themePalette),
         setThemePalette,
 
         colorPrimary,
