@@ -6,6 +6,8 @@ import "../style/theme.scss"
 
 import { ThemeProvider } from "@/contexts/useThemeContext"
 
+import { DEFAULT_THEME_PALETTE } from "@/configs/theme-palette.metadata"
+
 const urbanist = Urbanist({
   variable: "--font-urbanist-sans",
   subsets: ["latin"],
@@ -33,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html data-theme-mode="light" lang="en-US" dir="ltr">
+    <html data-theme-mode="light" data-theme-palette={DEFAULT_THEME_PALETTE} lang="en-US" dir="ltr">
       <body
         className={`${urbanist.variable} ${sora.variable} antialiased`}
       >

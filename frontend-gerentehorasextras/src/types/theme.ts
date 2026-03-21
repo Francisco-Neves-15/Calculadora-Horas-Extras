@@ -30,7 +30,8 @@ export interface IPaletteColors {
 export interface ICustomPalettesColors {
   id: string | null; // 36b4fec0-923a-4d19-b6a9-defeb218cba9 (uuid)
   code: string | null; // th-palette-c-custom
-  name: string | null; // Custom
+  name: string | null; // custom1
+  displayName: string | null; // Customized
   primaryColor: string | null; // #66277f
   primaryColorContrast: string | null; // #ffffff
 }

@@ -42,11 +42,18 @@ type ThemeContextType = {
   setCustomPalettesColors: (t: ICustomPalettesColors | null) => void;
 };
 
+// It is intended to come from the API
+
+// Current selected
+const currentCustomPaletteExample: ICustomPalettesColors["name"] = "custom1"
+
+// list of customized palettes
 const customPaletteExample: TCustomPalettesColors = [
   {
     id: "36b4fec0-923a-4d19-b6a9-defeb218cba9",
     code: "th-palette-c-custom",
-    name: "Custom",
+    name: "custom1",
+    displayName: "Customized",
     primaryColor: "#66277f",
     primaryColorContrast: "#ffffff",
   },
@@ -56,12 +63,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   const [themeMode, setThemeModeState] = useState<ThemeModeOptions>("system");
   const [themePalette, setThemePaletteState] = useState<ThemePaletteOptions>("default");
-
-  const [colorPrimary, setColorPrimary] = useState("#27427F");
-  const [colorPrimaryContrast, setColorPrimaryContrast] = useState("#ffffff");
   
-  const [customPaletteColorsState, setCustomPaletteColorsState] = useState<TCustomPalettesColors | null>(null);
-  setCustomPaletteColorsState(customPaletteExample)
+  const [customPalettesColors, setCustomPaletteColorsState] = useState<TCustomPalettesColors | null>(null);
 
   // load inicial
   useEffect(() => {
@@ -80,6 +83,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       setThemePaletteState("default");
     }
 
+    customPaletteExample.forEach((palette) => {
+      if (palette.name === currentCustomPaletteExample) setCustomPaletteColorsState(palette);
+    })
+
   }, []);
   
   // Get Primary's Colors (do not change with the theme yet)
@@ -88,12 +95,19 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     
     const resolvedThemeMode = getResolvedThemeMode(themeMode);
     
+    // inicial key
     root.setAttribute(HTML_KEY_MODE, resolvedThemeMode);
     root.setAttribute(HTML_KEY_PALETTE, themePalette);
     
-    root.style.setProperty("--color-primary", colorPrimary);
-    root.style.setProperty("--color-primaryContrast", colorPrimaryContrast);
-  }, [themeMode, themePalette, colorPrimary, colorPrimaryContrast]);
+    // custom palette settings
+    if (customPaletteColorsState?.primaryColor) {
+      root.style.setProperty("--color-primary", customPaletteColorsState?.primaryColor);
+    };
+    if (customPaletteColorsState?.primaryColorContrast) {
+      root.style.setProperty("--color-primaryContrast", customPaletteColorsState?.primaryColorContrast);
+    };
+
+  }, [themeMode, themePalette, customPaletteColorsState]);
 
   // listern when change the systemThemeMode
   useEffect(() => {
@@ -164,14 +178,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   };
   
   const setCustomPalettesColors = (t: ICustomPalettesColors) => {
-    // setThemePaletteState(t);
-
-    // // if system theme remove the current resolved palette
-    // if (t === "default") {
-    //   localStorage.removeItem(STORAGE_KEY_PALETTE);
-    // } else {
-    //   localStorage.setItem(STORAGE_KEY_PALETTE, t);
-    // }
+    setCustomPaletteColorsState(t);
   };
 
   return (
@@ -185,7 +192,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         resolvedThemePalette: getResolvedThemePalette(themePalette),
         setThemePalette,
 
-        customPalettesColors,
+        customPalettesColors:,
         setCustomPalettesColors,
       }}
     >
