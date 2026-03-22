@@ -3,7 +3,7 @@ const path = require("path");
 
 // === PATHS ===
 const SCSS_FILE = path.resolve("src/style/theme.scss");
-const GLOBAL_FILE = path.resolve("src/hooks/useGlobalStyles.tsx");
+const GLOBAL_FILE = path.resolve("src/hooks/useGlobalStyles.ts");
 const TYPES_FILE = path.resolve("src/types/theme.ts");
 const TAILWIND_FILE = path.resolve("tailwind.config.ts");
 

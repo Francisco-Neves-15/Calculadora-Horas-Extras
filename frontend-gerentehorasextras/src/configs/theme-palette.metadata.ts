@@ -1,6 +1,6 @@
-import { getDefaultThemePalette } from "@/utils/theme"
+// theme-palette.metadata.ts
+import { getDefaultThemePalette } from "@/utils/theme";
 
-// Availables themes palettes
 export const THEMES_PALETTES = {
   ocean: "ocean",
   wine: "wine",
@@ -17,11 +17,11 @@ type ThemePaletteMeta = {
 
 export const THEME_PALETTE_META: Record<ThemePaletteOptions, ThemePaletteMeta> = {
   ocean: {
-    id: "th-palette-opt-light",
+    id: "th-palette-opt-ocean",
     resolve: () => "ocean",
   },
   wine: {
-    id: "th-palette-opt-light",
+    id: "th-palette-opt-wine",
     resolve: () => "wine",
   },
   default: {

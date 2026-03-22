@@ -1,3 +1,4 @@
+import { ThemePaletteOptions } from "@/configs/theme-palette.metadata";
 
 // Palette/Colors types
 export interface IPaletteColors {
@@ -32,8 +33,25 @@ export interface ICustomPalettesColors {
   code: string | null; // th-palette-c-custom
   name: string | null; // custom1
   displayName: string | null; // Customized
-  primaryColor: string | null; // #66277f
-  primaryColorContrast: string | null; // #ffffff
+  colors: {
+    primaryColor: string | null; // #66277f
+    primaryColorContrast: string | null; // #ffffff
+  }
 }
 
 export type TCustomPalettesColors = ICustomPalettesColors[];
+
+export type ThemePaletteItem =
+  | {
+      type: "system";
+      key: ThemePaletteOptions;
+      id: string;
+      displayName: string;
+    }
+  | {
+      type: "custom";
+      key: string;
+      id: string;
+      displayName: string;
+      palette: ICustomPalettesColors;
+    };

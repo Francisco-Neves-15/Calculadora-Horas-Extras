@@ -1,32 +1,57 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-import { 
+// Metadatas's
+
+import {
   ThemeModeOptions,
   ThemeModeResolved,
-} from "@/configs/theme-mode.metadata"
+} from "@/configs/theme-mode.metadata";
 
-import { 
+import {
   ThemePaletteOptions,
   ThemePaletteResolved,
-} from "@/configs/theme-palette.metadata"
+  THEMES_PALETTES,
+} from "@/configs/theme-palette.metadata";
 
-import { getResolvedThemeMode, getResolvedThemePalette } from "@/utils/theme"
+// Hooks
+import { HTML_KEY_MODE, HTML_KEY_PALETTE, useThemeStorage } from "@/hooks/useThemeStorage";
+import { useApplyTheme } from "@/hooks/useApplyTheme";
 
-import { ICustomPalettesColors, TCustomPalettesColors } from "@/types/theme"
+// Utils
+import { getResolvedThemeMode, getResolvedThemePalette, getSystemThemeMode } from "@/utils/theme";
 
-// context
+// Types
+import { ICustomPalettesColors, TCustomPalettesColors, ThemePaletteItem } from "@/types/theme";
+
 const ThemeContext = createContext({} as ThemeContextType);
 
-// local storage or storage key
-const STORAGE_KEY_MODE = "client-theme-mode";
-const STORAGE_KEY_PALETTE = "client-theme-palette";
 
-const HTML_KEY_MODE = "data-theme-mode";
-const HTML_KEY_PALETTE = "data-theme-palette";
+// It is intended to come from the API
+//
+// current selection coming from API:
+// - null = never chose one, so use default system palette
+// - otherwise = selected custom palette id
 
-// main
+export const EXAMPLE_customColorsPaletteLimit = 3;
+
+const EXAMPLE_currentCustomColorsPaletteId: string | null =
+  "36b4fec0-923a-4d19-b6a9-defeb218cba9";
+
+// list of customized palettes coming from API
+const EXAMPLE_currentCustomColorsPaletteList: TCustomPalettesColors = [
+  {
+    id: "36b4fec0-923a-4d19-b6a9-defeb218cba9",
+    code: "th-palette-c-custom",
+    name: "custom1",
+    displayName: "Customized",
+    colors: {
+      primaryColor: "#66277f",
+      primaryColorContrast: "#ffffff",
+    }
+  },
+];
 
 type ThemeContextType = {
   themeMode: ThemeModeOptions;
@@ -35,101 +60,130 @@ type ThemeContextType = {
 
   themePalette: ThemePaletteOptions;
   resolvedThemePalette: ThemePaletteResolved;
+  currentThemePaletteCode: string;
   setThemePalette: (t: ThemePaletteOptions) => void;
 
-  // transformar em objeto?
-  customPalettesColors: TCustomPalettesColors;
-  setCustomPalettesColors: (t: ICustomPalettesColors | null) => void;
+  customPalettes: TCustomPalettesColors;
+  setCustomPalettes: (t: TCustomPalettesColors) => void;
+  addCustomPalette: (t: ICustomPalettesColors) => void;
+
+  selectedCustomPaletteId: string | null;
+  setSelectedCustomPaletteId: (t: string | null) => void;
+  selectedCustomPalette: ICustomPalettesColors | null;
+
+  allThemePalettes: ThemePaletteItem[];
+  customColorsPaletteLimit: number;
 };
 
-// It is intended to come from the API
-
-// Current selected
-const currentCustomPaletteExample: ICustomPalettesColors["name"] = "custom1"
-
-// list of customized palettes
-const customPaletteExample: TCustomPalettesColors = [
-  {
-    id: "36b4fec0-923a-4d19-b6a9-defeb218cba9",
-    code: "th-palette-c-custom",
-    name: "custom1",
-    displayName: "Customized",
-    primaryColor: "#66277f",
-    primaryColorContrast: "#ffffff",
-  },
-]
-
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const {
+    getThemeMode,
+    getThemePalette,
+    getCustomPalettes,
+    getSelectedCustomPaletteId,
+    setThemeMode: saveThemeMode,
+    setThemePalette: saveThemePalette,
+    setCustomPalettes: saveCustomPalettes,
+    setSelectedCustomPaletteId: saveSelectedCustomPaletteId,
+  } = useThemeStorage();
 
   const [themeMode, setThemeModeState] = useState<ThemeModeOptions>("system");
   const [themePalette, setThemePaletteState] = useState<ThemePaletteOptions>("default");
+  const [customPalettes, setCustomPalettesState] = useState<TCustomPalettesColors>([]);
+  const [selectedCustomPaletteId, setSelectedCustomPaletteIdState] = useState<string | null>(null);
+
+  // ** ----- API SPACE START----- ** //
+
+  //  API sync point *1* :customPaletteExample need to be replaced by "API USER PALETTE LIST"
+
+  // const customColorsPaletteLimit = api.get.get() replace > "EXAMPLE_customColorsPaletteLimit"
+  // const currentCustomColorsPaletteId = api.get.get() replace > "EXAMPLE_currentCustomColorsPaletteId"
+  // const currentCustomColorsPaletteList = api.get.get() replace > "customized"
   
-  const [customPalettesColors, setCustomPaletteColorsState] = useState<TCustomPalettesColors | null>(null);
+  // ** ----- API SPACE END----- ** //
 
-  // load inicial
-  useEffect(() => {
-    const savedMode = localStorage.getItem(STORAGE_KEY_MODE) as ThemeModeOptions | null;
-    const savedPalette = localStorage.getItem(STORAGE_KEY_PALETTE) as ThemePaletteOptions | null;
+  // React to Changes
 
-    if (savedMode) {
-      setThemeModeState(savedMode);
+  const selectedCustomPalette = useMemo(() => {
+    if (!selectedCustomPaletteId) return null;
+    return customPalettes.find((palette) => palette.id === selectedCustomPaletteId) ?? null;
+  }, [customPalettes, selectedCustomPaletteId]);
+
+  const currentThemePaletteCode = useMemo(() => {
+    if (selectedCustomPalette?.code) return selectedCustomPalette.code;
+    return getResolvedThemePalette(themePalette);
+  }, [selectedCustomPalette, themePalette]);
+
+  const allThemePalettes = useMemo<ThemePaletteItem[]>(() => {
+    const systemPalettes: ThemePaletteItem[] = Object.keys(THEMES_PALETTES).map((key) => ({
+      type: "system",
+      key: key as ThemePaletteOptions,
+      id: `th-palette-opt-${key}`,
+      displayName: key,
+    }));
+
+    const userPalettes: ThemePaletteItem[] = customPalettes.map((palette) => ({
+      type: "custom",
+      key: palette.code ?? palette.id ?? palette.name ?? "",
+      id: palette.id ?? "",
+      displayName: palette.displayName ?? palette.name ?? "Custom",
+      palette,
+    }));
+
+    return [...systemPalettes, ...userPalettes];
+  }, [customPalettes]);
+
+  // On Load
+  const onLoad = () => {
+    const savedMode = getThemeMode();
+    const savedPalette = getThemePalette();
+    const savedCustomPalettes = getCustomPalettes();
+    const savedSelectedCustomPaletteId = getSelectedCustomPaletteId();
+
+    setThemeModeState(savedMode ?? "system");
+    setThemePaletteState(savedPalette ?? "default");
+    setCustomPalettesState(savedCustomPalettes);
+
+    // Initial
+    const initialCustomPalettes =
+      savedCustomPalettes.length > 0
+      ? savedCustomPalettes
+      : EXAMPLE_currentCustomColorsPaletteList; // <- API sync point *1*
+    
+    setCustomPalettesState(initialCustomPalettes);
+    
+    const initialSelectedId = savedSelectedCustomPaletteId ?? EXAMPLE_currentCustomColorsPaletteId ?? null;
+
+    if (initialSelectedId) {
+      const found =
+        initialCustomPalettes.find(p => p.id === initialSelectedId) ?? null;
+
+      setSelectedCustomPaletteIdState(found?.id ?? null);
     } else {
-      setThemeModeState("system");
+      setSelectedCustomPaletteIdState(null);
     }
+  }
 
-    if (savedPalette) {
-      setThemePaletteState(savedPalette);
-    } else {
-      setThemePaletteState("default");
-    }
-
-    customPaletteExample.forEach((palette) => {
-      if (palette.name === currentCustomPaletteExample) setCustomPaletteColorsState(palette);
-    })
-
-  }, []);
-  
-  // Get Primary's Colors (do not change with the theme yet)
-  useEffect(() => {
-    const root = document.documentElement;
-    
-    const resolvedThemeMode = getResolvedThemeMode(themeMode);
-    
-    // inicial key
-    root.setAttribute(HTML_KEY_MODE, resolvedThemeMode);
-    root.setAttribute(HTML_KEY_PALETTE, themePalette);
-    
-    // custom palette settings
-    if (customPaletteColorsState?.primaryColor) {
-      root.style.setProperty("--color-primary", customPaletteColorsState?.primaryColor);
-    };
-    if (customPaletteColorsState?.primaryColorContrast) {
-      root.style.setProperty("--color-primaryContrast", customPaletteColorsState?.primaryColorContrast);
-    };
-
-  }, [themeMode, themePalette, customPaletteColorsState]);
-
-  // listern when change the systemThemeMode
-  useEffect(() => {
+  // 
+  const onChangeThemeMode = () => {
     if (themeMode !== "system") return;
-
+    
+    const root = document.documentElement;
     const media = window.matchMedia("(prefers-color-scheme: dark)");
 
-    // Change the App Favicon based on Navigator Theme
     const handleChangeFavicon = (resolved: ThemeModeResolved) => {
       const link = document.querySelector("link[rel='icon']") as HTMLLinkElement;
-      if (link) {
-        link.href = resolved === "dark" ? 
-          `/favicon/favicon-v2/favicon-v2-white.ico?v=${Date.now()}` : 
-          `/favicon/favicon-v2/favicon-v2-black.ico?v=${Date.now()}`;
-      }
-    }
+      if (!link) return;
 
-    // main
+      link.href =
+        resolved === "dark"
+          ? `/favicon/favicon-v2/favicon-v2-white.ico?v=${Date.now()}`
+          : `/favicon/favicon-v2/favicon-v2-black.ico?v=${Date.now()}`;
+    };
+
     const handleChangeThemeMode = () => {
-      const resolved = media.matches ? "dark" : "light";
-
-      document.documentElement.setAttribute(HTML_KEY_MODE, resolved);
+      const resolved = getSystemThemeMode();
+      root.setAttribute(HTML_KEY_MODE, resolved);
       handleChangeFavicon(resolved);
     };
 
@@ -138,47 +192,125 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     return () => {
       media.removeEventListener("change", handleChangeThemeMode);
     };
+  }
+
+  // 
+  const onChangeThemePalette = () => {
+    const root = document.documentElement;
+
+    root.setAttribute(HTML_KEY_PALETTE, currentThemePaletteCode);
+
+    if (selectedCustomPalette) {
+      if (selectedCustomPalette.colors.primaryColor) {
+        root.style.setProperty("--color-primary", selectedCustomPalette.colors.primaryColor);
+      }
+
+      if (selectedCustomPalette.colors.primaryColorContrast) {
+        root.style.setProperty("--color-primaryContrast", selectedCustomPalette.colors.primaryColorContrast);
+      }
+
+      return;
+    }
+
+    root.style.removeProperty("--color-primary");
+    root.style.removeProperty("--color-primaryContrast");
+  }
+
+  // Effects
+
+  // Initial Load
+  useEffect(() => {
+    onLoad()
+  }, []);
+
+  useEffect(() => {
+    saveThemeMode(themeMode);
   }, [themeMode]);
 
-  // listern when change the theme palette
   useEffect(() => {
-    if (themePalette !== "default") return;
-
-    // main
-    const handleChangeThemePalette = () => {
-      document.documentElement.setAttribute(HTML_KEY_PALETTE, themePalette);
-    };
-
-    handleChangeThemePalette();
-
+    saveThemePalette(themePalette);
   }, [themePalette]);
 
-  // sets
+  useEffect(() => {
+    saveCustomPalettes(customPalettes);
+  }, [customPalettes]);
 
-  const setThemeMode = (t: ThemeModeOptions) => {
-    setThemeModeState(t);
+  useEffect(() => {
+    saveSelectedCustomPaletteId(selectedCustomPaletteId);
+  }, [selectedCustomPaletteId]);
 
-    // if system theme remove the current resolved mode
-    if (t === "system") {
-      localStorage.removeItem(STORAGE_KEY_MODE);
-    } else {
-      localStorage.setItem(STORAGE_KEY_MODE, t);
+  useApplyTheme({
+    themeMode,
+    currentThemePaletteCode,
+    selectedCustomPalette,
+  });
+
+  // Theme Mode Change
+  useEffect(() => {
+    onChangeThemeMode()
+  }, [themeMode]);
+
+  // Theme Palette Change
+  useEffect(() => {
+    onChangeThemePalette()
+  }, [themeMode, currentThemePaletteCode, selectedCustomPalette]);
+
+  // Sets
+
+  const setThemeMode = (mode: ThemeModeOptions) => {
+    setThemeModeState(mode);
+  };
+
+  const setThemePalette = (palette: ThemePaletteOptions) => {
+    setThemePaletteState(palette);
+    setSelectedCustomPaletteIdState(null);
+  };
+
+  const setSelectedCustomPaletteId = (id: string | null) => {
+    if (!id) {
+      setSelectedCustomPaletteIdState(null);
+      setThemePaletteState("default");
+      return;
+    }
+
+    const found = customPalettes.find((palette) => palette.id === id) ?? null;
+
+    if (!found) {
+      setSelectedCustomPaletteIdState(null);
+      setThemePaletteState("default");
+      return;
+    }
+
+    setSelectedCustomPaletteIdState(found.id);
+    setThemePaletteState("default");
+  };
+
+  const setCustomPalettes = (list: TCustomPalettesColors) => {
+    const next = list.slice(0, EXAMPLE_customColorsPaletteLimit);
+    setCustomPalettesState(next);
+
+    if (selectedCustomPaletteId) {
+      const stillExists = next.some((palette) => palette.id === selectedCustomPaletteId);
+      if (!stillExists) {
+        setSelectedCustomPaletteIdState(null);
+        setThemePaletteState("default");
+      }
     }
   };
-  
-  const setThemePalette = (t: ThemePaletteOptions) => {
-    setThemePaletteState(t);
 
-    // if system theme remove the current resolved palette
-    if (t === "default") {
-      localStorage.removeItem(STORAGE_KEY_PALETTE);
-    } else {
-      localStorage.setItem(STORAGE_KEY_PALETTE, t);
-    }
-  };
-  
-  const setCustomPalettesColors = (t: ICustomPalettesColors) => {
-    setCustomPaletteColorsState(t);
+  const addCustomPalette = (palette: ICustomPalettesColors) => {
+    setCustomPalettesState((prev) => {
+      if (prev.length >= EXAMPLE_customColorsPaletteLimit) {
+        console.warn("Custom palette limit reached");
+        return prev;
+      }
+
+      if (palette.id && prev.some((item) => item.id === palette.id)) {
+        return prev;
+      }
+
+      return [...prev, palette];
+    });
   };
 
   return (
@@ -187,13 +319,22 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         themeMode,
         resolvedThemeMode: getResolvedThemeMode(themeMode),
         setThemeMode,
-        
+
         themePalette,
         resolvedThemePalette: getResolvedThemePalette(themePalette),
+        currentThemePaletteCode,
         setThemePalette,
 
-        customPalettesColors:,
-        setCustomPalettesColors,
+        customPalettes,
+        setCustomPalettes,
+        addCustomPalette,
+
+        selectedCustomPaletteId,
+        setSelectedCustomPaletteId,
+        selectedCustomPalette,
+
+        allThemePalettes,
+        customColorsPaletteLimit: EXAMPLE_customColorsPaletteLimit,
       }}
     >
       {children}
