@@ -12,7 +12,7 @@ import {
   ThemePaletteResolved,
 } from "@/configs/theme-palette.metadata"
 
-import { getResolvedThemeMode, getResolvedThemePalette, getDefaultThemePalette } from "@/utils/theme"
+import { getResolvedThemeMode, getResolvedThemePalette } from "@/utils/theme"
 
 // context
 const ThemeContext = createContext({} as ThemeContextType);
@@ -23,6 +23,11 @@ const STORAGE_KEY_PALETTE = "client-theme-palette";
 
 const HTML_KEY_MODE = "data-theme-mode";
 const HTML_KEY_PALETTE = "data-theme-palette";
+
+// fix values
+
+const PATH_FAVICON_LIGHT: string = "/favicon/favicon-v2/favicon-v2-black.ico";
+const PATH_FAVICON_DARK: string = "/favicon/favicon-v2/favicon-v2-white.ico";
 
 // main
 
@@ -35,7 +40,6 @@ type ThemeContextType = {
   resolvedThemePalette: ThemePaletteResolved;
   setThemePalette: (t: ThemePaletteOptions) => void;
 
-  // transformar em objeto?
   colorPrimary: string;
   setColorPrimary: (c: string) => void;
   colorPrimaryContrast: string;
@@ -92,8 +96,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       const link = document.querySelector("link[rel='icon']") as HTMLLinkElement;
       if (link) {
         link.href = resolved === "dark" ? 
-          `/favicon/favicon-v2/favicon-v2-white.ico?v=${Date.now()}` : 
-          `/favicon/favicon-v2/favicon-v2-black.ico?v=${Date.now()}`;
+          `${PATH_FAVICON_DARK}?v=${Date.now()}` : 
+          `${PATH_FAVICON_LIGHT}?v=${Date.now()}`;
       }
     }
 
