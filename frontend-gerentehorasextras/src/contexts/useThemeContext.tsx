@@ -44,6 +44,8 @@ type ThemeContextType = {
   setColorPrimary: (c: string) => void;
   colorPrimaryContrast: string;
   setColorPrimaryContrast: (c: string) => void;
+  colorPrimaryAlpha: string;
+  setColorPrimaryAlpha: (c: string) => void;
 };
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
@@ -52,6 +54,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   const [colorPrimary, setColorPrimary] = useState("#27427F");
   const [colorPrimaryContrast, setColorPrimaryContrast] = useState("#ffffff");
+  const [colorPrimaryAlpha, setColorPrimaryAlpha] = useState("#27427f26");
 
   // load inicial
   useEffect(() => {
@@ -168,6 +171,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         setColorPrimary,
         colorPrimaryContrast,
         setColorPrimaryContrast,
+        colorPrimaryAlpha,
+        setColorPrimaryAlpha,
       }}
     >
       {children}
