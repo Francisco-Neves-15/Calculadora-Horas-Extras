@@ -5,7 +5,7 @@ import { Urbanist, Sora } from "next/font/google";
 
 // Style
 import "./globals.css";
-import "../style/theme.scss"
+import "../styles/theme.scss";
 
 // Providers
 import { ThemeProvider } from "@/contexts/useThemeContext"

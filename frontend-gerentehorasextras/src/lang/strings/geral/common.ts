@@ -4,13 +4,13 @@ export const commonStrings = {
     "common-confirm": "Confirmar",
     "common-continue": "Continuar",
     "common-ok": "Ok",
-    "common-save": "Salvar"
+    "common-save": "Salvar",
   },
   "en-US": {
     "common-cancel": "Cancel",
     "common-confirm": "Confirm",
     "common-continue": "Continue",
     "common-ok": "Ok",
-    "common-save": "Save"
-  }
+    "common-save": "Save",
+  },
 };

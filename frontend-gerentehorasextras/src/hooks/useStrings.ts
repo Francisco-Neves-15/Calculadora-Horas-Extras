@@ -1,20 +1,33 @@
+"use client";
+
 import { useLang } from "../contexts/useLangContext";
 
 // Strings
-import { homeStrings } from "../lang/strings/home";
-import { commonStrings } from "../lang/strings/common";
+import { pageHomeStrings } from "../lang/strings/pages/home";
+import { pageSettingsStrings } from "../lang/strings/pages/settings";
+
+import { commonStrings } from "../lang/strings/geral/common";
+import { dataSettingsStrings } from "../lang/strings/geral/dataSettings";
 
 type ModuleStrings = Record<string, string>;
 
-export function useStrings(module: "home" | "settings" | "common"): ModuleStrings {
-  const { lang } = useLang();
+type IModulesPages = "pag-home" | "pag-settings";
+type IModulesGeral = "common" | "data-settings";
+
+export function useStrings(module: IModulesPages | IModulesGeral): ModuleStrings {
+  const { resolvedLang } = useLang();
 
   switch (module) {
-    case "home":
-      return homeStrings[lang];
     case "common":
-      return commonStrings[lang];
+      return commonStrings[resolvedLang];
+    case "data-settings":
+      return dataSettingsStrings[resolvedLang];
+    case "pag-home":
+      return pageHomeStrings[resolvedLang];
+    case "pag-settings":
+      return pageSettingsStrings[resolvedLang];
     default:
       return {};
   }
+
 }

@@ -1,4 +1,4 @@
-export const homeStrings = {
+export const pageHomeStrings = {
   "pt-BR": {
     "home-button-click": "Clique aqui",
     "home-title": "Página Inicial",

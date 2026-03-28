@@ -1,13 +1,17 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
-import { 
-  AVAILABLE_LANGCODE, 
-  ISO_LANG_MAP 
-} from "../lang/main";
+import { AVAILABLE_LANGCODE, ISO_LANG_MAP } from "../lang/main";
 
-import { generalizeLang } from "../lang/utils";
+import { LangOptions } from "@/configs/lang.metadata";
+import { getResolvedLang } from "@/utils/lang";
 
 // context
 const LangContext = createContext({} as LangContextType);
@@ -16,77 +20,72 @@ const LangContext = createContext({} as LangContextType);
 const STORAGE_KEY_LANG = "client-lang";
 const HTML_KEY_LANG = "lang";
 
-// fallback
-const FALLBACK_LANG: AVAILABLE_LANGCODE = "en-US";
+// fallback (preferência quando nada foi salvo — igual ao theme mode `system`)
+const FALLBACK_LANG_OPTION: LangOptions = "system";
 
 // types
 type LangContextType = {
-  lang: AVAILABLE_LANGCODE;
-  setLang: (lang: AVAILABLE_LANGCODE) => void;
+  langOption: LangOptions;
+  resolvedLang: AVAILABLE_LANGCODE;
+  setLang: (lang: LangOptions) => void;
 };
-
-// helpers
-
-function resolveBrowserLang(): AVAILABLE_LANGCODE {
-  if (typeof navigator === "undefined") return FALLBACK_LANG;
-
-  const browserLang = navigator.language;
-
-  // match
-  if (Object.values(ISO_LANG_MAP).includes(browserLang as AVAILABLE_LANGCODE)) {
-    return browserLang as AVAILABLE_LANGCODE;
-  }
-
-  // generalize (en-GB -> en)
-  const generalized = generalizeLang(browserLang as AVAILABLE_LANGCODE);
-
-  const found = Object.values(ISO_LANG_MAP).find(
-    (lang) => lang.startsWith(generalized)
-  );
-
-  if (found) return found;
-
-  return FALLBACK_LANG;
-}
 
 // provider
 export function LangProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLangState] = useState<AVAILABLE_LANGCODE>(FALLBACK_LANG);
+  const [langOption, setLangOptionState] = useState<LangOptions>(
+    FALLBACK_LANG_OPTION
+  );
+  const [browserLangNonce, setBrowserLangNonce] = useState(0);
 
-  // initial load (localStorage -> browser -> fallback)
+  const resolvedLang = useMemo(
+    () => getResolvedLang(langOption),
+    [langOption, browserLangNonce]
+  );
+
+  // initial load (localStorage -> padrão system)
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY_LANG) as AVAILABLE_LANGCODE | null;
+    const saved = localStorage.getItem(STORAGE_KEY_LANG) as
+      | AVAILABLE_LANGCODE
+      | null;
 
     if (saved && Object.values(ISO_LANG_MAP).includes(saved)) {
-      setLangState(saved);
+      setLangOptionState(saved as LangOptions);
       return;
     }
 
-    const resolved = resolveBrowserLang();
-    setLangState(resolved);
+    setLangOptionState("system");
   }, []);
 
-  // sync
+  // sistema do navegador pode mudar com languagechange
+  useEffect(() => {
+    if (langOption !== "system") return;
+
+    const onLanguageChange = () => setBrowserLangNonce((n) => n + 1);
+    window.addEventListener("languagechange", onLanguageChange);
+    return () =>
+      window.removeEventListener("languagechange", onLanguageChange);
+  }, [langOption]);
+
+  // sync attribute (valor efetivo)
   useEffect(() => {
     const root = document.documentElement;
-
-    // HTML tag
-    root.setAttribute(HTML_KEY_LANG, lang);
-
-    // localStorage
-    localStorage.setItem(STORAGE_KEY_LANG, lang);
-
+    root.setAttribute(HTML_KEY_LANG, resolvedLang);
     // API POINT
+  }, [resolvedLang]);
 
-  }, [lang]);
+  // setter (espelha Theme: system remove a chave do storage)
+  const setLang = (next: LangOptions) => {
+    setLangOptionState(next);
 
-  // setter
-  const setLang = (newLang: AVAILABLE_LANGCODE) => {
-    setLangState(newLang);
+    if (next === "system") {
+      localStorage.removeItem(STORAGE_KEY_LANG);
+    } else {
+      localStorage.setItem(STORAGE_KEY_LANG, next);
+    }
   };
 
   return (
-    <LangContext.Provider value={{ lang, setLang }}>
+    <LangContext.Provider value={{ langOption, resolvedLang, setLang }}>
       {children}
     </LangContext.Provider>
   );
