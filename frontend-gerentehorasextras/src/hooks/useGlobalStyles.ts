@@ -8,6 +8,7 @@ function useGlobalStyles() {
     gColors: {
       "primary": "var(--color-primary)",
       "primaryContrast": "var(--color-primaryContrast)",
+      "primaryAlpha": "var(--color-primaryAlpha)",
       "link": "var(--color-link)",
       "info": "var(--color-info)",
       "warning": "var(--color-warning)",

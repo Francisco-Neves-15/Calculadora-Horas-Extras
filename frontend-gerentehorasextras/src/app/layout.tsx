@@ -1,10 +1,17 @@
 import type { Metadata } from "next";
+
+// Fonts
 import { Urbanist, Sora } from "next/font/google";
 
+// Style
 import "./globals.css";
 import "../style/theme.scss"
 
+// Providers
 import { ThemeProvider } from "@/contexts/useThemeContext"
+import { LangProvider } from "@/contexts/useLangContext"
+
+// Fonts Creating
 
 const urbanist = Urbanist({
   variable: "--font-urbanist-sans",
@@ -33,12 +40,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html data-theme-mode="light" lang="en-US" dir="ltr">
+    <html data-theme-mode="light" data-theme-palette="default" lang="en-US" dir="ltr">
       <body
         className={`${urbanist.variable} ${sora.variable} antialiased`}
       >
         <ThemeProvider>
-          {children}
+          <LangProvider>
+            {children}
+          </LangProvider>
         </ThemeProvider>
       </body>
     </html>

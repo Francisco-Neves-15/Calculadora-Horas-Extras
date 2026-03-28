@@ -1,10 +1,11 @@
 // ISO 3166
 
+// Truth
 export const ISO_LANG_MAP = {
   BR: "pt-BR",
   US: "en-US",
-  FR: "fr-FR",
-  ES: "es-ES",
+  // FR: "fr-FR",
+  // ES: "es-ES",
 } as const;
 
 // following ISO 3166-1 | A2

@@ -4,6 +4,7 @@ export interface IPaletteColors {
 // AUTO-GENERATED--PALETTE-COLORS START
   "primary": string;
   "primaryContrast": string;
+  "primaryAlpha": string;
   "link": string;
   "info": string;
   "warning": string;

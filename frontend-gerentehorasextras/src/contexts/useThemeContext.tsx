@@ -17,12 +17,16 @@ import { getResolvedThemeMode, getResolvedThemePalette } from "@/utils/theme"
 // context
 const ThemeContext = createContext({} as ThemeContextType);
 
-// local storage or storage key
+// local storage / keys
 const STORAGE_KEY_MODE = "client-theme-mode";
 const STORAGE_KEY_PALETTE = "client-theme-palette";
 
 const HTML_KEY_MODE = "data-theme-mode";
 const HTML_KEY_PALETTE = "data-theme-palette";
+
+// fallback
+const FALLBACK_MODE: ThemeModeOptions = "system";
+const FALLBACK_PALETTE: ThemePaletteOptions = "default";
 
 // fix values
 
@@ -49,14 +53,14 @@ type ThemeContextType = {
 };
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [themeMode, setThemeModeState] = useState<ThemeModeOptions>("system");
-  const [themePalette, setThemePaletteState] = useState<ThemePaletteOptions>("default");
+  const [themeMode, setThemeModeState] = useState<ThemeModeOptions>(FALLBACK_MODE);
+  const [themePalette, setThemePaletteState] = useState<ThemePaletteOptions>(FALLBACK_PALETTE);
 
   const [colorPrimary, setColorPrimary] = useState("#27427F");
   const [colorPrimaryContrast, setColorPrimaryContrast] = useState("#ffffff");
   const [colorPrimaryAlpha, setColorPrimaryAlpha] = useState("#27427f26");
 
-  // load inicial
+  // initial load
   useEffect(() => {
     const savedMode = localStorage.getItem(STORAGE_KEY_MODE) as ThemeModeOptions | null;
     const savedPalette = localStorage.getItem(STORAGE_KEY_PALETTE) as ThemePaletteOptions | null;
@@ -86,7 +90,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     
     root.style.setProperty("--color-primary", colorPrimary);
     root.style.setProperty("--color-primaryContrast", colorPrimaryContrast);
-  }, [themeMode, themePalette, colorPrimary, colorPrimaryContrast]);
+    root.style.setProperty("--color-primaryAlpha", colorPrimaryAlpha);
+
+    // API POINT
+
+  }, [themeMode, themePalette, colorPrimary, colorPrimaryContrast, colorPrimaryAlpha]);
 
   // listern when change the systemThemeMode
   useEffect(() => {
@@ -180,4 +188,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export const useTheme = () => useContext(ThemeContext);
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (!context) throw new Error("useTheme must be used within a ThemeProvider");
+  return context;
+};
