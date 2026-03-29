@@ -7,7 +7,7 @@ import { useLang } from "@/contexts/useLangContext";
 import { useTheme } from "@/contexts/useThemeContext";
 
 // 
-import { useStrings } from "@/hooks/useStrings";
+import { useI18n } from "@/hooks/useI18n";
 
 // Lang
 import { AVAILABLE_LANGCODE, ISO_LANG_MAP } from "@/lang/main";
@@ -39,6 +39,7 @@ const sectionStyle: CSSProperties = {
 };
 
 export default function Settings() {
+
   const { langOption, setLang } = useLang();
 
   const {
@@ -48,8 +49,8 @@ export default function Settings() {
     setThemePalette,
   } = useTheme();
 
-  // const tPage = useStrings("pag-settings");
-  const tData = useStrings("data-settings");
+  // const tPage = useI18n("pag-settings");
+  const tData = useI18n("data-settings");
 
   const paletteLabel = (p: ThemePaletteOptions) => {
     if (p === "default") return tData[THEME_PALETTE_META.default.id];

@@ -20,7 +20,7 @@ const LangContext = createContext({} as LangContextType);
 const STORAGE_KEY_LANG = "client-lang";
 const HTML_KEY_LANG = "lang";
 
-// fallback (preferência quando nada foi salvo — igual ao theme mode `system`)
+// fallback
 const FALLBACK_LANG_OPTION: LangOptions = "system";
 
 // types
@@ -42,7 +42,7 @@ export function LangProvider({ children }: { children: React.ReactNode }) {
     [langOption, browserLangNonce]
   );
 
-  // initial load (localStorage -> padrão system)
+  // initial load (localStorage -> system default)
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY_LANG) as
       | AVAILABLE_LANGCODE
@@ -56,7 +56,7 @@ export function LangProvider({ children }: { children: React.ReactNode }) {
     setLangOptionState("system");
   }, []);
 
-  // sistema do navegador pode mudar com languagechange
+  // listern when browser lang change
   useEffect(() => {
     if (langOption !== "system") return;
 
@@ -66,14 +66,16 @@ export function LangProvider({ children }: { children: React.ReactNode }) {
       window.removeEventListener("languagechange", onLanguageChange);
   }, [langOption]);
 
-  // sync attribute (valor efetivo)
+  // sync attribute
   useEffect(() => {
     const root = document.documentElement;
     root.setAttribute(HTML_KEY_LANG, resolvedLang);
+
     // API POINT
+
   }, [resolvedLang]);
 
-  // setter (espelha Theme: system remove a chave do storage)
+  // setter
   const setLang = (next: LangOptions) => {
     setLangOptionState(next);
 

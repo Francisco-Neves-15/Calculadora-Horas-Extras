@@ -5,6 +5,7 @@ export const commonStrings = {
     "common-continue": "Continuar",
     "common-ok": "Ok",
     "common-save": "Salvar",
+    "common-typeHere": "Digite aqui",
   },
   "en-US": {
     "common-cancel": "Cancel",
@@ -12,5 +13,6 @@ export const commonStrings = {
     "common-continue": "Continue",
     "common-ok": "Ok",
     "common-save": "Save",
+    "common-typeHere": "Type here",
   },
 };

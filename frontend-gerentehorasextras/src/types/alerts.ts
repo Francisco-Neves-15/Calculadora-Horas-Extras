@@ -1,0 +1,65 @@
+
+// Alert
+export type AlertOptions = {
+  title?: string;
+  msg?: string;
+  okBtnText?: string;
+  onClose?: () => void;
+  time?: boolean;
+  timeSec?: number;
+  timeBar?: boolean;
+};
+
+// Confirm
+export type ConfirmOptions = {
+  title?: string;
+  msg?: string;
+  confirmText?: string;
+  cancelText?: string;
+};
+
+// Input
+export type InputOptions = {
+  title?: string;
+  msg?: string;
+  placeholder?: string;
+  confirmText?: string;
+  cancelText?: string;
+};
+
+// Alert's
+export type AlertsApi = {
+  alert: (options: AlertOptions) => Promise<void>;
+  confirm: (options: ConfirmOptions) => Promise<boolean>;
+  input: (options: InputOptions) => Promise<string | null>;
+};
+
+export type InternalItem =
+  | (InternalAlert & { type: "alert" })
+  | (InternalConfirm & { type: "confirm" })
+  | (InternalInput & { type: "input" });
+
+// Alert
+export type InternalAlert = Required<
+  Pick<AlertOptions, "title" | "msg" | "okBtnText" | "time" | "timeSec" | "timeBar">
+> & {
+  onClose?: () => void;
+  id: string;
+  resolve: () => void;
+};
+
+// Confirm
+type InternalConfirm = Required<
+  Pick<ConfirmOptions, "title" | "msg" | "confirmText" | "cancelText">
+> & {
+  resolve: (value: boolean) => void;
+  id: string;
+};
+
+// Input
+type InternalInput = Required<
+  Pick<InputOptions, "title" | "msg" | "placeholder" | "confirmText" | "cancelText">
+> & {
+  resolve: (value: string | null) => void;
+  id: string;
+};

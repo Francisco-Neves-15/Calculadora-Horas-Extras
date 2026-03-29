@@ -10,6 +10,7 @@ import "../styles/theme.scss";
 // Providers
 import { ThemeProvider } from "@/contexts/useThemeContext"
 import { LangProvider } from "@/contexts/useLangContext"
+import { AlertsProvider } from "@/contexts/useAlertsContext"
 
 // Fonts Creating
 
@@ -41,15 +42,15 @@ export default function RootLayout({
 }>) {
   return (
     <html data-theme-mode="light" data-theme-palette="default" lang="en-US" dir="ltr">
-      <body
-        className={`${urbanist.variable} ${sora.variable} antialiased`}
-      >
+      <LangProvider>
         <ThemeProvider>
-          <LangProvider>
-            {children}
-          </LangProvider>
+          <AlertsProvider>
+            <body className={`${urbanist.variable} ${sora.variable} antialiased`}>
+              {children}
+            </body>
+          </AlertsProvider>
         </ThemeProvider>
-      </body>
+      </LangProvider>
     </html>
   );
 }

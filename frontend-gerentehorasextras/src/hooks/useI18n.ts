@@ -14,7 +14,7 @@ type ModuleStrings = Record<string, string>;
 type IModulesPages = "pag-home" | "pag-settings";
 type IModulesGeral = "common" | "data-settings";
 
-export function useStrings(module: IModulesPages | IModulesGeral): ModuleStrings {
+export function useI18n(module: IModulesPages | IModulesGeral): ModuleStrings {
   const { resolvedLang } = useLang();
 
   switch (module) {
