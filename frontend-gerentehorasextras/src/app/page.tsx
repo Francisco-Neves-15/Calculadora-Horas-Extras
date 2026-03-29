@@ -3,7 +3,7 @@
 import Link from "next/link";
 
 import { useI18n } from "@/hooks/useI18n";
-import { useAlerts } from "@/hooks/useAlerts";
+// import { useAlerts } from "@/hooks/useAlerts";
 
 export default function Home() {
   const tHome = useI18n("pag-home");
@@ -39,7 +39,7 @@ export default function Home() {
     <div className="">
 
       <main className="bg-primary">
-        <p className="color-primary">não consigo ver nada</p>
+        <p className="text-primaryContrast">Teste Tailwind: fundo primary + texto contrast</p>
       </main>
       
       <div>

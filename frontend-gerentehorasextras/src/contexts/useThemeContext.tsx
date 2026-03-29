@@ -28,11 +28,6 @@ const HTML_KEY_PALETTE = "data-theme-palette";
 const FALLBACK_MODE: ThemeModeOptions = "system";
 const FALLBACK_PALETTE: ThemePaletteOptions = "default";
 
-// fix values
-
-const PATH_FAVICON_LIGHT: string = "/favicon/favicon-v2/favicon-v2-black.ico";
-const PATH_FAVICON_DARK: string = "/favicon/favicon-v2/favicon-v2-white.ico";
-
 // main
 
 type ThemeContextType = {
@@ -52,6 +47,7 @@ type ThemeContextType = {
   setColorPrimaryAlpha: (c: string) => void;
 };
 
+// Body Classname to theme mode
 function setClassNameBody(resolved: ThemeModeResolved) {
   const addClass = resolved === "dark" ? "dark" : "light";
   const removeClass = resolved === "dark" ? "light" : "dark";
@@ -72,6 +68,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const savedMode = localStorage.getItem(STORAGE_KEY_MODE) as ThemeModeOptions | null;
     const savedPalette = localStorage.getItem(STORAGE_KEY_PALETTE) as ThemePaletteOptions | null;
 
+    // API POINT | TO GET
+
     if (savedMode) {
       setThemeModeState(savedMode);
     } else {
@@ -86,7 +84,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   }, []);
   
-  // Get Primary's Colors (do not change with the theme yet)
+  // 
   useEffect(() => {
     const root = document.documentElement;
     
@@ -94,13 +92,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     
     root.setAttribute(HTML_KEY_MODE, resolvedThemeMode);
     root.setAttribute(HTML_KEY_PALETTE, themePalette);
+
     setClassNameBody(resolvedThemeMode);
     
     root.style.setProperty("--color-primary", colorPrimary);
     root.style.setProperty("--color-primaryContrast", colorPrimaryContrast);
     root.style.setProperty("--color-primaryAlpha", colorPrimaryAlpha);
 
-    // API POINT
+    // API POINT | TO SAVE
 
   }, [themeMode, themePalette, colorPrimary, colorPrimaryContrast, colorPrimaryAlpha]);
 
@@ -110,23 +109,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
     const media = window.matchMedia("(prefers-color-scheme: dark)");
 
-    // Change the App Favicon based on Navigator Theme
-    const handleChangeFavicon = (resolved: ThemeModeResolved) => {
-      const link = document.querySelector("link[rel='icon']") as HTMLLinkElement;
-      if (link) {
-        link.href = resolved === "dark" ? 
-          `${PATH_FAVICON_DARK}?v=${Date.now()}` : 
-          `${PATH_FAVICON_LIGHT}?v=${Date.now()}`;
-      }
-    }
-
     // main
     const handleChangeThemeMode = () => {
       const resolved = media.matches ? "dark" : "light";
 
       document.documentElement.setAttribute(HTML_KEY_MODE, resolved);
       setClassNameBody(resolved);
-      handleChangeFavicon(resolved);
     };
 
     media.addEventListener("change", handleChangeThemeMode);

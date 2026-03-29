@@ -47,6 +47,9 @@ export default function Settings() {
     setThemeMode,
     themePalette,
     setThemePalette,
+    setColorPrimary,
+    setColorPrimaryContrast,
+    setColorPrimaryAlpha,
   } = useTheme();
 
   // const tPage = useI18n("pag-settings");
@@ -59,6 +62,11 @@ export default function Settings() {
 
   return (
     <div style={{ padding: 16 }}>
+
+      <main className="bg-primary">
+        <p className="text-primaryContrast">Teste Tailwind: fundo primary + texto contrast</p>
+      </main>
+
       <section style={sectionStyle}>
         <h2 style={{ fontSize: "1rem", marginBottom: 8 }}>Theme mode</h2>
         <div>
@@ -91,6 +99,13 @@ export default function Settings() {
               {paletteLabel(palette)}
             </button>
           ))}
+        </div>
+      </section>
+
+      <section style={sectionStyle}>
+        <h2 style={{ fontSize: "1rem", marginBottom: 8 }}>Color Primary</h2>
+        <div>
+          <button onClick={() => setColorPrimary("#ff0000")}>Aaaaa</button>
         </div>
       </section>
 

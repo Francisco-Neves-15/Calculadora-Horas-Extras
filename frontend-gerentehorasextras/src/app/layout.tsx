@@ -24,15 +24,18 @@ const sora = Sora({
   subsets: ["latin"],
 });
 
+const PATH_FAVICON_LIGHT: string = "favicon/favicon-v2/favicon-v2-black.ico";
+const PATH_FAVICON_DARK: string = "favicon/favicon-v2/favicon-v2-white.ico";
+
 export const metadata: Metadata = {
   title: "Gerente de Horas Extras",
   description: "Gerenciamento pessoal de Horas Extras",
-  // icons: {
-  //   icon: [
-  //     { url: "/favicon/favicon-v2/favicon-v2-white.ico", media: "(prefers-color-scheme: dark)" },
-  //     { url: "/favicon/favicon-v2/favicon-v2-black.ico", media: "(prefers-color-scheme: light)" },
-  //   ],
-  // },
+  icons: {
+    icon: [
+      { url: PATH_FAVICON_DARK, media: "(prefers-color-scheme: dark)" },
+      { url: PATH_FAVICON_LIGHT, media: "(prefers-color-scheme: light)" },
+    ],
+  },
 };
 
 export default function RootLayout({

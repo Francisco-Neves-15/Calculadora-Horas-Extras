@@ -2,6 +2,11 @@
 
 Este diretorio foi reservado para o app React, mas nao inclui instalacao nem scaffold nesta etapa.
 
+RUN BEFORE
+```bash
+npm run build
+```
+
 ## Contrato esperado com o backend
 
 - Base URL da API: `http://localhost:5000/api/v1`

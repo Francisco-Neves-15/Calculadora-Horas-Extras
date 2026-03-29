@@ -1,7 +1,16 @@
 @import "tailwindcss";
+@config "../../tailwind.config.mjs";
 
-/* 
+
 body {
   background: var(--color-bgBase);
   color: var(--color-text);
-} */
+}
+
+a {
+  cursor: pointer;
+}
+
+button {
+  cursor: pointer;
+}
