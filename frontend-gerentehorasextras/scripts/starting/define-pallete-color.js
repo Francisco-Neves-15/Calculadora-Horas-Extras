@@ -2,10 +2,10 @@ const fs = require("fs");
 const path = require("path");
 
 // === PATHS ===
-const SCSS_FILE = path.resolve("src/style/theme.scss");
-const GLOBAL_FILE = path.resolve("src/hooks/useGlobalStyles.tsx");
+const SCSS_FILE = path.resolve("src/styles/theme.scss");
+const GLOBAL_FILE = path.resolve("src/hooks/useGlobalStyles.ts");
 const TYPES_FILE = path.resolve("src/types/theme.ts");
-const TAILWIND_FILE = path.resolve("tailwind.config.ts");
+const TAILWIND_FILE = path.resolve("tailwind.config.mjs");
 
 // === HELPERS ===
 
@@ -115,7 +115,7 @@ fs.writeFileSync(TYPES_FILE, typesFile);
 let tailwindFile = fs.readFileSync(TAILWIND_FILE, "utf-8");
 
 const tailwindContent = `      colors: {
-${colors.map(c => `        "${c.key}": "var(${c.cssVar})",`).join("\n")}
+${colors.map(c => `        ${c.key}: "var(${c.cssVar})",`).join("\n")}
       },`;
 
 tailwindFile = replaceAutoBlock(tailwindFile, tailwindContent);

@@ -5,6 +5,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
@@ -35,29 +36,38 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
 
   // Default Values
 
-  const DEFAULT_ALERT_VALUES = {
-    title: "",
-    msg: "",
-    okBtnText: tCommon["common-ok"],
-    time: false,
-    timeSec: 3000,
-    timeBar: true,
-  };
+  const DEFAULT_ALERT_VALUES = useMemo(
+    () => ({
+      title: "",
+      msg: "",
+      okBtnText: tCommon["common-ok"],
+      time: false,
+      timeSec: 3000,
+      timeBar: true,
+    }),
+    [tCommon]
+  );
 
-  const DEFAULT_CONFIRM_VALUES = {
-    title: "",
-    msg: "",
-    confirmText: tCommon["common-confirm"],
-    cancelText: tCommon["common-cancel"],
-  };
+  const DEFAULT_CONFIRM_VALUES = useMemo(
+    () => ({
+      title: "",
+      msg: "",
+      confirmText: tCommon["common-confirm"],
+      cancelText: tCommon["common-cancel"],
+    }),
+    [tCommon]
+  );
 
-  const DEFAULT_INPUT_VALUES = {
-    title: "",
-    msg: "",
-    placeholder: tCommon["common-typeHere"],
-    confirmText: tCommon["common-confirm"],
-    cancelText: tCommon["common-cancel"],
-  };
+  const DEFAULT_INPUT_VALUES = useMemo(
+    () => ({
+      title: "",
+      msg: "",
+      placeholder: tCommon["common-typeHere"],
+      confirmText: tCommon["common-confirm"],
+      cancelText: tCommon["common-cancel"],
+    }),
+    [tCommon]
+  );
 
   // ALERT
   const alert = useCallback((options: AlertOptions) => {
@@ -78,7 +88,7 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
         },
       ]);
     });
-  }, []);
+  }, [DEFAULT_ALERT_VALUES]);
 
   // CONFIRM
   const confirm = useCallback((options: ConfirmOptions) => {
@@ -96,7 +106,7 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
         },
       ]);
     });
-  }, []);
+  }, [DEFAULT_CONFIRM_VALUES]);
 
   // INPUT
   const input = useCallback((options: InputOptions) => {
@@ -115,24 +125,29 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
         },
       ]);
     });
-  }, []);
+  }, [DEFAULT_INPUT_VALUES]);
 
 
   const active = useMemo(() => queue[0] ?? null, [queue]);
+  const activeRef = useRef<InternalItem | null>(null);
+  const closedIdsRef = useRef<Set<string>>(new Set());
+
+  useEffect(() => {
+    activeRef.current = active;
+  }, [active]);
 
   const close = useCallback(() => {
-    setQueue((q) => {
-      const [current, ...rest] = q;
+    const current = activeRef.current;
+    if (!current) return;
+    if (closedIdsRef.current.has(current.id)) return;
+    closedIdsRef.current.add(current.id);
 
-      if (!current) return q;
+    if (current.type === "alert") {
+      current.resolve();
+      current.onClose?.();
+    }
 
-      if (current.type === "alert") {
-        current.resolve();
-        current.onClose?.();
-      }
-
-      return rest;
-    });
+    setQueue((q) => (q[0]?.id === current.id ? q.slice(1) : q));
   }, []);
 
   const resolveConfirm = (value: boolean) => {

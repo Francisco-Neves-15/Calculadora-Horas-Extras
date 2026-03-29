@@ -10,7 +10,7 @@ export default function Home() {
   // const { alert, confirm, input } = useAlerts();
 
   const testAlert = async () => {
-    await global.alerts?.alert({
+    await global.alerts.alert({
       title: "Alerta!!!",
       msg: "Isso é um alerta",
       time: true,
@@ -19,7 +19,7 @@ export default function Home() {
   }
 
   const testConfirm = async () => {
-    const res = await global.alerts?.confirm({
+    const res = await global.alerts.confirm({
       title: "Confirma?",
       msg: "Confirma isso?",
     });
@@ -28,7 +28,7 @@ export default function Home() {
   }
 
   const testInput = async () => {
-    const entry = await global.alerts?.input({
+    const entry = await global.alerts.input({
       title: "Título",
       msg: "Mensagem",
     });

@@ -52,13 +52,20 @@ type ThemeContextType = {
   setColorPrimaryAlpha: (c: string) => void;
 };
 
+function setClassNameBody(resolved: ThemeModeResolved) {
+  const addClass = resolved === "dark" ? "dark" : "light";
+  const removeClass = resolved === "dark" ? "light" : "dark";
+  document.body.classList.add(addClass);
+  document.body.classList.remove(removeClass);
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [themeMode, setThemeModeState] = useState<ThemeModeOptions>(FALLBACK_MODE);
   const [themePalette, setThemePaletteState] = useState<ThemePaletteOptions>(FALLBACK_PALETTE);
 
   const [colorPrimary, setColorPrimary] = useState("#27427F");
   const [colorPrimaryContrast, setColorPrimaryContrast] = useState("#ffffff");
-  const [colorPrimaryAlpha, setColorPrimaryAlpha] = useState("#27427f26");
+  const [colorPrimaryAlpha, setColorPrimaryAlpha] = useState("#27427f33");
 
   // initial load
   useEffect(() => {
@@ -87,6 +94,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     
     root.setAttribute(HTML_KEY_MODE, resolvedThemeMode);
     root.setAttribute(HTML_KEY_PALETTE, themePalette);
+    setClassNameBody(resolvedThemeMode);
     
     root.style.setProperty("--color-primary", colorPrimary);
     root.style.setProperty("--color-primaryContrast", colorPrimaryContrast);
@@ -117,6 +125,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       const resolved = media.matches ? "dark" : "light";
 
       document.documentElement.setAttribute(HTML_KEY_MODE, resolved);
+      setClassNameBody(resolved);
       handleChangeFavicon(resolved);
     };
 

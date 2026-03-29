@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 type AlertProps = {
@@ -24,6 +24,13 @@ export function Alert({
 }: AlertProps) {
   const [mounted, setMounted] = useState(false);
   const [remaining, setRemaining] = useState(timeSec);
+  const closedRef = useRef(false);
+
+  const requestClose = useCallback(() => {
+    if (closedRef.current) return;
+    closedRef.current = true;
+    onClose();
+  }, [onClose]);
 
   useEffect(() => {
     setMounted(true);
@@ -33,23 +40,24 @@ export function Alert({
     if (!time) return;
 
     setRemaining(timeSec);
+    closedRef.current = false;
 
     const startedAt = Date.now();
 
     const intervalId = window.setInterval(() => {
       const elapsed = Date.now() - startedAt;
       setRemaining(Math.max(0, timeSec - elapsed));
-    }, 0);
+    }, 50);
 
     const timeoutId = window.setTimeout(() => {
-      onClose();
+      requestClose();
     }, timeSec);
 
     return () => {
       window.clearInterval(intervalId);
       window.clearTimeout(timeoutId);
     };
-  }, [time, timeSec, onClose]);
+  }, [time, timeSec, requestClose]);
 
   if (!mounted) return null;
 
@@ -59,7 +67,7 @@ export function Alert({
         {title ? <h2>{title}</h2> : null}
         {msg ? <p>{msg}</p> : null}
 
-        <button type="button" onClick={onClose}>
+        <button type="button" onClick={requestClose}>
           {okBtnText}
         </button>
 

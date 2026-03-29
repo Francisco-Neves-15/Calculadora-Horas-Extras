@@ -11,11 +11,11 @@ export interface IPaletteColors {
   "danger": string;
   "success": string;
   "neutral": string;
-  "infoBg": string;
-  "warningBg": string;
-  "dangerBg": string;
-  "successBg": string;
-  "neutralBg": string;
+  "infoAlpha": string;
+  "warningAlpha": string;
+  "dangerAlpha": string;
+  "successAlpha": string;
+  "neutralAlpha": string;
   "text": string;
   "textSecondary": string;
   "bgBase": string;
