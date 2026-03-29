@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 
 type AlertProps = {
   title: string;
-  msg: string;
+  message: string;
   okBtnText: string;
   time: boolean;
   timeSec: number;
@@ -15,7 +15,7 @@ type AlertProps = {
 
 export function Alert({
   title,
-  msg,
+  message,
   okBtnText,
   time,
   timeSec,
@@ -65,7 +65,7 @@ export function Alert({
     <div style={{ position: "fixed", inset: 0, display: "grid", placeItems: "center" }}>
       <div>
         {title ? <h2>{title}</h2> : null}
-        {msg ? <p>{msg}</p> : null}
+        {message ? <p>{message}</p> : null}
 
         <button type="button" onClick={requestClose}>
           {okBtnText}

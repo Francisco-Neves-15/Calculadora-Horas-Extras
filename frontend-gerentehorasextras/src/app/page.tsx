@@ -12,7 +12,7 @@ export default function Home() {
   const testAlert = async () => {
     await global.alerts.alert({
       title: "Alerta!!!",
-      msg: "Isso é um alerta",
+      message: "Isso é um alerta",
       time: true,
       onClose: () => { console.log("Depois"); }
     });
@@ -21,7 +21,7 @@ export default function Home() {
   const testConfirm = async () => {
     const res = await global.alerts.confirm({
       title: "Confirma?",
-      msg: "Confirma isso?",
+      message: "Confirma isso?",
     });
     if (res) console.log("Aceito");
     else console.log("Recusado");
@@ -30,7 +30,7 @@ export default function Home() {
   const testInput = async () => {
     const entry = await global.alerts.input({
       title: "Título",
-      msg: "Mensagem",
+      message: "Mensagem",
     });
     console.log(entry)
   }

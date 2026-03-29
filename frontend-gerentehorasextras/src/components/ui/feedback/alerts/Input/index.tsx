@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 
 export function Input({
   title,
-  msg,
+  message,
   placeholder,
   confirmText,
   cancelText,
@@ -18,7 +18,7 @@ export function Input({
     <div style={{ position: "fixed", inset: 0, display: "grid", placeItems: "center" }}>
       <div>
         <h2>{title}</h2>
-        <p>{msg}</p>
+        <p>{message}</p>
 
         <input
           value={value}

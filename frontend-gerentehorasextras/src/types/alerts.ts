@@ -2,7 +2,7 @@
 // Alert
 export type AlertOptions = {
   title?: string;
-  msg?: string;
+  message?: string;
   okBtnText?: string;
   onClose?: () => void;
   time?: boolean;
@@ -13,7 +13,7 @@ export type AlertOptions = {
 // Confirm
 export type ConfirmOptions = {
   title?: string;
-  msg?: string;
+  message?: string;
   confirmText?: string;
   cancelText?: string;
 };
@@ -21,7 +21,7 @@ export type ConfirmOptions = {
 // Input
 export type InputOptions = {
   title?: string;
-  msg?: string;
+  message?: string;
   placeholder?: string;
   confirmText?: string;
   cancelText?: string;
@@ -41,7 +41,7 @@ export type InternalItem =
 
 // Alert
 export type InternalAlert = Required<
-  Pick<AlertOptions, "title" | "msg" | "okBtnText" | "time" | "timeSec" | "timeBar">
+  Pick<AlertOptions, "title" | "message" | "okBtnText" | "time" | "timeSec" | "timeBar">
 > & {
   onClose?: () => void;
   id: string;
@@ -50,7 +50,7 @@ export type InternalAlert = Required<
 
 // Confirm
 type InternalConfirm = Required<
-  Pick<ConfirmOptions, "title" | "msg" | "confirmText" | "cancelText">
+  Pick<ConfirmOptions, "title" | "message" | "confirmText" | "cancelText">
 > & {
   resolve: (value: boolean) => void;
   id: string;
@@ -58,7 +58,7 @@ type InternalConfirm = Required<
 
 // Input
 type InternalInput = Required<
-  Pick<InputOptions, "title" | "msg" | "placeholder" | "confirmText" | "cancelText">
+  Pick<InputOptions, "title" | "message" | "placeholder" | "confirmText" | "cancelText">
 > & {
   resolve: (value: string | null) => void;
   id: string;

@@ -39,7 +39,7 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
   const DEFAULT_ALERT_VALUES = useMemo(
     () => ({
       title: "",
-      msg: "",
+      message: "",
       okBtnText: tCommon["common-ok"],
       time: false,
       timeSec: 3000,
@@ -51,7 +51,7 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
   const DEFAULT_CONFIRM_VALUES = useMemo(
     () => ({
       title: "",
-      msg: "",
+      message: "",
       confirmText: tCommon["common-confirm"],
       cancelText: tCommon["common-cancel"],
     }),
@@ -61,7 +61,7 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
   const DEFAULT_INPUT_VALUES = useMemo(
     () => ({
       title: "",
-      msg: "",
+      message: "",
       placeholder: tCommon["common-typeHere"],
       confirmText: tCommon["common-confirm"],
       cancelText: tCommon["common-cancel"],
@@ -79,7 +79,7 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
           id: crypto.randomUUID(),
           resolve,
           title: options.title ?? DEFAULT_ALERT_VALUES.title,
-          msg: options.msg ?? DEFAULT_ALERT_VALUES.msg,
+          message: options.message ?? DEFAULT_ALERT_VALUES.message,
           okBtnText: options.okBtnText ?? DEFAULT_ALERT_VALUES.okBtnText,
           onClose: options.onClose,
           time: options.time ?? DEFAULT_ALERT_VALUES.time,
@@ -100,7 +100,7 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
           id: crypto.randomUUID(),
           resolve,
           title: options.title ?? DEFAULT_CONFIRM_VALUES.title,
-          msg: options.msg ?? DEFAULT_CONFIRM_VALUES.msg,
+          message: options.message ?? DEFAULT_CONFIRM_VALUES.message,
           confirmText: options.confirmText ?? DEFAULT_CONFIRM_VALUES.confirmText,
           cancelText: options.cancelText ?? DEFAULT_CONFIRM_VALUES.cancelText,
         },
@@ -118,7 +118,7 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
           id: crypto.randomUUID(),
           resolve,
           title: options.title ?? DEFAULT_INPUT_VALUES.title,
-          msg: options.msg ?? DEFAULT_INPUT_VALUES.msg,
+          message: options.message ?? DEFAULT_INPUT_VALUES.message,
           placeholder: options.placeholder ?? DEFAULT_INPUT_VALUES.placeholder,
           confirmText: options.confirmText ?? DEFAULT_INPUT_VALUES.confirmText,
           cancelText: options.cancelText ?? DEFAULT_INPUT_VALUES.cancelText,

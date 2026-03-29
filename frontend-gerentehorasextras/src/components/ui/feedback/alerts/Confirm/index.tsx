@@ -4,7 +4,7 @@ import { createPortal } from "react-dom";
 
 export function Confirm({
   title,
-  msg,
+  message,
   confirmText,
   cancelText,
   onConfirm,
@@ -14,7 +14,7 @@ export function Confirm({
     <div style={{ position: "fixed", inset: 0, display: "grid", placeItems: "center" }}>
       <div>
         <h2>{title}</h2>
-        <p>{msg}</p>
+        <p>{message}</p>
 
         <button onClick={onConfirm}>{confirmText}</button>
         <button onClick={onCancel}>{cancelText}</button>
