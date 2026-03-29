@@ -1,25 +1,33 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
-import { 
+import {
   ThemeModeOptions,
   ThemeModeResolved,
-} from "@/configs/theme-mode.metadata"
+} from "@/configs/theme-mode.metadata";
 
-import { 
+import {
   ThemePaletteOptions,
   ThemePaletteResolved,
-} from "@/configs/theme-palette.metadata"
+} from "@/configs/theme-palette.metadata";
 
-import { getResolvedThemeMode, getResolvedThemePalette } from "@/utils/theme"
+import { THEME_STORAGE_KEYS, THEME_COLOR_DEFAULTS } from "@/configs/theme-storage";
+import {
+  readStoredPrimaryColors,
+  readStoredThemeMode,
+  readStoredThemePalette,
+} from "@/utils/read-theme-prefs";
+import { getResolvedThemeMode, getResolvedThemePalette } from "@/utils/theme";
 
 // context
 const ThemeContext = createContext({} as ThemeContextType);
-
-// local storage / keys
-const STORAGE_KEY_MODE = "client-theme-mode";
-const STORAGE_KEY_PALETTE = "client-theme-palette";
 
 const HTML_KEY_MODE = "data-theme-mode";
 const HTML_KEY_PALETTE = "data-theme-palette";
@@ -56,51 +64,41 @@ function setClassNameBody(resolved: ThemeModeResolved) {
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [themeMode, setThemeModeState] = useState<ThemeModeOptions>(FALLBACK_MODE);
-  const [themePalette, setThemePaletteState] = useState<ThemePaletteOptions>(FALLBACK_PALETTE);
+  const [themeMode, setThemeModeState] = useState<ThemeModeOptions>(() =>
+    typeof window === "undefined" ? FALLBACK_MODE : readStoredThemeMode()
+  );
+  const [themePalette, setThemePaletteState] = useState<ThemePaletteOptions>(
+    () =>
+      typeof window === "undefined" ? FALLBACK_PALETTE : readStoredThemePalette()
+  );
 
-  const [colorPrimary, setColorPrimary] = useState("#27427F");
-  const [colorPrimaryContrast, setColorPrimaryContrast] = useState("#ffffff");
-  const [colorPrimaryAlpha, setColorPrimaryAlpha] = useState("#27427f33");
+  const initColors =
+    typeof window === "undefined"
+      ? { ...THEME_COLOR_DEFAULTS }
+      : readStoredPrimaryColors();
 
-  // initial load
-  useEffect(() => {
-    const savedMode = localStorage.getItem(STORAGE_KEY_MODE) as ThemeModeOptions | null;
-    const savedPalette = localStorage.getItem(STORAGE_KEY_PALETTE) as ThemePaletteOptions | null;
+  const [colorPrimary, setColorPrimaryState] = useState<string>(initColors.colorPrimary);
+  const [colorPrimaryContrast, setColorPrimaryContrastState] = useState<string>(
+    initColors.colorPrimaryContrast
+  );
+  const [colorPrimaryAlpha, setColorPrimaryAlphaState] = useState<string>(
+    initColors.colorPrimaryAlpha
+  );
 
-    // API POINT | TO GET
-
-    if (savedMode) {
-      setThemeModeState(savedMode);
-    } else {
-      setThemeModeState("system");
-    }
-
-    if (savedPalette) {
-      setThemePaletteState(savedPalette);
-    } else {
-      setThemePaletteState("default");
-    }
-
-  }, []);
-  
-  // 
+  // Sincroniza DOM (e variáveis CSS) com o estado — sem efeitos colaterais de API aqui.
   useEffect(() => {
     const root = document.documentElement;
-    
+
     const resolvedThemeMode = getResolvedThemeMode(themeMode);
-    
+
     root.setAttribute(HTML_KEY_MODE, resolvedThemeMode);
     root.setAttribute(HTML_KEY_PALETTE, themePalette);
 
     setClassNameBody(resolvedThemeMode);
-    
+
     root.style.setProperty("--color-primary", colorPrimary);
     root.style.setProperty("--color-primaryContrast", colorPrimaryContrast);
     root.style.setProperty("--color-primaryAlpha", colorPrimaryAlpha);
-
-    // API POINT | TO SAVE
-
   }, [themeMode, themePalette, colorPrimary, colorPrimaryContrast, colorPrimaryAlpha]);
 
   // listern when change the systemThemeMode
@@ -134,32 +132,51 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     };
 
     handleChangeThemePalette();
-
   }, [themePalette]);
 
   // sets
 
-  const setThemeMode = (t: ThemeModeOptions) => {
+  const setThemeMode = useCallback((t: ThemeModeOptions) => {
     setThemeModeState(t);
 
-    // if system theme remove the current resolved mode
     if (t === "system") {
-      localStorage.removeItem(STORAGE_KEY_MODE);
+      localStorage.removeItem(THEME_STORAGE_KEYS.mode);
     } else {
-      localStorage.setItem(STORAGE_KEY_MODE, t);
+      localStorage.setItem(THEME_STORAGE_KEYS.mode, t);
     }
-  };
-  
-  const setThemePalette = (t: ThemePaletteOptions) => {
+
+    // API POINT
+  }, []);
+
+  const setThemePalette = useCallback((t: ThemePaletteOptions) => {
     setThemePaletteState(t);
 
-    // if system theme remove the current resolved palette
     if (t === "default") {
-      localStorage.removeItem(STORAGE_KEY_PALETTE);
+      localStorage.removeItem(THEME_STORAGE_KEYS.palette);
     } else {
-      localStorage.setItem(STORAGE_KEY_PALETTE, t);
+      localStorage.setItem(THEME_STORAGE_KEYS.palette, t);
     }
-  };
+
+    // API POINT
+  }, []);
+
+  const setColorPrimary = useCallback((c: string) => {
+    setColorPrimaryState(c);
+    localStorage.setItem(THEME_STORAGE_KEYS.colorPrimary, c);
+    // API POINT
+  }, []);
+
+  const setColorPrimaryContrast = useCallback((c: string) => {
+    setColorPrimaryContrastState(c);
+    localStorage.setItem(THEME_STORAGE_KEYS.colorPrimaryContrast, c);
+    // API POINT
+  }, []);
+
+  const setColorPrimaryAlpha = useCallback((c: string) => {
+    setColorPrimaryAlphaState(c);
+    localStorage.setItem(THEME_STORAGE_KEYS.colorPrimaryAlpha, c);
+    // API POINT
+  }, []);
 
   return (
     <ThemeContext.Provider
@@ -167,7 +184,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         themeMode,
         resolvedThemeMode: getResolvedThemeMode(themeMode),
         setThemeMode,
-        
+
         themePalette,
         resolvedThemePalette: getResolvedThemePalette(themePalette),
         setThemePalette,

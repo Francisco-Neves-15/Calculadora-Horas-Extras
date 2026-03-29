@@ -12,6 +12,8 @@ import { ThemeProvider } from "@/contexts/useThemeContext"
 import { LangProvider } from "@/contexts/useLangContext"
 import { AlertsProvider } from "@/contexts/useAlertsContext"
 
+import { getThemeBootInlineScript } from "./theme-boot-script";
+
 // Fonts Creating
 
 const urbanist = Urbanist({
@@ -44,11 +46,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html data-theme-mode="light" data-theme-palette="default" lang="en-US" dir="ltr">
+    <html lang="en-US" dir="ltr" suppressHydrationWarning>
       <LangProvider>
         <ThemeProvider>
           <AlertsProvider>
-            <body className={`${urbanist.variable} ${sora.variable} antialiased`}>
+            <body
+              className={`${urbanist.variable} ${sora.variable} antialiased`}
+              suppressHydrationWarning
+            >
+              <script dangerouslySetInnerHTML={{ __html: getThemeBootInlineScript() }}/>
               {children}
             </body>
           </AlertsProvider>
