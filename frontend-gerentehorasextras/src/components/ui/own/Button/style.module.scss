@@ -1,9 +1,9 @@
-@use "@/mix" as s;
+@use "@mixins" as mix;
 
 .btnBase {
   background-color: red;
 
-  @include s.flex_center;
+  @include mix.flex_center;
   padding: 4px 8px;
   transition: 0.3s ease-in-out all;
 
@@ -11,4 +11,8 @@
     background-color: green;
   }
 
+  @include mix.responsive_large {
+    background-color: yellow;
+  }
+  
 }

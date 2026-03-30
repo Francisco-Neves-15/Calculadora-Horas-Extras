@@ -1,32 +1,33 @@
-@use "./_variables" as s;
+@use "@vars" as var;
 
 // ===== Responsive;
 
 @mixin responsive_small {
-  @media screen and (max-width: s.$breakpoint-small) {
+  @media screen and (max-width: var.$breakpoint-small) {
     @content;
   }
 }
 
 @mixin responsive_medium {
-  @media screen and (min-width: (s.$breakpoint-small + 1)) and (max-width: s.$breakpoint-large) {
+  @media screen and (min-width: (var.$breakpoint-small + 1)) and (max-width: var.$breakpoint-large) {
     @content;
   }
 }
 
 @mixin responsive_large {
-  @media screen and (min-width: (s.$breakpoint-large + 1)) {
+  @media screen and (min-width: (var.$breakpoint-large + 1)) {
     @content;
   }
 }
 
-// ===== Theme;
+// ===== Theme Mode;
 
 @mixin theme_light($selector) {
   html[data-theme-mode="light"] #{$selector} {
     @content;
   }
 }
+
 @mixin theme_dark($selector) {
   html[data-theme-mode="dark"] #{$selector} {
     @content;

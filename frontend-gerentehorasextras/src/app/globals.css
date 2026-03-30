@@ -24,3 +24,24 @@ button {
 span {
   font-family: var(--font-urbanist);
 }
+
+/* SCSS USAGE */
+
+/* 
+// Importing
+@use "@mixins" as mixs;
+
+tag {
+  @include mixs.flex_center;
+  
+  @include mixs.theme_light("&") {
+    background-color: white;
+    color: black;
+  } 
+  
+  @include mixs.responsive_large {
+    background-color: yellow;
+  }
+}
+
+*/

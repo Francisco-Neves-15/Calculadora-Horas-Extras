@@ -20,8 +20,6 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@mix*": ["./src/styles/_mixins.scss*"],
-      "@var*": ["./src/styles/_variables.scss*"],
     }
   },
   "include": [
