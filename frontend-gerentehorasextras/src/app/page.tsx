@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useI18n } from "@/hooks/useI18n";
 // import { useAlerts } from "@/hooks/useAlerts";
 
+import Button from "@/components/ui/own/Button"
+
 export default function Home() {
   const tHome = useI18n("pag-home");
   // const { alert, confirm, input } = useAlerts();
@@ -45,7 +47,7 @@ export default function Home() {
       <div>
         <h1>{tHome["home-title"]}</h1>
         <p>{tHome["home-welcome"]}</p>
-        <button>{tHome["home-button-click"]}</button>
+        <Button>{tHome["home-button-click"]}</Button>
       </div>
 
       <div>
@@ -53,11 +55,11 @@ export default function Home() {
       </div>
 
       <div>
-        <button onClick={testAlert}>Teste Alert</button>
+        <Button onClick={testAlert}>Teste Alert</Button>
         <br />
-        <button onClick={testConfirm}>Teste Confirm</button>
+        <Button onClick={testConfirm}>Teste Confirm</Button>
         <br />
-        <button onClick={testInput}>Teste Input</button>
+        <Button onClick={testInput}>Teste Input</Button>
       </div>
 
     </div>

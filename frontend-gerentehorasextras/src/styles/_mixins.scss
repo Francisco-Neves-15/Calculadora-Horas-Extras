@@ -1,0 +1,61 @@
+@use "./_variables" as s;
+
+// ===== Responsive;
+
+@mixin responsive_small {
+  @media screen and (max-width: s.$breakpoint-small) {
+    @content;
+  }
+}
+
+@mixin responsive_medium {
+  @media screen and (min-width: (s.$breakpoint-small + 1)) and (max-width: s.$breakpoint-large) {
+    @content;
+  }
+}
+
+@mixin responsive_large {
+  @media screen and (min-width: (s.$breakpoint-large + 1)) {
+    @content;
+  }
+}
+
+// ===== Theme;
+
+@mixin theme_light($selector) {
+  html[data-theme-mode="light"] #{$selector} {
+    @content;
+  }
+}
+@mixin theme_dark($selector) {
+  html[data-theme-mode="dark"] #{$selector} {
+    @content;
+  }
+}
+
+// ===== Display: Flex;
+
+@mixin flex_center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex_row {
+  display: flex;
+  flex-direction: row;
+}
+
+@mixin flex_column {
+  display: flex;
+  flex-direction: column;
+}
+
+// ===== Others;
+
+@mixin width_full {
+  width: 100%;
+}
+@mixin height_full {
+  height: 100%;
+}

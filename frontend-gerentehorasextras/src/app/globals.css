@@ -1,10 +1,15 @@
 @import "tailwindcss";
 @config "../../tailwind.config.mjs";
 
+html {
+  line-height: 1.5;
+  scroll-behavior: smooth;
+}
 
 body {
   background: var(--color-bgBase);
   color: var(--color-text);
+  font-family: var(--font-urbanist);
 }
 
 a {
@@ -13,4 +18,9 @@ a {
 
 button {
   cursor: pointer;
+  font-family: var(--font-urbanist);
+}
+
+span {
+  font-family: var(--font-urbanist);
 }

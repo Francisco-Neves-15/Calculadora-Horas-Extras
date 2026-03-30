@@ -18,7 +18,7 @@ import {
   ThemePaletteResolved,
 } from "@/configs/theme-palette.metadata";
 
-import { THEME_STORAGE_KEYS, THEME_COLOR_DEFAULTS } from "@/configs/theme-storage";
+import { THEME_STORAGE_KEYS, THEME_COLOR_DEFAULTS, HTML_KEY_MODE, HTML_KEY_PALETTE } from "@/configs/theme-storage";
 import {
   readStoredPrimaryColors,
   readStoredThemeMode,
@@ -28,9 +28,6 @@ import { getResolvedThemeMode, getResolvedThemePalette } from "@/utils/theme";
 
 // context
 const ThemeContext = createContext({} as ThemeContextType);
-
-const HTML_KEY_MODE = "data-theme-mode";
-const HTML_KEY_PALETTE = "data-theme-palette";
 
 // fallback
 const FALLBACK_MODE: ThemeModeOptions = "system";

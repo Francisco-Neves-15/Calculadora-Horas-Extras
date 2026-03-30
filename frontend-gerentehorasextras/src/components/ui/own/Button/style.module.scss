@@ -1,0 +1,14 @@
+@use "@/mix" as s;
+
+.btnBase {
+  background-color: red;
+
+  @include s.flex_center;
+  padding: 4px 8px;
+  transition: 0.3s ease-in-out all;
+
+  &:hover {
+    background-color: green;
+  }
+
+}

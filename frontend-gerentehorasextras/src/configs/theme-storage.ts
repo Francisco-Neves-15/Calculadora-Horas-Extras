@@ -6,7 +6,9 @@ export const THEME_STORAGE_KEYS = {
   colorPrimaryAlpha: "client-theme-color-primary-alpha",
 } as const;
 
-/** Defaults do app (alinhados ao `theme.scss`); o script `define-pallete-color.js` mantém este bloco. */
+export const HTML_KEY_MODE = "data-theme-mode";
+export const HTML_KEY_PALETTE = "data-theme-palette";
+
 export type ThemePrimaryColors = {
   colorPrimary: string;
   colorPrimaryContrast: string;

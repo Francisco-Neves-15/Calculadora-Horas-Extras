@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 
 // Fonts
-import { Urbanist, Sora } from "next/font/google";
+import localFont from "next/font/local"
 
 // Style
+import "../styles/_reset.scss";
 import "./globals.css";
+import "../styles/_variables.scss";
+import "../styles/_mixins.scss";
 import "../styles/theme.scss";
 
 // Providers
@@ -16,15 +19,15 @@ import { getThemeBootInlineScript } from "./theme-boot-script";
 
 // Fonts Creating
 
-const urbanist = Urbanist({
-  variable: "--font-urbanist-sans",
-  subsets: ["latin"],
-});
+const urbanist = localFont({
+  src: "../../public/fonts/Urbanist/Urbanist-Regular.ttf",
+  variable: "--font-urbanist"
+})
 
-const sora = Sora({
-  variable: "--font-urbanist-sans",
-  subsets: ["latin"],
-});
+const sora = localFont({
+  src: "../../public/fonts/Sora/Sora-Regular.ttf",
+  variable: "--font-sora"
+})
 
 const PATH_FAVICON_LIGHT: string = "favicon/favicon-v2/favicon-v2-black.ico";
 const PATH_FAVICON_DARK: string = "favicon/favicon-v2/favicon-v2-white.ico";
