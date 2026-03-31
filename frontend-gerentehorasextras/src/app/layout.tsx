@@ -14,6 +14,7 @@ import "../styles/theme.scss";
 import { ThemeProvider } from "@/contexts/useThemeContext"
 import { LangProvider } from "@/contexts/useLangContext"
 import { AlertsProvider } from "@/contexts/useAlertsContext"
+import { ToastsProvider } from "@/contexts/useToastsContext"
 
 import { getThemeBootInlineScript } from "./theme-boot-script";
 
@@ -53,13 +54,15 @@ export default function RootLayout({
       <LangProvider>
         <ThemeProvider>
           <AlertsProvider>
-            <body
-              className={`${urbanist.variable} ${sora.variable} antialiased`}
-              suppressHydrationWarning
-            >
-              <script dangerouslySetInnerHTML={{ __html: getThemeBootInlineScript() }}/>
-              {children}
-            </body>
+            <ToastsProvider>
+              <body
+                className={`${urbanist.variable} ${sora.variable} antialiased`}
+                suppressHydrationWarning
+              >
+                <script dangerouslySetInnerHTML={{ __html: getThemeBootInlineScript() }}/>
+                {children}
+              </body>
+            </ToastsProvider>
           </AlertsProvider>
         </ThemeProvider>
       </LangProvider>

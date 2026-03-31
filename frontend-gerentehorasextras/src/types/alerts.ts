@@ -32,6 +32,8 @@ export type AlertsApi = {
   alert: (options: AlertOptions) => Promise<void>;
   confirm: (options: ConfirmOptions) => Promise<boolean>;
   input: (options: InputOptions) => Promise<string | null>;
+  dismiss: () => void;
+  clear: () => void;
 };
 
 export type InternalItem =

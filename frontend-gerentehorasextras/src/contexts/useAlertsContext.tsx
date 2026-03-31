@@ -8,6 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { usePathname } from "next/navigation";
 
 // Components
 import { Alert } from "@/components/ui/feedback/alerts/Alert";
@@ -130,30 +131,66 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
 
   const active = useMemo(() => queue[0] ?? null, [queue]);
   const activeRef = useRef<InternalItem | null>(null);
-  const closedIdsRef = useRef<Set<string>>(new Set());
+  const handledIdsRef = useRef<Set<string>>(new Set());
+  const pathname = usePathname();
 
   useEffect(() => {
     activeRef.current = active;
   }, [active]);
 
+  const handleItem = useCallback((item: InternalItem) => {
+    if (handledIdsRef.current.has(item.id)) return;
+    handledIdsRef.current.add(item.id);
+
+    if (item.type === "alert") {
+      item.resolve();
+      item.onClose?.();
+      return;
+    }
+
+    if (item.type === "confirm") {
+      item.resolve(false);
+      return;
+    }
+
+    if (item.type === "input") {
+      item.resolve(null);
+      return;
+    }
+  }, []);
+
   const close = useCallback(() => {
     const current = activeRef.current;
     if (!current) return;
-    if (closedIdsRef.current.has(current.id)) return;
-    closedIdsRef.current.add(current.id);
-
-    if (current.type === "alert") {
-      current.resolve();
-      current.onClose?.();
-    }
+    handleItem(current);
 
     setQueue((q) => (q[0]?.id === current.id ? q.slice(1) : q));
-  }, []);
+  }, [handleItem]);
+
+  const dismiss = useCallback(() => {
+    setQueue((q) => {
+      const [current, ...rest] = q;
+      if (current) handleItem(current);
+      return rest;
+    });
+  }, [handleItem]);
+
+  const clear = useCallback(() => {
+    setQueue((q) => {
+      q.forEach(handleItem);
+      return [];
+    });
+  }, [handleItem]);
 
   const resolveConfirm = (value: boolean) => {
     setQueue((q) => {
       const [current, ...rest] = q;
-      if (current?.type === "confirm") current.resolve(value);
+      if (current?.type === "confirm") {
+        if (!handledIdsRef.current.has(current.id)) {
+          handledIdsRef.current.add(current.id);
+          current.resolve(value);
+        }
+      }
       return rest;
     });
   };
@@ -161,25 +198,34 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
   const resolveInput = (value: string | null) => {
     setQueue((q) => {
       const [current, ...rest] = q;
-      if (current?.type === "input") current.resolve(value);
+      if (current?.type === "input") {
+        if (!handledIdsRef.current.has(current.id)) {
+          handledIdsRef.current.add(current.id);
+          current.resolve(value);
+        }
+      }
       return rest;
     });
   };
 
   useEffect(() => {
-    globalThis.alerts = { alert, confirm, input };
+    clear();
+  }, [pathname, clear]);
 
-    // const api: AlertsApi = { alert };
-    // return () => {
-    //   if (globalThis.alerts === api) {
-    //     delete globalThis.alerts;
-    //   }
-    // };
+  // useEffect(() => {
+  //   globalThis.alerts = { alert, confirm, input, dismiss, clear };
 
-  }, [alert, confirm, input]);
+  //   // const api: AlertsApi = { alert };
+  //   // return () => {
+  //   //   if (globalThis.alerts === api) {
+  //   //     delete globalThis.alerts;
+  //   //   }
+  //   // };
+
+  // }, [alert, confirm, input, dismiss, clear]);
 
   return (
-    <AlertsContext.Provider value={{ alert, confirm, input }}>
+    <AlertsContext.Provider value={{ alert, confirm, input, dismiss, clear }}>
       {children}
 
       {active?.type === "alert" && (

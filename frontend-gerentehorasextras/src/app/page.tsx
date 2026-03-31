@@ -3,16 +3,20 @@
 import Link from "next/link";
 
 import { useI18n } from "@/hooks/useI18n";
-// import { useAlerts } from "@/hooks/useAlerts";
+import { useAlerts } from "@/hooks/useAlerts";
+import { useToasts } from "@/hooks/useToasts";
 
 import Button from "@/components/ui/own/Button"
 
 export default function Home() {
+
   const tHome = useI18n("pag-home");
-  // const { alert, confirm, input } = useAlerts();
+
+  const { alert, confirm, input } = useAlerts();
+  const { toast } = useToasts();
 
   const testAlert = async () => {
-    await global.alerts.alert({
+    await alert({
       title: "Alerta!!!",
       message: "Isso é um alerta",
       time: true,
@@ -21,7 +25,7 @@ export default function Home() {
   }
 
   const testConfirm = async () => {
-    const res = await global.alerts.confirm({
+    const res = await confirm({
       title: "Confirma?",
       message: "Confirma isso?",
     });
@@ -30,11 +34,38 @@ export default function Home() {
   }
 
   const testInput = async () => {
-    const entry = await global.alerts.input({
+    const entry = await input({
       title: "Título",
       message: "Mensagem",
     });
     console.log(entry)
+  }
+
+  const testToast = async () => {
+    await toast({
+      mode: "action",
+      variant: "danger",
+      title: "Title",
+      message: "Aprovado!",
+      actions: [{ label: "Vai!", onClick: () => console.log("Click!") }],
+      stack: false,
+      slide: true,
+      group: "teste112324"
+    })
+  }
+
+  const testToast2 = async () => {
+    await toast({
+      mode: "action",
+      variant: "default",
+      title: "Title",
+      message: "Aprovado!",
+      actions: [{ label: "Vai!", onClick: () => console.log("Click!") }, ],
+      stack: false,
+      slide: true,
+      group: "teste11232",
+      timeSec: "inf"
+    })
   }
 
   return (
@@ -60,6 +91,10 @@ export default function Home() {
         <Button onClick={testConfirm}>Teste Confirm</Button>
         <br />
         <Button onClick={testInput}>Teste Input</Button>
+        <br />
+        <Button onClick={testToast}>Teste Toast</Button>
+        <br />
+        <Button onClick={testToast2}>Teste Toast</Button>
       </div>
 
     </div>
