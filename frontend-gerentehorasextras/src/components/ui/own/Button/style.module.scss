@@ -1,18 +1,38 @@
 @use "@mixins" as mix;
 
 .btnBase {
-  background-color: red;
+  background-color: #0000ff;
+  color: #ffffff;
 
   @include mix.flex_center;
-  padding: 4px 8px;
-  transition: 0.3s ease-in-out all;
 
-  &:hover {
-    background-color: green;
-  }
+  border: none;
+  border-radius: 32px;
 
-  @include mix.responsive_large {
-    background-color: yellow;
+  padding: 8px 16px;
+  
+  transition: opacity 0.3s ease-in-out;
+  @include mix.layout_expanded {
+    transition: opacity 0.3s ease-in-out, background-color 0.3s ease-in-out, color 0.3s ease-in-out, filter 0.3s ease-in-out;
+
+    filter: contrast(100%);
+
+    &:hover {
+      filter: contrast(150%);
+    }
   }
   
+}
+
+.btnBaseEffects {
+  &:active {
+    opacity: 0.5;
+  }
+}
+
+// Variant
+
+.btnVariantPrimary {
+  background-color: var(--color-primary);
+  color: var(--color-primaryContrast);
 }

@@ -27,7 +27,7 @@ import {
 import { getResolvedThemeMode, getResolvedThemePalette } from "@/utils/theme";
 
 // context
-const ThemeContext = createContext({} as ThemeContextType);
+export const ThemeContext = createContext({} as ThemeContextType);
 
 // fallback
 const FALLBACK_MODE: ThemeModeOptions = "system";
@@ -198,9 +198,3 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     </ThemeContext.Provider>
   );
 }
-
-export const useTheme = () => {
-  const context = useContext(ThemeContext);
-  if (!context) throw new Error("useTheme must be used within a ThemeProvider");
-  return context;
-};

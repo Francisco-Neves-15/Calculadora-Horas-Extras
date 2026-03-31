@@ -14,7 +14,7 @@ import { LangOptions } from "@/configs/lang.metadata";
 import { getResolvedLang } from "@/utils/lang";
 
 // context
-const LangContext = createContext({} as LangContextType);
+export const LangContext = createContext({} as LangContextType);
 
 // local storage / keys
 const STORAGE_KEY_LANG = "client-lang";
@@ -92,9 +92,3 @@ export function LangProvider({ children }: { children: React.ReactNode }) {
     </LangContext.Provider>
   );
 }
-
-export const useLang = () => {
-  const context = useContext(LangContext);
-  if (!context) throw new Error("useLang must be used within a LangProvider");
-  return context;
-};

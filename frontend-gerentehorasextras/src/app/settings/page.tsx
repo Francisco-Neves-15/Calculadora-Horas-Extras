@@ -3,8 +3,8 @@
 import type { CSSProperties } from "react";
 
 // 
-import { useLang } from "@/contexts/useLangContext";
-import { useTheme } from "@/contexts/useThemeContext";
+import { useLang } from "@/hooks/useLang";
+import { useTheme } from "@/hooks/useTheme";
 
 // 
 import { useI18n } from "@/hooks/useI18n";

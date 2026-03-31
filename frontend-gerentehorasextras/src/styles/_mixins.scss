@@ -20,6 +20,20 @@
   }
 }
 
+// ===== Responsive (Layout);
+
+@mixin layout_compact {
+  @media screen and (max-width: var.$breakpoint-medium) {
+    @content;
+  }
+}
+
+@mixin layout_expanded {
+  @media screen and (min-width: (var.$breakpoint-medium + 1)) {
+    @content;
+  }
+}
+
 // ===== Theme Mode;
 
 @mixin theme_light($selector) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useLang } from "../contexts/useLangContext";
+import { useLang } from "@/hooks/useLang";
 
 // Strings
 import { pageHomeStrings } from "../lang/strings/pages/home";

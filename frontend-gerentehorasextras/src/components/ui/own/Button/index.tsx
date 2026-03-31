@@ -32,9 +32,17 @@ const Button = forwardRef<HTMLButtonElement, IButtonProps>(
     ...props 
   }, ref) => {
 
-  const { gColors } = useGlobalStyles();
+    const { gColors } = useGlobalStyles();
 
-    
+    const getVariant = () => {
+      let classes;
+      switch (variant) {
+        case "primary": {
+          classes = `${fStyles.btnVariantPrimary}`
+        }
+      }
+      return classes;
+    }
 
     return (
       <button 
@@ -45,7 +53,8 @@ const Button = forwardRef<HTMLButtonElement, IButtonProps>(
         onClick={onClick}
         className={`
           ${fStyles.btnBase}
-
+          ${getVariant()}
+          ${fStyles.btnBaseEffects}
         `}
         {...props}
       >
