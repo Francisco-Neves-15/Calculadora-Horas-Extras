@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-import type { InternalToast, ToastAction } from "@/types/toasts";
+import type { InternalToast, ToastAction, ToastPosition } from "@/types/toasts";
 import { useI18n } from "@/hooks/useI18n";
 
 type ToastsViewportProps = {
@@ -11,9 +11,16 @@ type ToastsViewportProps = {
   onDismiss: (id: string) => void;
 };
 
-const POSITION = "bottom-left" as const;
+const POSITIONS: ToastPosition[] = [
+  "top-left",
+  "top",
+  "top-right",
+  "bottom-left",
+  "bottom",
+  "bottom-right",
+];
 
-function getViewportStyle(position: typeof POSITION): React.CSSProperties {
+function getViewportStyle(position: ToastPosition): React.CSSProperties {
   const base: React.CSSProperties = {
     position: "fixed",
     zIndex: 9999,
@@ -22,11 +29,34 @@ function getViewportStyle(position: typeof POSITION): React.CSSProperties {
     gap: 8,
     pointerEvents: "none",
     maxWidth: 360,
+    backgroundColor: "red",
   };
 
   switch (position) {
+    case "top-left":
+      return { ...base, left: 16, top: 16, alignItems: "flex-start" };
+    case "top":
+      return {
+        ...base,
+        left: "50%",
+        top: 16,
+        transform: "translateX(-50%)",
+        alignItems: "center",
+      };
+    case "top-right":
+      return { ...base, right: 16, top: 16, alignItems: "flex-end" };
     case "bottom-left":
       return { ...base, left: 16, bottom: 16, alignItems: "flex-start" };
+    case "bottom":
+      return {
+        ...base,
+        left: "50%",
+        bottom: 16,
+        transform: "translateX(-50%)",
+        alignItems: "center",
+      };
+    case "bottom-right":
+      return { ...base, right: 16, bottom: 16, alignItems: "flex-end" };
   }
 }
 
@@ -39,12 +69,31 @@ export function ToastsViewport({ items, onDismiss }: ToastsViewportProps) {
 
   if (!mounted) return null;
 
+  const byPosition = useMemo(() => {
+    const map = new Map<ToastPosition, InternalToast[]>();
+    for (const pos of POSITIONS) map.set(pos, []);
+    for (const item of items) {
+      const bucket = map.get(item.position) ?? map.get("bottom-left");
+      bucket?.push(item);
+    }
+    return map;
+  }, [items]);
+
   return createPortal(
-    <div style={getViewportStyle(POSITION)}>
-      {items.map((item) => (
-        <ToastItem key={item.id} item={item} onDismiss={onDismiss} />
-      ))}
-    </div>,
+    <>
+      {POSITIONS.map((position) => {
+        const list = byPosition.get(position) ?? [];
+        if (list.length === 0) return null;
+
+        return (
+          <div key={position} style={getViewportStyle(position)}>
+            {list.map((item) => (
+              <ToastItem key={item.id} item={item} onDismiss={onDismiss} />
+            ))}
+          </div>
+        );
+      })}
+    </>,
     document.body
   );
 }
@@ -126,8 +175,8 @@ function ToastItem({
         padding: 12,
       }}
     >
-      <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-        <div style={{ flex: 1, minWidth: 0 }}>
+      <div style={{ display: "flex", gap: 12, alignItems: "flex-start", backgroundColor: "blue" }}>
+        <div style={{ flex: 1, minWidth: 0, backgroundColor: "green" }}>
           {item.title ? (
             <div style={{ fontWeight: 600 }}>{item.title}</div>
           ) : null}
@@ -156,6 +205,19 @@ function ToastItem({
               {action.label}
             </button>
           ))}
+          {item.showDismissAction ? (
+            <button type="button" onClick={requestDismiss}>
+              {tCommon["common-close"] ?? "Close"}
+            </button>
+          ) : null}
+        </div>
+      ) : null}
+
+      {item.mode === "action" && !item.actions.length && item.showDismissAction ? (
+        <div style={{ marginTop: 8 }}>
+          <button type="button" onClick={requestDismiss}>
+            {tCommon["common-close"] ?? "Close"}
+          </button>
         </div>
       ) : null}
 
@@ -192,6 +254,10 @@ function SwipeableToastCard({
   const onPointerDown = useCallback(
     (event: React.PointerEvent<HTMLDivElement>) => {
       if (!enabled) return;
+      const target = event.target as HTMLElement | null;
+      if (target?.closest("button, a, input, textarea, select, [role='button']")) {
+        return;
+      }
       pointerIdRef.current = event.pointerId;
       startXRef.current = event.clientX;
       setDragging(true);
@@ -249,4 +315,3 @@ function SwipeableToastCard({
     </div>
   );
 }
-

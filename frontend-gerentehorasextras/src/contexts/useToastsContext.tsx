@@ -3,7 +3,12 @@
 import { createContext, useCallback, useEffect, useMemo, useState } from "react";
 
 import { ToastsViewport } from "@/components/ui/feedback/toasts/ToastsViewport";
-import type { InternalToast, ToastOptions, ToastsApi } from "@/types/toasts";
+import type {
+  InternalToast,
+  ToastOptions,
+  ToastPosition,
+  ToastsApi,
+} from "@/types/toasts";
 
 export const ToastsContext = createContext<ToastsApi | null>(null);
 
@@ -12,13 +17,11 @@ type ToastsState = {
   queued: InternalToast[];
 };
 
-const MAX_VISIBLE = 3;
-
-function fillVisible(state: ToastsState): ToastsState {
-  if (state.visible.length >= MAX_VISIBLE) return state;
+function fillVisible(state: ToastsState, maxVisible: number): ToastsState {
+  if (state.visible.length >= maxVisible) return state;
   if (state.queued.length === 0) return state;
 
-  const space = MAX_VISIBLE - state.visible.length;
+  const space = maxVisible - state.visible.length;
   const promoted = state.queued.slice(0, space);
   const remaining = state.queued.slice(space);
 
@@ -33,30 +36,40 @@ function normalizeGroup(group?: string): string | null {
   return value ? value : null;
 }
 
-export function ToastsProvider({ children }: { children: React.ReactNode }) {
+export function ToastsProvider({
+  children,
+  maxVisible = 3,
+  defaultPosition = "bottom-left",
+}: {
+  children: React.ReactNode;
+  maxVisible?: number;
+  defaultPosition?: ToastPosition;
+}) {
   const [state, setState] = useState<ToastsState>({ visible: [], queued: [] });
 
   const DEFAULT_VALUES = useMemo(
     () => ({
       variant: "default" as const,
       mode: "default" as const,
+      position: defaultPosition,
       title: "",
       message: "",
-      timeSec: 5000 as const,
+      timeSec: 12000 as const,
       slide: true as const,
       stack: true as const,
+      showDismissAction: false as const,
       actions: [] as const,
     }),
-    []
+    [defaultPosition]
   );
 
   const dismiss = useCallback((id: string) => {
     setState((prev) => {
       const visible = prev.visible.filter((t) => t.id !== id);
       const queued = prev.queued.filter((t) => t.id !== id);
-      return fillVisible({ visible, queued });
+      return fillVisible({ visible, queued }, maxVisible);
     });
-  }, []);
+  }, [maxVisible]);
 
   const dismissGroup = useCallback((group: string) => {
     const normalized = normalizeGroup(group);
@@ -65,9 +78,9 @@ export function ToastsProvider({ children }: { children: React.ReactNode }) {
     setState((prev) => {
       const visible = prev.visible.filter((t) => t.group !== normalized);
       const queued = prev.queued.filter((t) => t.group !== normalized);
-      return fillVisible({ visible, queued });
+      return fillVisible({ visible, queued }, maxVisible);
     });
-  }, []);
+  }, [maxVisible]);
 
   const clear = useCallback(() => {
     setState({ visible: [], queued: [] });
@@ -78,6 +91,8 @@ export function ToastsProvider({ children }: { children: React.ReactNode }) {
       const now = Date.now();
       const group = normalizeGroup(options.group);
       const stack = options.stack ?? DEFAULT_VALUES.stack;
+      const showDismissAction =
+        options.showDismissAction ?? DEFAULT_VALUES.showDismissAction;
 
       setState((prev) => {
         const nextBase: Omit<InternalToast, "id" | "createdAt" | "updatedAt"> = {
@@ -85,10 +100,14 @@ export function ToastsProvider({ children }: { children: React.ReactNode }) {
           stack,
           variant: options.variant ?? DEFAULT_VALUES.variant,
           mode: options.mode ?? DEFAULT_VALUES.mode,
+          position: options.position ?? DEFAULT_VALUES.position,
           title: options.title ?? DEFAULT_VALUES.title,
           message: options.message ?? DEFAULT_VALUES.message,
-          timeSec: options.timeSec ?? DEFAULT_VALUES.timeSec,
+          timeSec:
+            options.timeSec ??
+            (showDismissAction ? "inf" : DEFAULT_VALUES.timeSec),
           slide: options.slide ?? DEFAULT_VALUES.slide,
+          showDismissAction,
           actions: options.actions ?? [...DEFAULT_VALUES.actions],
         };
 
@@ -136,14 +155,14 @@ export function ToastsProvider({ children }: { children: React.ReactNode }) {
           ...nextBase,
         };
 
-        if (prev.visible.length < MAX_VISIBLE) {
+        if (prev.visible.length < maxVisible) {
           return { visible: [...prev.visible, item], queued: prev.queued };
         }
 
         return { visible: prev.visible, queued: [...prev.queued, item] };
       });
     },
-    [DEFAULT_VALUES]
+    [DEFAULT_VALUES, maxVisible]
   );
 
   const api = useMemo<ToastsApi>(
@@ -162,4 +181,3 @@ export function ToastsProvider({ children }: { children: React.ReactNode }) {
     </ToastsContext.Provider>
   );
 }
-

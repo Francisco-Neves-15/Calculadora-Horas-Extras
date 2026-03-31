@@ -50,13 +50,15 @@ export default function Home() {
       actions: [{ label: "Vai!", onClick: () => console.log("Click!") }],
       stack: false,
       slide: true,
-      group: "teste112324"
+      group: "teste112324", 
+      timeSec: "inf",
+      showDismissAction: true
     })
   }
 
   const testToast2 = async () => {
     await toast({
-      mode: "action",
+      mode: "default",
       variant: "default",
       title: "Title",
       message: "Aprovado!",
