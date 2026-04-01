@@ -84,6 +84,17 @@ export default function Home() {
       </div>
 
       <div>
+        <Button variant="primary" color="primary" >Btn Teste</Button>
+        <Button variant="primary" color="danger" >Btn Teste</Button>
+        <Button variant="outline" color="primary" >Btn Testea</Button>
+        <Button variant="outline" color="neutral" >Btn Testea</Button>
+        <Button variant="bg-dark" color="success" >Btn Teste</Button>
+        <Button variant="bg-light" color="success" >Btn Teste</Button>
+        <Button variant="ghost" color="success" >Btn Teste</Button>
+        <Button variant="invert" color="theme" >Btn Teste Inverted</Button>
+      </div>
+
+      <div>
         <Link href={"settings"}>Config</Link>
       </div>
 

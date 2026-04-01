@@ -18,7 +18,7 @@
     filter: contrast(100%);
 
     &:hover {
-      filter: contrast(150%);
+      filter: contrast(125%);
     }
   }
   
@@ -32,7 +32,15 @@
 
 // Variant
 
-.btnVariantPrimary {
-  background-color: var(--color-primary);
-  color: var(--color-primaryContrast);
+.btnVariantInvert {
+  background-color: var(--btn-bg);
+  color: var(--btn-color);
+  border: 2px solid var(--btn-border);
+
+  @include mix.layout_expanded {
+    &:hover {
+      background-color: var(--btn-color);
+      color: var(--btn-bg);
+    }
+  }
 }
