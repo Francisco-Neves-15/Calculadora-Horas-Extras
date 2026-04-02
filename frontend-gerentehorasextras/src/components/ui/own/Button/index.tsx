@@ -9,9 +9,13 @@ import fStyles from "./style.module.scss"
 import { BaseColorConfig } from "@/types/theme";
 
 // Types
-type TButtonVariants = "primary" | "invert" | "outline" | "ghost" | "bg-dark" | "bg-light";
+type TButtonVariants = "main" | "invert" | "outline" | "ghost" | "bg-dark" | "bg-light";
+interface IVariantConfig { type: "uses-color" | "static"; class: string }
+
 type TButtonColored = "primary" | "info" | "warning" | "danger" | "success" | "neutral" | "theme" | "muted";
+
 type TButtonSize = "small" | "normal" | "large";
+
 
 interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: TButtonVariants;
@@ -25,7 +29,7 @@ interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button = forwardRef<HTMLButtonElement, IButtonProps>(
   ({ 
-    variant = "primary",
+    variant = "main",
     color = "primary",
     size = "normal",
     icon = false,
@@ -82,45 +86,29 @@ const Button = forwardRef<HTMLButtonElement, IButtonProps>(
   
     const resolveColors = (): BaseColorConfig => { return colorMap()[color]; };
 
-    const getVariant = () => {
-      let classes;
-      switch (variant) {
-        case "invert": {
-          classes = `${fStyles.btnVariantInvert}`
-        };
-      }
-      return classes;
-    }
+    const variantConfig: Record<TButtonVariants, IVariantConfig> = {
+      "main": { type: "uses-color", class: "btnVariantFilled" },
+      "outline": { type: "uses-color", class: "btnVariantOutline" },
+      "invert": { type: "uses-color", class: "btnVariantInvert" },
+      "ghost": { type: "uses-color", class: "btnVariantGhost" },
+      "bg-light": { type: "static", class: "btnVariantBgLight" },
+      "bg-dark": { type: "static", class: "btnVariantBgDark" },
+    } as const;
 
-    const getStyle = () => {
+    const getStyle = (): CSSProperties => {
+      const config = variantConfig[variant];
+
+      if (config.type === "static") return {};
+
       const c = resolveColors();
-      let styles: CSSProperties = {};
-      switch (variant) {
-        case "primary":
-          styles = { color: c.contrast ?? "#ffffff", backgroundColor: c.base }
-        break;
-        case "invert":
-          styles = {
-            "--btn-bg": c.contrast ?? "#ffffff",
-            "--btn-color": c.base,
-            "--btn-border": c.base,
-          } as CSSProperties;
-        break;
-        case "outline":
-          styles = { color: c.base, backgroundColor: "transparent", borderWidth: 2, borderColor: c.base, borderStyle: "solid" }
-        break;
-        case "ghost":
-          styles = { color: gColors.text, backgroundColor: "transparent" }
-        break;
-        case "bg-light":
-          styles = { color: "#000000", backgroundColor: "rgba(255, 255, 255, 0.75)" }
-        break;
-        case "bg-dark":
-          styles = { color: "#ffffff", backgroundColor: "rgba(0, 0, 0, 0.75)" }
-        break;
-      }
-      return styles;
-    }
+
+      return {
+        "--btn-base": c.base,
+        "--btn-contrast": c.contrast ?? "#fff",
+      } as CSSProperties;
+    };
+
+    const config = variantConfig[variant];
 
     return (
       <button 
@@ -132,7 +120,7 @@ const Button = forwardRef<HTMLButtonElement, IButtonProps>(
         style={getStyle()}
         className={`
           ${fStyles.btnBase}
-          ${getVariant}
+          ${fStyles[config.class]}
           ${fStyles.btnBaseEffects}
         `}
         {...props}

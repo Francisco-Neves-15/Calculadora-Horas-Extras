@@ -84,14 +84,14 @@ export default function Home() {
       </div>
 
       <div>
-        <Button variant="primary" color="primary" >Btn Teste</Button>
-        <Button variant="primary" color="danger" >Btn Teste</Button>
-        <Button variant="outline" color="primary" >Btn Testea</Button>
-        <Button variant="outline" color="neutral" >Btn Testea</Button>
-        <Button variant="bg-dark" color="success" >Btn Teste</Button>
-        <Button variant="bg-light" color="success" >Btn Teste</Button>
+        <Button variant="bg-dark">Btn Teste</Button>
+        <Button variant="bg-light">Btn Teste</Button>
         <Button variant="ghost" color="success" >Btn Teste</Button>
-        <Button variant="invert" color="theme" >Btn Teste Inverted</Button>
+        <Button variant="invert" color="primary" >Btn Teste</Button>
+        <Button variant="main" color="success" >Btn Teste</Button>
+        <Button variant="main" color="theme" >Btn Teste</Button>
+        <Button variant="outline" color="info" >Btn Teste</Button>
+        <Button variant="outline" color="primary" >Btn Teste</Button>
       </div>
 
       <div>
