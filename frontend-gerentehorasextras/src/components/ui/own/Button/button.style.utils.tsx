@@ -61,6 +61,7 @@ const colorMap = (gColors: IPaletteColors): Record<TButtonColors, IColorConfig> 
 
 const variantConfig: Record<TButtonVariants, IVariantConfig> = {
   "main": { type: "uses-color", class: "btnVariantMain" },
+  "secondary": { type: "static", class: "btnVariantSecondary" },
   "outline": { type: "uses-color", class: "btnVariantOutline" },
   "ghost": { type: "uses-color", class: "btnVariantGhost" },
   "bg-light": { type: "static", class: "btnVariantBgLight" },
@@ -90,6 +91,7 @@ export const getStyle = (gColors: IPaletteColors, variant: TButtonVariants, colo
   return {
     "--btn-base": c.base,
     "--btn-contrast": c.contrast ?? gColors.text,
+    "--btn-alpha": c.alpha ?? gColors.neutralAlpha,
   } as CSSProperties;
 };
 

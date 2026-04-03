@@ -29,6 +29,7 @@ function useGlobalStyles() {
       "bgSecondary": "var(--color-bgSecondary)",
       "bgSecondaryInverted": "var(--color-bgSecondaryInverted)",
       "muted": "var(--color-muted)",
+      "mutedAlpha": "var(--color-mutedAlpha)",
       "mutedInverted": "var(--color-mutedInverted)",
       "border": "var(--color-border)",
     } as IPaletteColors,

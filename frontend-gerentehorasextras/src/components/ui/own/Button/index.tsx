@@ -6,11 +6,12 @@ import useGlobalStyles from "@/hooks/useGlobalStyles";
 import fStyles from "./button.module.scss"
 
 // Types
-export type TButtonVariants = "main" | "outline" | "ghost" | "bg-dark" | "bg-light";
+export type TButtonVariants = "main" | "secondary" | "outline" | "ghost" | "bg-dark" | "bg-light";
 export type TButtonColors = "primary" | "info" | "warning" | "danger" | "success" | "neutral" | "theme";
 export type TButtonSize = "small" | "normal";
 
 import { getStyle, getVariantConfig, getSizeConfig } from "./button.style.utils";
+import { resolveButtonChildren } from "./button.children.utils";
 
 interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: TButtonVariants;
@@ -40,6 +41,9 @@ const Button = forwardRef<HTMLButtonElement, IButtonProps>(
     const variantConfig = getVariantConfig(variant);
     const sizeConfig = getSizeConfig(size);
 
+    // Child
+    const resolvedChildren = resolveButtonChildren(props.children);
+
     return (
       <button 
         ref={ref}
@@ -58,7 +62,7 @@ const Button = forwardRef<HTMLButtonElement, IButtonProps>(
         `}
         {...props}
       >
-        {props.children}
+        {resolvedChildren}
       </button>
     );
   }

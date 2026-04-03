@@ -84,6 +84,7 @@ export default function Home() {
       </div>
 
       <div className="flex flex-row justify-start align-center">
+        <Button variant="secondary">Btn Secondary</Button>
         <Button variant="bg-dark">Btn bg-dark</Button>
         <Button variant="bg-light">Btn bg-light</Button>
       </div>
@@ -118,8 +119,10 @@ export default function Home() {
         <Button variant="ghost" color="theme">Btn theme</Button>
       </div>
 
-      <div>
-        <Button size="small" >Btn small</Button>
+      <div className="flex flex-row justify-start align-center">
+        <Button>Texto</Button>
+        <Button><p>Texto</p></Button>
+        <Button><span>Texto</span></Button>
         <Button size="normal" >Btn normal</Button>
         <Button size="normal" disabled >Btn normal</Button>
         <Button size="normal" interaction={false} >Btn normal</Button>

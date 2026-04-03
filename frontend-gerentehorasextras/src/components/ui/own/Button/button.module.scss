@@ -1,5 +1,14 @@
 @use "@mixins" as mix;
 
+:root {
+  @include mix.layout_compact {
+    --btn-border-width: 2px;
+  }
+  @include mix.layout_expanded {
+    --btn-border-width: 1px;
+  }
+}
+
 .btnBase {
   @include mix.flex_center;
 
@@ -50,10 +59,22 @@
   color: var(--btn-contrast);
 }
 
+.btnVariantSecondary {
+  color: var(--color-text);
+  background: transparent;
+  border: var(--btn-border-width) solid var(--color-border);
+  @include mix.layout_expanded {
+    &:hover {
+      filter: contrast(100%);
+      background: var(--color-mutedAlpha);
+    }
+  }
+}
+
 .btnVariantOutline {
   background: transparent;
   color: var(--btn-base);
-  border: 2px solid var(--btn-base);
+  border: var(--btn-border-width) solid var(--btn-base);
 
   @include mix.layout_expanded {
     &:hover {
@@ -68,6 +89,12 @@
 .btnVariantGhost {
   background: transparent;
   color: var(--btn-base);
+  @include mix.layout_expanded {
+    &:hover {
+      filter: contrast(100%);
+      background: var(--btn-alpha);
+    }
+  }
 }
 
 .btnVariantBgLight {
@@ -88,4 +115,11 @@
 
 .btnSizeNormal {
   padding: 8px 16px;
+}
+
+// Wrapper
+
+.buttonText {
+  font-size: 16px;
+  font-weight: 500;
 }

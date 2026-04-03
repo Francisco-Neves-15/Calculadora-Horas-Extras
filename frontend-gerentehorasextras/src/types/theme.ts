@@ -25,6 +25,7 @@ export interface IPaletteColors {
   "bgSecondary": string;
   "bgSecondaryInverted": string;
   "muted": string;
+  "mutedAlpha": string;
   "mutedInverted": string;
   "border": string;
 // AUTO-GENERATED--PALETTE-COLORS END
