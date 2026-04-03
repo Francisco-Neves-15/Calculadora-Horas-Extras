@@ -6,15 +6,17 @@ export interface IPaletteColors {
   "primaryContrast": string;
   "primaryAlpha": string;
   "link": string;
+  "light": string;
+  "dark": string;
   "info": string;
-  "warning": string;
-  "danger": string;
-  "success": string;
-  "neutral": string;
   "infoAlpha": string;
+  "warning": string;
   "warningAlpha": string;
+  "danger": string;
   "dangerAlpha": string;
+  "success": string;
   "successAlpha": string;
+  "neutral": string;
   "neutralAlpha": string;
   "text": string;
   "textSecondary": string;
@@ -27,9 +29,3 @@ export interface IPaletteColors {
   "border": string;
 // AUTO-GENERATED--PALETTE-COLORS END
 }
-
-export type BaseColorConfig = {
-  base: string;
-  contrast?: string | null;
-  alpha?: string | null;
-};

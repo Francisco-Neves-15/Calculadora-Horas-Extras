@@ -83,22 +83,53 @@ export default function Home() {
         <Button>{tHome["home-button-click"]}</Button>
       </div>
 
+      <div className="flex flex-row justify-start align-center">
+        <Button variant="bg-dark">Btn bg-dark</Button>
+        <Button variant="bg-light">Btn bg-light</Button>
+      </div>
+
+      <div className="flex flex-row justify-start align-center">
+        <Button variant="main" color="primary">Btn primary</Button>
+        <Button variant="main" color="info">Btn info</Button>
+        <Button variant="main" color="warning">Btn warning</Button>
+        <Button variant="main" color="danger">Btn danger</Button>
+        <Button variant="main" color="success">Btn success</Button>
+        <Button variant="main" color="neutral">Btn neutral</Button>
+        <Button variant="main" color="theme">Btn theme</Button>
+      </div>
+
+      <div className="flex flex-row justify-start align-center">
+        <Button variant="outline" color="primary">Btn primary</Button>
+        <Button variant="outline" color="info">Btn info</Button>
+        <Button variant="outline" color="warning">Btn warning</Button>
+        <Button variant="outline" color="danger">Btn danger</Button>
+        <Button variant="outline" color="success">Btn success</Button>
+        <Button variant="outline" color="neutral">Btn neutral</Button>
+        <Button variant="outline" color="theme">Btn theme</Button>
+      </div>
+
+      <div className="flex flex-row justify-start align-center">
+        <Button variant="ghost" color="primary">Btn primary</Button>
+        <Button variant="ghost" color="info">Btn info</Button>
+        <Button variant="ghost" color="warning">Btn warning</Button>
+        <Button variant="ghost" color="danger">Btn danger</Button>
+        <Button variant="ghost" color="success">Btn success</Button>
+        <Button variant="ghost" color="neutral">Btn neutral</Button>
+        <Button variant="ghost" color="theme">Btn theme</Button>
+      </div>
+
       <div>
-        <Button variant="bg-dark">Btn Teste</Button>
-        <Button variant="bg-light">Btn Teste</Button>
-        <Button variant="ghost" color="success" >Btn Teste</Button>
-        <Button variant="invert" color="primary" >Btn Teste</Button>
-        <Button variant="main" color="success" >Btn Teste</Button>
-        <Button variant="main" color="theme" >Btn Teste</Button>
-        <Button variant="outline" color="info" >Btn Teste</Button>
-        <Button variant="outline" color="primary" >Btn Teste</Button>
+        <Button size="small" >Btn small</Button>
+        <Button size="normal" >Btn normal</Button>
+        <Button size="normal" disabled >Btn normal</Button>
+        <Button size="normal" interaction={false} >Btn normal</Button>
       </div>
 
       <div>
         <Link href={"settings"}>Config</Link>
       </div>
 
-      <div>
+      <div className="">
         <Button onClick={testAlert}>Teste Alert</Button>
         <br />
         <Button onClick={testConfirm}>Teste Confirm</Button>

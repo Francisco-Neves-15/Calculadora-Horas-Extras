@@ -7,6 +7,7 @@ const GLOBAL_FILE = path.resolve("src/hooks/useGlobalStyles.ts");
 const TYPES_FILE = path.resolve("src/types/theme.ts");
 const TAILWIND_FILE = path.resolve("tailwind.config.mjs");
 const THEME_STORAGE_FILE = path.resolve("src/configs/theme-storage.ts");
+// maybe the "theme-boot-script"
 
 // === HELPERS ===
 

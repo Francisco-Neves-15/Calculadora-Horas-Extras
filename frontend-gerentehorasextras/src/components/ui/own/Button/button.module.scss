@@ -4,8 +4,7 @@
   @include mix.flex_center;
 
   border: none;
-  border-radius: 32px;
-  padding: 8px 16px;
+  border-radius: 64px;
 
   transition: opacity 0.3s ease-in-out;
 
@@ -21,14 +20,32 @@
 }
 
 .btnBaseEffects {
-  &:active {
-    opacity: 0.5;
+  @include mix.layout_compact {
+    &:active {
+      opacity: 0.5;
+    }
+  }
+  @include mix.layout_expanded {
+    &:active {
+      opacity: 0.75;
+    }
   }
 }
 
-// Variant
+.btnDisable {
+  opacity: 0.3;
+  pointer-events: none;
+}
 
-.btnVariantFilled {
+.btnNoInteraction {
+  pointer-events: none;
+  &:hover { opacity: 1; filter: contrast(100%); }
+  &:active { opacity: 1; }
+}
+
+// ========== COLORS & VARIANT's ==========
+
+.btnVariantMain {
   background: var(--btn-base);
   color: var(--btn-contrast);
 }
@@ -37,19 +54,15 @@
   background: transparent;
   color: var(--btn-base);
   border: 2px solid var(--btn-base);
-}
-
-.btnVariantInvert {
-  background: var(--btn-contrast);
-  color: var(--btn-base);
-  border: 2px solid var(--btn-base);
 
   @include mix.layout_expanded {
     &:hover {
+      filter: contrast(100%);
       background: var(--btn-base);
       color: var(--btn-contrast);
     }
   }
+
 }
 
 .btnVariantGhost {
@@ -59,10 +72,20 @@
 
 .btnVariantBgLight {
   background: rgba(255, 255, 255, 0.75);
-  color: #000;
+  color: #000000;
 }
 
 .btnVariantBgDark {
   background: rgba(0, 0, 0, 0.75);
   color: #ffffff;
+}
+
+// ========== SIZE's ==========
+
+.btnSizeSmall {
+  padding: 4px 8px;
+}
+
+.btnSizeNormal {
+  padding: 8px 16px;
 }
