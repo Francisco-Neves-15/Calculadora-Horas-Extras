@@ -8,6 +8,8 @@ import { useToasts } from "@/hooks/useToasts";
 
 import Button from "@/components/ui/own/Button"
 
+import { LuHouse } from "react-icons/lu"
+
 export default function Home() {
 
   const tHome = useI18n("pag-home");
@@ -89,7 +91,7 @@ export default function Home() {
         <Button variant="bg-light">Btn bg-light</Button>
       </div>
 
-      <div className="flex flex-row justify-start align-center">
+      <div className="flex flex-row justify-start items-center">
         <Button variant="main" color="primary">Btn primary</Button>
         <Button variant="main" color="info">Btn info</Button>
         <Button variant="main" color="warning">Btn warning</Button>
@@ -97,9 +99,11 @@ export default function Home() {
         <Button variant="main" color="success">Btn success</Button>
         <Button variant="main" color="neutral">Btn neutral</Button>
         <Button variant="main" color="theme">Btn theme</Button>
+        <Button variant="main" color="theme"><LuHouse size={24} /></Button>
+        <Button variant="main" color="theme" iconRound><LuHouse size={24} /></Button>
       </div>
 
-      <div className="flex flex-row justify-start align-center">
+      <div className="flex flex-row justify-start items-center">
         <Button variant="outline" color="primary">Btn primary</Button>
         <Button variant="outline" color="info">Btn info</Button>
         <Button variant="outline" color="warning">Btn warning</Button>
@@ -107,9 +111,11 @@ export default function Home() {
         <Button variant="outline" color="success">Btn success</Button>
         <Button variant="outline" color="neutral">Btn neutral</Button>
         <Button variant="outline" color="theme">Btn theme</Button>
+        <Button variant="outline" color="theme"><LuHouse size={24} /></Button>
+        <Button variant="outline" color="theme" iconRound><LuHouse size={24} /></Button>
       </div>
 
-      <div className="flex flex-row justify-start align-center">
+      <div className="flex flex-row justify-start items-center">
         <Button variant="ghost" color="primary">Btn primary</Button>
         <Button variant="ghost" color="info">Btn info</Button>
         <Button variant="ghost" color="warning">Btn warning</Button>
@@ -117,12 +123,25 @@ export default function Home() {
         <Button variant="ghost" color="success">Btn success</Button>
         <Button variant="ghost" color="neutral">Btn neutral</Button>
         <Button variant="ghost" color="theme">Btn theme</Button>
+        <Button variant="ghost" color="theme"><LuHouse size={24} /></Button>
+        <Button variant="ghost" color="theme" iconRound><LuHouse size={24} /></Button>
       </div>
 
       <div className="flex flex-row justify-start align-center">
         <Button>Texto</Button>
         <Button><p>Texto</p></Button>
         <Button><span>Texto</span></Button>
+
+        <Button>
+          <p>Texto 1</p>
+          <span>Texto 2</span>
+        </Button>
+
+        <Button>
+          <LuHouse size={24} />
+          <p>Texto 0</p>
+        </Button>
+
         <Button size="normal" >Btn normal</Button>
         <Button size="normal" disabled >Btn normal</Button>
         <Button size="normal" interaction={false} >Btn normal</Button>

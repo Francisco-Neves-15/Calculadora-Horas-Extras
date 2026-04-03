@@ -17,7 +17,7 @@ interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: TButtonVariants;
   color?: TButtonColors;
   size?: TButtonSize;
-  icon?: boolean;
+  iconRound?: boolean;
   onClick?: () => void;
   disabled?: boolean;
   interaction?: boolean;
@@ -28,7 +28,7 @@ const Button = forwardRef<HTMLButtonElement, IButtonProps>(
     variant = "main",
     color = "primary",
     size = "normal",
-    icon = false,
+    iconRound = false,
     onClick,
     disabled = false,
     interaction = true,
@@ -56,9 +56,10 @@ const Button = forwardRef<HTMLButtonElement, IButtonProps>(
           ${fStyles.btnBase}
           ${fStyles[variantConfig.class]}
           ${fStyles[sizeConfig.class]}
+          ${iconRound ? fStyles.iconRound : null}
           ${fStyles.btnBaseEffects}
-          ${disabled ? fStyles.btnDisable : null}
           ${!interaction ? fStyles.btnNoInteraction : null}
+          ${disabled ? fStyles.btnDisable : null}
         `}
         {...props}
       >

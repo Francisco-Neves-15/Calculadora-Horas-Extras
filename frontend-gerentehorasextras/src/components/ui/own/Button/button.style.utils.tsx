@@ -91,7 +91,7 @@ export const getStyle = (gColors: IPaletteColors, variant: TButtonVariants, colo
   return {
     "--btn-base": c.base,
     "--btn-contrast": c.contrast ?? gColors.text,
-    "--btn-alpha": c.alpha ?? gColors.neutralAlpha,
+    "--btn-alpha": c.alpha ?? gColors.mutedAlpha,
   } as CSSProperties;
 };
 
