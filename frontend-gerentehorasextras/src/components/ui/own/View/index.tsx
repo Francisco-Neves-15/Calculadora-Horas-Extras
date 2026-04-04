@@ -6,6 +6,8 @@ interface ViewProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const View = forwardRef<HTMLDivElement, ViewProps>(
   ({
+    className,
+    children,
     ...props 
   }, ref) => {
     return (
@@ -13,11 +15,11 @@ const View = forwardRef<HTMLDivElement, ViewProps>(
         ref={ref}
         className={`
           flex flex-col justify-start justify-items-start items-start content-start
-          ${props.className}
+          ${className}
         `}
         {...props}
       >
-        {props.children}
+        {children}
       </div>
     )
   }

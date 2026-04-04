@@ -19,6 +19,8 @@ const Text = forwardRef<HTMLDivElement, TextProps>(
     size,
     color = null,
     span = false,
+    className,
+    children,
     ...props 
   }, ref) => {
   const { gColors } = useGlobalStyles();
@@ -43,11 +45,12 @@ const Text = forwardRef<HTMLDivElement, TextProps>(
           ${fStyles.textBase}
           ${fStyles[getClassConfig(size)]}
           ${span ? fStyles.textSpan : ""}
+          ${className}
         `}
         style={{ color: color ? color : gColors.text }}
         {...props}
       >
-        {props.children}
+        {children}
       </p>
     )
   }

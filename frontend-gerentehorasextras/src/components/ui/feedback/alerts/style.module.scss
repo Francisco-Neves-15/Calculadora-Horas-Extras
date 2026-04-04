@@ -1,0 +1,67 @@
+@use "@mixins" as mix;
+@use "@vars" as var;
+
+:root {
+  @include mix.layout_compact {
+    --popover-border-width: 2px;
+  }
+  @include mix.layout_expanded {
+    --popover-border-width: 1px;
+  }
+
+  @include mix.responsive_small {
+    --popover-width: 80dvw;
+    --popover-height: 20dvh;
+  }
+
+  @include mix.responsive_medium {
+    --popover-width: 360px;
+    --popover-height: 180px;
+  }
+
+  @include mix.responsive_large {
+    --popover-width: 360px;
+    --popover-height: 120px;
+  }
+}
+
+// Container
+
+.alertsOverlay {
+  @include mix.flex_center;
+  @include mix.width_full;
+  @include mix.height_full;
+  z-index: 999;
+  position: fixed;
+  inset: 0;
+  background-color: var.$color-overlay-dark;  
+}
+
+.alertsPopover {
+  z-index: 1000;
+  position: relative;
+
+  width: clamp(60px, var(--popover-width), var(--popover-width));
+  min-height: var(--popover-height);
+
+  background-color: var(--color-bgSecondary);
+  background-color: red;
+  border-radius: 16px;
+  overflow: hidden;
+
+  padding: 16px;
+
+  @include mix.layout_compact {
+    border: var(--popover-border-width) solid var(--color-border);
+  }
+  @include mix.layout_expanded {
+    border: var(--popover-border-width) solid var(--color-border);
+  }
+  
+}
+
+// Alert
+
+.alertsContainerAlert {
+  background-color: rgba(0, 0, 255, 0.619);
+}
