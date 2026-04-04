@@ -80,7 +80,7 @@ export function Alert({
 
   return createPortal(
     <AlertsContainer>
-      <View className={`${fStyles.alertsContainerAlert}`}>
+      <View className={`${fStyles.alertsContainerAlert} ${(time && timeBar) ? fStyles.alertsContainerAlertTimed : "" }`}>
 
         {title ? <Text size="h1" className="w-full text-center">
           {title}
@@ -90,21 +90,20 @@ export function Alert({
           {message}
         </Text> : null}
 
-        <View className="w-full flex flex-row justify-center items-center bg-info p-4">
-          <Button variant="main" color="primary" size="normal" onClick={requestClose}>
-            {okBtnText}
-          </Button>
+        <View className={fStyles.alertsContainerAlertActions}>
           <Button variant="main" color="primary" size="normal" onClick={requestClose}>
             {okBtnText}
           </Button>
         </View>
 
-
-        {time && timeBar ? (
-          <Progress width={"full"} value={remaining} max={timeSec} barColor={gColors.success} wrapperColor="transparent" />
-        ) : null}
-
       </View>
+
+      {time && timeBar ? (
+        <div className={fStyles.areaTimeBar}>
+          <Progress width={"full"} value={remaining} max={timeSec} barColor={gColors.success} wrapperColor="transparent" />
+        </div>
+      ) : null}
+
     </AlertsContainer>,
     document.body
   );

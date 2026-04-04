@@ -14,7 +14,7 @@ const View = forwardRef<HTMLDivElement, ViewProps>(
       <div
         ref={ref}
         className={`
-          flex flex-col justify-start justify-items-start items-start content-start
+          flex flex-col
           ${className}
         `}
         {...props}

@@ -10,13 +10,13 @@
   }
 
   @include mix.responsive_small {
-    --popover-width: 80dvw;
-    --popover-height: 20dvh;
+    --popover-width: 320px;
+    --popover-height: 100px;
   }
 
   @include mix.responsive_medium {
     --popover-width: 360px;
-    --popover-height: 180px;
+    --popover-height: 120px;
   }
 
   @include mix.responsive_large {
@@ -44,8 +44,9 @@
   width: clamp(60px, var(--popover-width), var(--popover-width));
   min-height: var(--popover-height);
 
+  overflow: scroll;
+
   background-color: var(--color-bgSecondary);
-  background-color: red;
   border-radius: 16px;
   overflow: hidden;
 
@@ -60,8 +61,43 @@
   
 }
 
+.areaTimeBar {
+  @include mix.width_full;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
 // Alert
 
 .alertsContainerAlert {
-  background-color: rgba(0, 0, 255, 0.619);
+  @include mix.flex_center;
+  @include mix.flex_column;
+  @include mix.width_full;
+  @include mix.height_full;
+  gap: 16px;
+}
+
+.alertsContainerAlertTimed {
+  padding-bottom: 16px;
+}
+
+.alertsContainerAlertActions {
+  @include mix.width_full;
+  @include mix.flex_center;
+  @include mix.flex_row;
+  align-items: center;
+  gap: 8px;
+  
+  @include mix.responsive_small {
+    justify-content: flex-end;
+  }
+  
+  @include mix.responsive_medium {
+    justify-content: center;
+  }
+  
+  @include mix.responsive_large {
+    justify-content: center;
+  }
 }

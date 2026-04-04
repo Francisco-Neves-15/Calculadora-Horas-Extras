@@ -43,7 +43,7 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
       message: "",
       okBtnText: tCommon["common-ok"],
       time: false,
-      timeSec: 60000,
+      timeSec: 3000,
       timeBar: true,
     }),
     [tCommon]

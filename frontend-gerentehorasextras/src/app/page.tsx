@@ -31,7 +31,7 @@ export default function Home() {
     await alert({
       title: "Alerta!!!",
       message: "Isso é um alerta",
-      time: true,
+      // time: true,
       onClose: () => { console.log("Depois"); }
     });
   }
