@@ -1,0 +1,74 @@
+// @use "@vars" as var;
+// @use "@mixins" as mix;
+
+// Scrollbars
+$scrollbar-back: var(--color-bgBase);
+$scrollbar-track: var(--color-bgSecondary);
+$scrollbar-thumb: var(--color-muted);
+$scrollbar-thumb-hover: var(--color-mutedInverted);
+
+$scrollbar-size: 16px;
+
+// WebKit
+::-webkit-scrollbar {
+  width: $scrollbar-size;
+  min-width: $scrollbar-size;
+  max-width: $scrollbar-size;
+}
+
+::-webkit-scrollbar-track {
+  background: $scrollbar-track;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $scrollbar-thumb;
+  border: 4px solid $scrollbar-track;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $scrollbar-thumb-hover;
+}
+
+// Arrow's
+
+// $scrollbar-arrow-size: 6px;
+
+// ::-webkit-scrollbar-button:single-button {
+//   display: block;
+//   height: 12px;
+// }
+
+// ::-webkit-scrollbar-button:single-button:vertical:decrement {
+//   background:
+//     linear-gradient(135deg, $scrollbar-back 50%, transparent 50%),
+//     linear-gradient(45deg, $scrollbar-thumb 50%, $scrollbar-back 50%);
+//   background-position: center;
+//   background-repeat: no-repeat;
+//   background-size: $scrollbar-arrow-size $scrollbar-arrow-size;
+//   &:hover {
+//     background:
+//       linear-gradient(135deg, $scrollbar-back 50%, transparent 50%),
+//       linear-gradient(45deg, $scrollbar-thumb-hover 50%, $scrollbar-back 50%);
+//     background-position: center;
+//     background-repeat: no-repeat;
+//     background-size: $scrollbar-arrow-size $scrollbar-arrow-size;
+//   }
+// }
+
+// ::-webkit-scrollbar-button:single-button:vertical:increment {
+//   background:
+//     linear-gradient(135deg, transparent 50%, $scrollbar-back 50%),
+//     linear-gradient(45deg, $scrollbar-back 50%, $scrollbar-thumb 50%);
+//   background-position: center;
+//   background-repeat: no-repeat;
+//   background-size: $scrollbar-arrow-size $scrollbar-arrow-size;
+//   &:hover {
+//     background:
+//       linear-gradient(135deg, transparent 50%, $scrollbar-back 50%),
+//       linear-gradient(45deg, $scrollbar-back 50%, $scrollbar-thumb-hover 50%);
+//     background-position: center;
+//     background-repeat: no-repeat;
+//     background-size: $scrollbar-arrow-size $scrollbar-arrow-size;
+//   }
+// }

@@ -5,10 +5,11 @@ import localFont from "next/font/local"
 
 // Style
 import "../styles/_reset.scss";
+import "../styles/theme.scss";
 import "./globals.css";
 import "../styles/_variables.scss";
 import "../styles/_mixins.scss";
-import "../styles/theme.scss";
+import "../styles/_global.scss";
 
 // Providers
 import { ThemeProvider } from "@/contexts/useThemeContext"
@@ -60,7 +61,9 @@ export default function RootLayout({
                 suppressHydrationWarning
               >
                 <script dangerouslySetInnerHTML={{ __html: getThemeBootInlineScript() }}/>
-                {children}
+                <main>
+                  {children}
+                </main>
               </body>
             </ToastsProvider>
           </AlertsProvider>

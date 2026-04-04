@@ -3,7 +3,7 @@ import { ButtonHTMLAttributes, forwardRef } from "react";
 
 // Styles
 import useGlobalStyles from "@/hooks/useGlobalStyles";
-import fStyles from "./button.module.scss"
+import fStyles from "./style.module.scss"
 
 // Types
 export type TButtonVariants = "main" | "secondary" | "outline" | "ghost" | "bg-dark" | "bg-light";
@@ -56,10 +56,10 @@ const Button = forwardRef<HTMLButtonElement, IButtonProps>(
           ${fStyles.btnBase}
           ${fStyles[variantConfig.class]}
           ${fStyles[sizeConfig.class]}
-          ${iconRound ? fStyles.iconRound : null}
+          ${iconRound ? fStyles.iconRound : ""}
           ${fStyles.btnBaseEffects}
-          ${!interaction ? fStyles.btnNoInteraction : null}
-          ${disabled ? fStyles.btnDisable : null}
+          ${!interaction ? fStyles.btnNoInteraction : ""}
+          ${disabled ? fStyles.btnDisable : ""}
         `}
         {...props}
       >

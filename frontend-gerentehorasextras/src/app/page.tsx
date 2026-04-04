@@ -2,17 +2,27 @@
 
 import Link from "next/link";
 
+// Style
+import useGlobalStyles from "@/hooks/useGlobalStyles";
+
+// Hooks
 import { useI18n } from "@/hooks/useI18n";
 import { useAlerts } from "@/hooks/useAlerts";
 import { useToasts } from "@/hooks/useToasts";
 
+// Components
 import Button from "@/components/ui/own/Button"
+import View from "@/components/ui/own/View";
+import Text from "@/components/ui/own/Text";
 
+// Icons
 import { LuHouse } from "react-icons/lu"
 
 export default function Home() {
 
   const tHome = useI18n("pag-home");
+
+  const { gColors } = useGlobalStyles();
 
   const { alert, confirm, input } = useAlerts();
   const { toast } = useToasts();
@@ -162,6 +172,30 @@ export default function Home() {
         <br />
         <Button onClick={testToast2}>Teste Toast</Button>
       </div>
+
+      <View>
+        <Text size="display">Text display</Text>
+        <Text size="h1">Text h1</Text>
+        <Text size="h2">Text h2</Text>
+        <Text size="h3">Text h3</Text>
+        <Text size="body">Text body</Text>
+        <Text size="caption">Text caption</Text>
+        <Text size="micro">Text micro</Text>
+        <Text size="nano">Text nano</Text>
+      </View>
+
+      <View>
+        <Text size="body" color={gColors.danger}>Text danger</Text>
+        <Text size="body" color={gColors.success}>Text success</Text>
+        <Text size="body" color={gColors.success} span>Text success span</Text>
+      </View>
+
+      <View>
+        <Text size="body" className="text-2xl">Text 2xl</Text>
+        <Text size="body" className="w-full bg-danger text-right">Text</Text>
+      </View>
+
+
 
     </div>
   );

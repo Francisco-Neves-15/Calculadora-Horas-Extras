@@ -1,0 +1,56 @@
+.textBase {
+  color: var(--color-text);
+  font-weight: 400;
+}
+
+.textDisplay {
+  font-family: var(--font-sora);
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.textH1 {
+  font-family: var(--font-sora);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.textH2 {
+  font-family: var(--font-sora);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.textH3 {
+  font-family: var(--font-sora);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.textBody {
+  font-family: var(--font-urbanist);
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.textCaption {
+  font-family: var(--font-urbanist);
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.textMicro {
+  font-family: var(--font-urbanist);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+.textNano {
+  font-family: var(--font-urbanist);
+  font-size: 0.625rem;
+  font-weight: 400;
+}
+
+.textSpan {
+  font-weight: 700;
+}

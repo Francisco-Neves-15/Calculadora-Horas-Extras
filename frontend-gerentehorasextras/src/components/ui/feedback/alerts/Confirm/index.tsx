@@ -2,6 +2,14 @@
 
 import { createPortal } from "react-dom";
 
+// Styles
+import useGlobalStyles from "@/hooks/useGlobalStyles";
+import fStyles from "./button.module.scss"
+
+interface IAlertsConfirm {
+   
+}
+
 export function Confirm({
   title,
   message,
@@ -10,6 +18,9 @@ export function Confirm({
   onConfirm,
   onCancel,
 }: any) {
+
+  const { gColors } = useGlobalStyles();
+
   return createPortal(
     <div style={{ position: "fixed", inset: 0, display: "grid", placeItems: "center" }}>
       <div>

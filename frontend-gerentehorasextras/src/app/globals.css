@@ -1,7 +1,9 @@
 @import "tailwindcss";
 @config "../../tailwind.config.mjs";
 
+
 html {
+  font-size: 16px;
   line-height: 1.5;
   scroll-behavior: smooth;
 }
@@ -10,6 +12,11 @@ body {
   background: var(--color-bgBase);
   color: var(--color-text);
   font-family: var(--font-urbanist);
+}
+
+html, body {
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 a {

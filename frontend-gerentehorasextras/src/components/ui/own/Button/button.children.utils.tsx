@@ -6,7 +6,7 @@ import React, {
   Children,
 } from "react";
 
-import fStyles from "./button.module.scss"
+import fStyles from "./style.module.scss"
 
 const TEXT_TAGS = new Set([
   "p",
