@@ -23,21 +23,22 @@ const Text = forwardRef<HTMLDivElement, TextProps>(
     children,
     ...props 
   }, ref) => {
-  const { gColors } = useGlobalStyles();
 
-  const classConfig: Record<TTextSizes, string> = {
-    display: "textDisplay",
-    h1: "textH1",
-    h2: "textH2",
-    h3: "textH3",
-    body: "textBody",
-    caption: "textCaption",
-    micro: "textMicro",
-    nano: "textNano",
-  } as const;
+    const { gColors } = useGlobalStyles();
 
-  const getClassConfig = (size: TTextSizes) => { return classConfig[size]; };
-    
+    const classConfig: Record<TTextSizes, string> = {
+      display: "textDisplay",
+      h1: "textH1",
+      h2: "textH2",
+      h3: "textH3",
+      body: "textBody",
+      caption: "textCaption",
+      micro: "textMicro",
+      nano: "textNano",
+    } as const;
+
+    const getClassConfig = (size: TTextSizes) => { return classConfig[size]; };
+      
     return (
       <p
         ref={ref}

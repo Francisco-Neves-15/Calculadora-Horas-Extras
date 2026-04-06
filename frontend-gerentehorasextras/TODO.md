@@ -5,9 +5,12 @@ styles dos:
 - [] Input
 
 - [x] Alert Base
-- [x] Alert
-- [] Confirm
+- [x] Alert Normal
+- [] Alert Confirm
 - [] Alert Input
+- [] Fazer Alerts quando aberto:
+  - [] não rolar a tela;
+  - [] tabindex funcionar nos botões com prioridade;
 
 checks:
 - uso de "useAlerts" sem await

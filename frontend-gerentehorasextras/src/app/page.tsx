@@ -11,6 +11,7 @@ import { useAlerts } from "@/hooks/useAlerts";
 import { useToasts } from "@/hooks/useToasts";
 
 // Components
+import Input from "@/components/ui/own/Input"
 import Button from "@/components/ui/own/Button"
 import View from "@/components/ui/own/View";
 import Text from "@/components/ui/own/Text";
@@ -31,7 +32,7 @@ export default function Home() {
     await alert({
       title: "Alerta!!!",
       message: "Isso é um alerta",
-      // time: true,
+      time: true,
       onClose: () => { console.log("Depois"); }
     });
   }
@@ -93,6 +94,10 @@ export default function Home() {
         <h1>{tHome["home-title"]}</h1>
         <p>{tHome["home-welcome"]}</p>
         <Button>{tHome["home-button-click"]}</Button>
+      </div>
+
+      <div className="flex flex-row justify-start align-center">
+        <Input variant="text" />
       </div>
 
       <div className="flex flex-row justify-start align-center">

@@ -2,13 +2,6 @@
 @use "@vars" as var;
 
 :root {
-  @include mix.layout_compact {
-    --popover-border-width: 2px;
-  }
-  @include mix.layout_expanded {
-    --popover-border-width: 1px;
-  }
-
   @include mix.responsive_small {
     --popover-width: 320px;
     --popover-height: 100px;
@@ -53,10 +46,10 @@
   padding: 16px;
 
   @include mix.layout_compact {
-    border: var(--popover-border-width) solid var(--color-border);
+    border: var(--ui-border-width) solid var(--color-border);
   }
   @include mix.layout_expanded {
-    border: var(--popover-border-width) solid var(--color-border);
+    border: var(--ui-border-width) solid var(--color-border);
   }
   
 }

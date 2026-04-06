@@ -1,0 +1,28 @@
+@use "@mixins" as mix;
+
+// @include mix.layout_compact {
+// }
+
+// @include mix.layout_expanded {
+// }
+
+.inputContainer {
+  @include mix.flex_center;
+  flex-direction: row;
+  gap: 8px;
+  border: var(--ui-border-width) var(--color-border) solid;
+  border-radius: 16px;
+  outline: none;
+
+  padding: 4px 8px;
+
+  & > input {
+    border: none;
+    outline: none;
+  }
+}
+
+.inputContainerFocused {
+  border: var(--ui-border-width) var(--color-primary) solid;
+  outline: calc(var(--ui-border-width) * 1) var(--color-primary) solid;
+}

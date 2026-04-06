@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
 export default {
-  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
+  content: ["./src/**/*.{ts,tsx,mdx}"],
   theme: {
     extend: {
 // AUTO-GENERATED--PALETTE-COLORS START

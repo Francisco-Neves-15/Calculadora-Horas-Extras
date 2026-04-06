@@ -27,6 +27,11 @@ button {
   font-family: var(--font-urbanist);
 }
 
+input {
+  cursor: text;
+  font-family: var(--font-urbanist);
+}
+
 span {
   font-family: var(--font-urbanist);
 }
