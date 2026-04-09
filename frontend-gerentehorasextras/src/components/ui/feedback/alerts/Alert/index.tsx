@@ -39,7 +39,7 @@ export function AlertsAlert({
   const requestClose = useCallback(() => {
     if (closedRef.current) return;
     closedRef.current = true;
-    onClose();
+    if (onClose) onClose();
   }, [onClose]);
 
   useEffect(() => {

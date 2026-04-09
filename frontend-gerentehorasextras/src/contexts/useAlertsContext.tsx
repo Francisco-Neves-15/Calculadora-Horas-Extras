@@ -37,17 +37,21 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
 
   // Default Values
 
-  const DEFAULT_ALERT_VALUES = useMemo(
-    () => ({
-      title: "",
-      message: "",
-      okBtnText: tCommon["common-ok"],
+  const DEFAULT_ALERT_VALUES: IAlertsAlert = useMemo(() => ({
+    title: "",
+    message: "",
+    btnOptions: {
+      btnText: tCommon["common-ok"],
+      btnVariant: "main",
+      btnColor: "primary",
+    },
+    timeOptions: {
       time: false,
       timeSec: 3000,
       timeBar: true,
-    }),
-    [tCommon]
-  );
+    },
+    onClose: () => {},
+  }), [tCommon]);
 
   const DEFAULT_CONFIRM_VALUES = useMemo(
     () => ({
@@ -76,16 +80,12 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
       setQueue((q) => [
         ...q,
         {
+          // Internal
           type: "alert",
           id: crypto.randomUUID(),
           resolve,
+          // External
           title: options.title ?? DEFAULT_ALERT_VALUES.title,
-          message: options.message ?? DEFAULT_ALERT_VALUES.message,
-          okBtnText: options.okBtnText ?? DEFAULT_ALERT_VALUES.okBtnText,
-          onClose: options.onClose,
-          time: options.time ?? DEFAULT_ALERT_VALUES.time,
-          timeSec: options.timeSec ?? DEFAULT_ALERT_VALUES.timeSec,
-          timeBar: options.timeBar ?? DEFAULT_ALERT_VALUES.timeBar,
         },
       ]);
     });

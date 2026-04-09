@@ -1,21 +1,36 @@
+import { TButtonColors, TButtonVariants } from "@/components/ui/own/Button";
 
 // Alert
-export interface IAlertsAlert {
-  title: string;
-  message: string;
-  okBtnText: string;
-  time: boolean;
-  timeSec: number;
-  timeBar: boolean;
-  onClose: () => void;
+export type IAlertsAlert = {
+  title?: string;
+  message?: string;
+  btnOptions?: {
+    btnText: string;
+    btnVariant: TButtonVariants;
+    btnColor: TButtonColors;
+  };
+  timeOptions?: {
+    time: boolean;
+    timeSec: number;
+    timeBar: boolean;
+  };
+  onClose?: () => void;
 };
 
 // Confirm
 export interface IAlertsConfirm {
   title: string;
   message: string;
-  confirmText: string;
-  cancelText: string;
+  confirmTextOptions: {
+    confirmText: string;
+    confirmTextVariant: TButtonVariants;
+    confirmTextColor: TButtonColors;
+  };
+  cancelTextOptions: {
+    cancelText: string;
+    cancelTextVariant: TButtonVariants;
+    cancelTextColor: TButtonColors;
+  };
   onConfirm: () => void;
   onCancel: () => void;
 }
@@ -25,8 +40,16 @@ export interface IAlertsInput {
   title: string;
   message: string;
   placeholder: string;
-  confirmText: string;
-  cancelText: string;
+  confirmTextOptions: {
+    confirmText: string;
+    confirmTextVariant: TButtonVariants;
+    confirmTextColor: TButtonColors;
+  };
+  cancelTextOptions: {
+    cancelText: string;
+    cancelTextVariant: TButtonVariants;
+    cancelTextColor: TButtonColors;
+  };
   onConfirm: (value: string) => void;
   onCancel: () => void;
 }
@@ -40,23 +63,22 @@ export type AlertsApi = {
   clear: () => void;
 };
 
+// ===== Internal
+
 export type InternalItem =
   | (InternalAlert & { type: "alert" })
   | (InternalConfirm & { type: "confirm" })
   | (InternalInput & { type: "input" });
 
 // Alert
-export type InternalAlert = Required<
-  Pick<IAlertsAlert, "title" | "message" | "okBtnText" | "time" | "timeSec" | "timeBar">
-> & {
-  onClose?: () => void;
+export interface InternalAlert extends IAlertsAlert {
   id: string;
   resolve: () => void;
 };
 
 // Confirm
 type InternalConfirm = Required<
-  Pick<IAlertsConfirm, "title" | "message" | "confirmText" | "cancelText">
+  Pick<IAlertsConfirm, "title" | "message" | "confirmTextOptions" | "cancelTextOptions">
 > & {
   resolve: (value: boolean) => void;
   id: string;
@@ -64,7 +86,7 @@ type InternalConfirm = Required<
 
 // Input
 type InternalInput = Required<
-  Pick<IAlertsInput, "title" | "message" | "placeholder" | "confirmText" | "cancelText">
+  Pick<IAlertsInput, "title" | "message" | "placeholder" | "confirmTextOptions" | "cancelTextOptions">
 > & {
   resolve: (value: string | null) => void;
   id: string;
