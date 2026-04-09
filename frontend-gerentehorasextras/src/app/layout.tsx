@@ -10,6 +10,8 @@ import "./globals.css";
 import "../styles/_variables.scss";
 import "../styles/_mixins.scss";
 import "../styles/_global.scss";
+import "../styles/details/scrollbar.scss";
+import "../styles/details/selection.scss";
 
 // Providers
 import { ThemeProvider } from "@/contexts/useThemeContext"
