@@ -3,34 +3,57 @@
 import { createPortal } from "react-dom";
 
 // Styles
-import useGlobalStyles from "@/hooks/useGlobalStyles";
-import fStyles from "./button.module.scss"
+import fStyles from "../style.module.scss";
 
-interface IAlertsConfirm {
-   
-}
+// Components
+import Text from "@/components/ui/own/Text";
+import View from "@/components/ui/own/View";
+import Button from "@/components/ui/own/Button";
 
-export function Confirm({
+// Alerts
+import AlertsContainer from "../AlertsContainer";
+
+// Types
+import { IAlertsConfirm } from "@/types/alerts"
+
+
+
+export function AlertsConfirm({
   title,
   message,
   confirmText,
   cancelText,
   onConfirm,
   onCancel,
-}: any) {
-
-  const { gColors } = useGlobalStyles();
+}: IAlertsConfirm) {
 
   return createPortal(
-    <div style={{ position: "fixed", inset: 0, display: "grid", placeItems: "center" }}>
-      <div>
-        <h2>{title}</h2>
-        <p>{message}</p>
+    <AlertsContainer>
+      <View className={fStyles.alertsContainerAlert}>
 
-        <button onClick={onConfirm}>{confirmText}</button>
-        <button onClick={onCancel}>{cancelText}</button>
-      </div>
-    </div>,
+        {title ? <Text size="h1" className="w-full text-center">
+          {title}
+        </Text> : null}
+
+        {message ? <Text size="body" className="w-full text-left">
+          {message}
+        </Text> : null}
+
+        <View className={fStyles.alertsContainerAlertActions}>
+
+          <Button variant="secondary" size="normal" onClick={onCancel}>
+            {cancelText}
+          </Button>
+
+          <Button variant="main" color="primary" size="normal" onClick={onConfirm}>
+            {confirmText}
+          </Button>
+
+        </View>
+
+      </View>
+
+    </AlertsContainer>,
     document.body
   );
 }

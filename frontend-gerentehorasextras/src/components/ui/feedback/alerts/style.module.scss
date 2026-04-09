@@ -68,7 +68,7 @@
   @include mix.flex_column;
   @include mix.width_full;
   @include mix.height_full;
-  gap: 16px;
+  gap: 8px;
 }
 
 .alertsContainerAlertTimed {
@@ -80,17 +80,7 @@
   @include mix.flex_center;
   @include mix.flex_row;
   align-items: center;
+  justify-content: flex-end;
   gap: 8px;
-  
-  @include mix.responsive_small {
-    justify-content: flex-end;
-  }
-  
-  @include mix.responsive_medium {
-    justify-content: center;
-  }
-  
-  @include mix.responsive_large {
-    justify-content: center;
-  }
+  margin-top: 8px;
 }

@@ -13,12 +13,14 @@ type TInputVariant = "text" | "number" | "date" | "time" | "password" | "search"
 
 interface InputProps extends React.HTMLAttributes<HTMLInputElement> {
   variant: TInputVariant;
+  placeholder: string;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   ({
     variant,
     className,
+    placeholder = "",
     ...props 
   }, ref) => {
 
@@ -38,10 +40,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     // const getClassConfig = (size: TTextSizes) => { return classConfig[size]; };
       
     return (
-      <div className={`${fStyles.inputContainer} ${focused ? fStyles.inputContainerFocused : ""}`}>
+      <div className={`${fStyles.inputContainer} ${focused ? fStyles.inputContainerFocused : ""} ${className}`}>
         {variant === "text" && (
           <input
             type="text"
+            placeholder={placeholder}
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
           />

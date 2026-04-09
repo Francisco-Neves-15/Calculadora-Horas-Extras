@@ -16,19 +16,12 @@ import Progress from "@/components/ui/own/Progress";
 // Alerts
 import AlertsContainer from "../AlertsContainer";
 
+// Types
+import { IAlertsAlert } from "@/types/alerts"
 
 
-type AlertProps = {
-  title: string;
-  message: string;
-  okBtnText: string;
-  time: boolean;
-  timeSec: number;
-  timeBar: boolean;
-  onClose: () => void;
-};
 
-export function Alert({
+export function AlertsAlert({
   title,
   message,
   okBtnText,
@@ -36,7 +29,7 @@ export function Alert({
   timeSec,
   timeBar,
   onClose,
-}: AlertProps) {
+}: IAlertsAlert) {
   const { gColors } = useGlobalStyles();
 
   const [mounted, setMounted] = useState(false);

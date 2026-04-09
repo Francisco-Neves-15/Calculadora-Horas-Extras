@@ -11,16 +11,16 @@ import {
 import { usePathname } from "next/navigation";
 
 // Components
-import { Alert } from "@/components/ui/feedback/alerts/Alert";
-import { Confirm } from "@/components/ui/feedback/alerts/Confirm";
-import { Input } from "@/components/ui/feedback/alerts/Input";
+import { AlertsAlert } from "@/components/ui/feedback/alerts/Alert";
+import { AlertsConfirm } from "@/components/ui/feedback/alerts/Confirm";
+import { AlertsInput } from "@/components/ui/feedback/alerts/Input";
 
 // Types
 import {
   AlertsApi,
-  AlertOptions,
-  ConfirmOptions,
-  InputOptions,
+  IAlertsAlert,
+  IAlertsConfirm,
+  IAlertsInput,
   InternalItem,
 } from "@/types/alerts";
 
@@ -71,7 +71,7 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
   );
 
   // ALERT
-  const alert = useCallback((options: AlertOptions) => {
+  const alert = useCallback((options: IAlertsAlert) => {
     return new Promise<void>((resolve) => {
       setQueue((q) => [
         ...q,
@@ -92,7 +92,7 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
   }, [DEFAULT_ALERT_VALUES]);
 
   // CONFIRM
-  const confirm = useCallback((options: ConfirmOptions) => {
+  const confirm = useCallback((options: IAlertsConfirm) => {
     return new Promise<boolean>((resolve) => {
       setQueue((q) => [
         ...q,
@@ -110,7 +110,7 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
   }, [DEFAULT_CONFIRM_VALUES]);
 
   // INPUT
-  const input = useCallback((options: InputOptions) => {
+  const input = useCallback((options: IAlertsInput) => {
     return new Promise<string | null>((resolve) => {
       setQueue((q) => [
         ...q,
@@ -229,11 +229,11 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
       {children}
 
       {active?.type === "alert" && (
-        <Alert {...active} onClose={close} />
+        <AlertsAlert {...active} onClose={close} />
       )}
 
       {active?.type === "confirm" && (
-        <Confirm
+        <AlertsConfirm
           {...active}
           onConfirm={() => resolveConfirm(true)}
           onCancel={() => resolveConfirm(false)}
@@ -241,7 +241,7 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
       )}
 
       {active?.type === "input" && (
-        <Input
+        <AlertsInput
           {...active}
           onConfirm={resolveInput}
           onCancel={() => resolveInput(null)}
