@@ -5,53 +5,54 @@ export type IAlertsAlert = {
   title?: string;
   message?: string;
   btnOptions?: {
-    btnText: string;
-    btnVariant: TButtonVariants;
-    btnColor: TButtonColors;
+    text?: string;
+    variant?: TButtonVariants;
+    color?: TButtonColors;
   };
   timeOptions?: {
-    time: boolean;
-    timeSec: number;
-    timeBar: boolean;
+    time?: boolean;
+    timeSec?: number;
+    timeBar?: boolean;
   };
   onClose?: () => void;
 };
 
 // Confirm
 export interface IAlertsConfirm {
-  title: string;
-  message: string;
-  confirmTextOptions: {
-    confirmText: string;
-    confirmTextVariant: TButtonVariants;
-    confirmTextColor: TButtonColors;
+  title?: string;
+  message?: string;
+  confirmOptions?: {
+    text?: string;
+    variant?: TButtonVariants;
+    color?: TButtonColors;
   };
-  cancelTextOptions: {
-    cancelText: string;
-    cancelTextVariant: TButtonVariants;
-    cancelTextColor: TButtonColors;
+  cancelOptions?: {
+    text?: string;
+    variant?: TButtonVariants;
+    color?: TButtonColors;
   };
-  onConfirm: () => void;
-  onCancel: () => void;
+  onConfirm?: () => void;
+  onCancel?: () => void;
 }
 
 // Input
 export interface IAlertsInput {
-  title: string;
-  message: string;
-  placeholder: string;
-  confirmTextOptions: {
-    confirmText: string;
-    confirmTextVariant: TButtonVariants;
-    confirmTextColor: TButtonColors;
+  title?: string;
+  message?: string;
+  placeholder?: string;
+  confirmOptions?: {
+    text?: string;
+    variant?: TButtonVariants;
+    color?: TButtonColors;
   };
-  cancelTextOptions: {
-    cancelText: string;
-    cancelTextVariant: TButtonVariants;
-    cancelTextColor: TButtonColors;
+  cancelOptions?: {
+    text?: string;
+    variant?: TButtonVariants;
+    color?: TButtonColors;
   };
-  onConfirm: (value: string) => void;
-  onCancel: () => void;
+  onConfirm?: (value: string | null) => void;
+  onCancel?: () => void;
+  required?: boolean;
 }
 
 // Alert's
@@ -77,17 +78,13 @@ export interface InternalAlert extends IAlertsAlert {
 };
 
 // Confirm
-type InternalConfirm = Required<
-  Pick<IAlertsConfirm, "title" | "message" | "confirmTextOptions" | "cancelTextOptions">
-> & {
-  resolve: (value: boolean) => void;
+export interface InternalConfirm extends IAlertsConfirm {
   id: string;
+  resolve: (value: boolean) => void;
 };
 
 // Input
-type InternalInput = Required<
-  Pick<IAlertsInput, "title" | "message" | "placeholder" | "confirmTextOptions" | "cancelTextOptions">
-> & {
-  resolve: (value: string | null) => void;
+export interface InternalInput extends IAlertsInput {
   id: string;
+  resolve: (value: string | null) => void;
 };

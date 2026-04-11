@@ -32,7 +32,7 @@ export default function Home() {
     await alert({
       title: "Alerta!!!",
       message: "Isso é um alerta",
-      time: true,
+      btnOptions: { text: "Continuar" },
       onClose: () => { console.log("Depois"); }
     });
   }
@@ -50,6 +50,7 @@ export default function Home() {
     const entry = await input({
       title: "Título",
       message: "Mensagem",
+      placeholder: "oie",
     });
     console.log(entry)
   }

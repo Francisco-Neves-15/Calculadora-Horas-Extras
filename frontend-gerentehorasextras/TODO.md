@@ -6,11 +6,14 @@ styles dos:
 
 - [x] Alert Base
 - [x] Alert Normal
-- [] Alert Confirm
-- [] Alert Input
+- [X] Alert Confirm
+- [X] Alert Input
 - [] Fazer Alerts quando aberto:
   - [] não rolar a tela;
   - [] tabindex funcionar nos botões com prioridade;
+
+- [] Após finalizar boa parte:
+  - [] refazer "toast" e seprar funcionalidade de "snacks";
 
 checks:
 - uso de "useAlerts" sem await

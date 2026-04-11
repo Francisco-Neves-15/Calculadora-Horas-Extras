@@ -11,9 +11,9 @@ import {
 import { usePathname } from "next/navigation";
 
 // Components
-import { AlertsAlert } from "@/components/ui/feedback/alerts/Alert";
-import { AlertsConfirm } from "@/components/ui/feedback/alerts/Confirm";
-import { AlertsInput } from "@/components/ui/feedback/alerts/Input";
+import { AlertsAlert } from "@/components/ui/feedback/alerts/AlertsAlert";
+import { AlertsConfirm } from "@/components/ui/feedback/alerts/AlertsConfirm";
+import { AlertsInput } from "@/components/ui/feedback/alerts/AlertsInput";
 
 // Types
 import {
@@ -24,55 +24,18 @@ import {
   InternalItem,
 } from "@/types/alerts";
 
-// Hooks
-import { useI18n } from "@/hooks/useI18n";
+// Utils
+import useAlertsDefaultValues from "@/utils/values/alerts";
+
+
 
 export const AlertsContext = createContext<AlertsApi | null>(null);
 
 export function AlertsProvider({ children }: { children: React.ReactNode }) {
 
   const [queue, setQueue] = useState<InternalItem[]>([]);
-  
-  const tCommon = useI18n("common");
 
-  // Default Values
-
-  const DEFAULT_ALERT_VALUES: IAlertsAlert = useMemo(() => ({
-    title: "",
-    message: "",
-    btnOptions: {
-      btnText: tCommon["common-ok"],
-      btnVariant: "main",
-      btnColor: "primary",
-    },
-    timeOptions: {
-      time: false,
-      timeSec: 3000,
-      timeBar: true,
-    },
-    onClose: () => {},
-  }), [tCommon]);
-
-  const DEFAULT_CONFIRM_VALUES = useMemo(
-    () => ({
-      title: "",
-      message: "",
-      confirmText: tCommon["common-confirm"],
-      cancelText: tCommon["common-cancel"],
-    }),
-    [tCommon]
-  );
-
-  const DEFAULT_INPUT_VALUES = useMemo(
-    () => ({
-      title: "",
-      message: "",
-      placeholder: tCommon["common-typeHere"],
-      confirmText: tCommon["common-confirm"],
-      cancelText: tCommon["common-cancel"],
-    }),
-    [tCommon]
-  );
+  const { DEFAULT_ALERT_VALUES, DEFAULT_CONFIRM_VALUES, DEFAULT_INPUT_VALUES } = useAlertsDefaultValues();
 
   // ALERT
   const alert = useCallback((options: IAlertsAlert) => {
@@ -80,12 +43,14 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
       setQueue((q) => [
         ...q,
         {
-          // Internal
-          type: "alert",
           id: crypto.randomUUID(),
+          type: "alert",
           resolve,
           // External
-          title: options.title ?? DEFAULT_ALERT_VALUES.title,
+          ...DEFAULT_ALERT_VALUES,
+          ...options,
+          btnOptions: { ...DEFAULT_ALERT_VALUES.btnOptions, ...options.btnOptions },
+          timeOptions: { ...DEFAULT_ALERT_VALUES.timeOptions, ...options.timeOptions },
         },
       ]);
     });
@@ -100,10 +65,11 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
           type: "confirm",
           id: crypto.randomUUID(),
           resolve,
-          title: options.title ?? DEFAULT_CONFIRM_VALUES.title,
-          message: options.message ?? DEFAULT_CONFIRM_VALUES.message,
-          confirmText: options.confirmText ?? DEFAULT_CONFIRM_VALUES.confirmText,
-          cancelText: options.cancelText ?? DEFAULT_CONFIRM_VALUES.cancelText,
+          // External
+          ...DEFAULT_CONFIRM_VALUES,
+          ...options,
+          confirmOptions: { ...DEFAULT_CONFIRM_VALUES.confirmOptions, ...options.confirmOptions },
+          cancelOptions: { ...DEFAULT_CONFIRM_VALUES.cancelOptions, ...options.cancelOptions },
         },
       ]);
     });
@@ -118,15 +84,16 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
           type: "input",
           id: crypto.randomUUID(),
           resolve,
-          title: options.title ?? DEFAULT_INPUT_VALUES.title,
-          message: options.message ?? DEFAULT_INPUT_VALUES.message,
-          placeholder: options.placeholder ?? DEFAULT_INPUT_VALUES.placeholder,
-          confirmText: options.confirmText ?? DEFAULT_INPUT_VALUES.confirmText,
-          cancelText: options.cancelText ?? DEFAULT_INPUT_VALUES.cancelText,
+          // External
+          ...DEFAULT_INPUT_VALUES,
+          ...options,
+          confirmOptions: { ...DEFAULT_INPUT_VALUES.confirmOptions, ...options.confirmOptions },
+          cancelOptions: { ...DEFAULT_INPUT_VALUES.cancelOptions, ...options.cancelOptions },
         },
       ]);
     });
   }, [DEFAULT_INPUT_VALUES]);
+
 
 
   const active = useMemo(() => queue[0] ?? null, [queue]);
@@ -182,31 +149,35 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
     });
   }, [handleItem]);
 
-  const resolveConfirm = (value: boolean) => {
+  const resolveConfirm = useCallback((value: boolean) => {
     setQueue((q) => {
-      const [current, ...rest] = q;
+      const current = q[0];
       if (current?.type === "confirm") {
         if (!handledIdsRef.current.has(current.id)) {
           handledIdsRef.current.add(current.id);
           current.resolve(value);
         }
+        return q.slice(1);
       }
-      return rest;
+      return q;
     });
-  };
+  }, []);
 
-  const resolveInput = (value: string | null) => {
+  const resolveInput = useCallback((value: string | null) => {
     setQueue((q) => {
-      const [current, ...rest] = q;
-      if (current?.type === "input") {
+      if (q.length === 0) return q;
+      
+      const current = q[0];
+      if (current.type === "input") {
         if (!handledIdsRef.current.has(current.id)) {
           handledIdsRef.current.add(current.id);
-          current.resolve(value);
+          current.resolve(value); 
         }
+        return q.slice(1);
       }
-      return rest;
+      return q;
     });
-  };
+  }, []);
 
   useEffect(() => {
     clear();
