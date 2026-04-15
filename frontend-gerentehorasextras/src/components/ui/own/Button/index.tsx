@@ -14,6 +14,7 @@ import { getStyle, getVariantConfig, getSizeConfig } from "./button.style.utils"
 import { resolveButtonChildren } from "./button.children.utils";
 
 interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactNode;
   variant?: TButtonVariants;
   color?: TButtonColors;
   size?: TButtonSize;
@@ -32,17 +33,24 @@ const Button = forwardRef<HTMLButtonElement, IButtonProps>(
     onClick,
     disabled = false,
     interaction = true,
+    children,
     ...props 
   }, ref) => {
 
     const { gColors } = useGlobalStyles();
+
+    const {
+      className: userClassName,
+      style: userStyle,
+      ...restProps
+    } = props;
 
     // Styles
     const variantConfig = getVariantConfig(variant);
     const sizeConfig = getSizeConfig(size);
 
     // Child
-    const resolvedChildren = resolveButtonChildren(props.children);
+    const resolvedChildren = resolveButtonChildren(children);
 
     return (
       <button 
@@ -51,7 +59,7 @@ const Button = forwardRef<HTMLButtonElement, IButtonProps>(
         aria-disabled={disabled}
         inert={disabled || !interaction}
         onClick={onClick}
-        style={getStyle(gColors, variant, color)}
+        style={getStyle(gColors, variant, color, userStyle)}
         className={`
           ${fStyles.btnBase}
           ${fStyles[variantConfig.class]}
@@ -60,8 +68,9 @@ const Button = forwardRef<HTMLButtonElement, IButtonProps>(
           ${fStyles.btnBaseEffects}
           ${!interaction ? fStyles.btnNoInteraction : ""}
           ${disabled ? fStyles.btnDisable : ""}
+          ${userClassName ?? ""}
         `}
-        {...props}
+        {...restProps}
       >
         {resolvedChildren}
       </button>

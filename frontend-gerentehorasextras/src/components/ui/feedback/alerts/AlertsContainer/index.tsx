@@ -6,7 +6,7 @@ import React, { forwardRef } from "react";
 import fStyles from "../style.module.scss";
 
 interface IAlertsContainer {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 const AlertsContainer = forwardRef<HTMLDivElement, IAlertsContainer>(

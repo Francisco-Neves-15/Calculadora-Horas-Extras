@@ -2,7 +2,7 @@ styles dos:
 - [x] Buttons
 - [x] View
 - [x] Text
-- [] Input
+- [x] Input (organizar melhor, talvez dinamicamente)
 
 - [x] Alert Base
 - [x] Alert Normal

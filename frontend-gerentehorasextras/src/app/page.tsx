@@ -1,5 +1,5 @@
 "use client";
-
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
 // Style
@@ -24,6 +24,8 @@ export default function Home() {
   const tHome = useI18n("pag-home");
 
   const { gColors } = useGlobalStyles();
+
+  const [valueInput, setValueInput] = useState<string>("")
 
   const { alert, confirm, input } = useAlerts();
   const { toast } = useToasts();
@@ -83,6 +85,15 @@ export default function Home() {
       timeSec: "inf"
     })
   }
+  
+  const isValid = useMemo(() => {
+    return valueInput.trim().length > 3;
+  }, [valueInput])
+
+  useEffect(() => {
+    console.log(isValid);
+    console.log(valueInput)
+  }, [valueInput])
 
   return (
     <div className="">
@@ -97,8 +108,19 @@ export default function Home() {
         <Button>{tHome["home-button-click"]}</Button>
       </div>
 
-      <div className="flex flex-row justify-start align-center">
-        <Input variant="text" />
+      <div className="flex flex-row justify-start align-center flex-wrap">
+        <Input variant="text" value={valueInput} onChange={(e) => setValueInput(e.target.value)} />
+        <Input variant="text" type="color" />
+        <Input variant="number" containerStyle={{ width: 100 }} style={{ textAlign: "center" }} />
+        <Input variant="date" variantsConfigs={{ showDatePicker: true }} />
+        <Input variant="date" />
+        <Input variant="time" variantsConfigs={{ showDatePicker: true }} />
+        <Input variant="datetime" variantsConfigs={{ showDatePicker: true }} />
+        <Input variant="password" variantsConfigs={{ showPasswordToggle: true }} />
+        <Input variant="password" variantsConfigs={{ showPasswordToggle: false }} />
+        <Input variant="search" variantsConfigs={{ showSearchButton: true }} />
+        <Input variant="search" variantsConfigs={{ showSearchButton: false }} />
+        <Input variant="email" />
       </div>
 
       <div className="flex flex-row justify-start align-center">

@@ -7,23 +7,127 @@
 // }
 
 .inputContainer {
+  position: relative;
+
   @include mix.flex_center;
   flex-direction: row;
   gap: 8px;
   border: var(--ui-border-width) var(--color-border) solid;
-  border-radius: 16px;
+  border-radius: 64px;
   outline: none;
 
-  padding: 4px 8px;
+  min-width: 100px;
+  width: auto;
+  max-width: 220px;
+  padding: 8px 16px;
 
+  color: var(--color-text);
+  font-size: 1rem;
   & > input {
-    width: 100%;
+    width: 100%;  
     border: none;
     outline: none;
+    font-weight: 500;
+    letter-spacing: 1px;
   }
 }
 
 .inputContainerFocused {
   border: var(--ui-border-width) var(--color-primary) solid;
   outline: calc(var(--ui-border-width) * 1) var(--color-primary) solid;
+}
+
+// Buttons Inside
+
+.inputBtnInternal {
+  // aspect-ratio: 1;
+  position: absolute;
+  top: 50%;
+  transform: translateX(0%) translateY(-50%);
+}
+
+// Text
+ 
+.inputText {
+  background-color: transparent;
+}
+
+// Number
+
+.inputNumber {
+  background-color: transparent;
+}
+
+.noNumberSpinner::-webkit-outer-spin-button,
+.noNumberSpinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.noNumberSpinner {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+// Date's
+
+.inputContainerDateOrTime {
+  & > input {
+    text-align: center;
+  }
+}
+
+.iconDatePicker {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  top: 50%;
+  right: 16px;
+  transform: translateX(0%) translateY(-50%);
+}
+
+/* date */
+.inputDateOrTime::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+
+/* hide picker */
+.noDatePicker::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
+// Password
+
+.inputContainerPassword {
+  background-color: transparent;
+}
+
+.inputPassword {
+  background-color: transparent;
+}
+
+// Password
+
+.inputContainerSearch {
+  background-color: transparent;
+}
+
+.inputSearch {
+  background-color: transparent;
+}
+
+.noSearchCancel::-webkit-search-cancel-button {
+  display: none;
+  -webkit-appearance: none;
+}
+
+// Email
+
+.inputContainerEmail {
+  background-color: transparent;
+}
+
+.inputEmail {
+  background-color: transparent;
 }

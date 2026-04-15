@@ -81,7 +81,7 @@ const sizeConfig: Record<TButtonSize, ISizeConfig> = {
 
 // ========== EXPORT's ==========
 
-export const getStyle = (gColors: IPaletteColors, variant: TButtonVariants, color: TButtonColors): CSSProperties => {
+export const getStyle = (gColors: IPaletteColors, variant: TButtonVariants, color: TButtonColors, style: CSSProperties | undefined): CSSProperties => {
   const config = variantConfig[variant];
 
   if (config.type === "static") return {};
@@ -92,6 +92,7 @@ export const getStyle = (gColors: IPaletteColors, variant: TButtonVariants, colo
     "--btn-base": c.base,
     "--btn-contrast": c.contrast ?? gColors.text,
     "--btn-alpha": c.alpha ?? gColors.mutedAlpha,
+    ...style
   } as CSSProperties;
 };
 
