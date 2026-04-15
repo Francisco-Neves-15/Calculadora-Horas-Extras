@@ -9,7 +9,7 @@ import fStyles from "./style.module.scss"
 // Icons
 import { LuEye, LuEyeClosed, LuSearch } from "react-icons/lu"
 
-type TInputVariant = "text" | "number" | "date" | "time" | "password" | "search";
+type TInputVariant = "text" | "number" | "date" | "time" | "datetime" | "password" | "search" | "email";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   variant?: TInputVariant;
@@ -44,8 +44,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       number: "",
       date: "",
       time: "",
+      datetime: "",
       password: "",
       search: "",
+      email: "",
     } as const;
 
     // const getClassConfig = (size: TTextSizes) => { return classConfig[size]; };
@@ -63,8 +65,35 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           <input
             ref={ref}
             type="text"
+            inputMode="text"
             placeholder={placeholder}
-            className={className}
+            className={`${classConfig} ${className}`}
+            style={style}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+            {...props}
+          />
+        )}
+        {variant === "number" && (
+          <input
+            ref={ref}
+            type="number"
+            inputMode="numeric"
+            placeholder={placeholder}
+            className={`${classConfig} ${className}`}
+            style={style}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+            {...props}
+          />
+        )}
+        {variant === "date" && (
+          <input
+            ref={ref}
+            type="date"
+            inputMode="numeric"
+            placeholder={placeholder}
+            className={`${classConfig} ${className}`}
             style={style}
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
