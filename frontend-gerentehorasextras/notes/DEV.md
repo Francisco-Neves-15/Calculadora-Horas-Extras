@@ -1,74 +1,65 @@
-# Frontend (Stub)
+# Frontend (Next.js / React)
 
-Este diretorio foi reservado para o app React, mas nao inclui instalacao nem scaffold nesta etapa.
+Pasta do frontend: `frontend-gerentehorasextras/`
 
----
-
-## RUN BEFORE
+## Rodar o projeto
 
 ```bash
-npm run install
-```
-
-```bash
-npm run build
-```
-
-## RUN
-
-```bash
+cd frontend-gerentehorasextras
+npm install
 npm run dev
 ```
 
----
-
-## Husky (pre commit actions)
-
-### install
+## Scripts úteis
 
 ```bash
-npm install --save-dev husky
+npm run format
+npm run lint
+npm run typecheck
+npm run validate
 ```
+
+## Husky (hooks do Git)
+
+### Por que não funcionava aqui
+
+O repositório Git (`.git/`) fica na raiz do projeto, mas o frontend fica em `frontend-gerentehorasextras/`.
+Se você roda `npx husky init` dentro do `frontend-gerentehorasextras/`, o Husky tenta achar `.git` ali e falha (ex.: “.git can't be found”).
+
+### Como habilitar os hooks (uma vez por clone)
+
+Rode este comando na raiz do repositório:
 
 ```bash
-npx husky init
+git config core.hooksPath frontend-gerentehorasextras/.husky
 ```
+
+Verifique:
 
 ```bash
-npm run prepare:husky 
+git config --get core.hooksPath
 ```
 
-### Disabling hooks
+Deve imprimir: `frontend-gerentehorasextras/.husky`
+
+### Hooks configurados
+
+- `pre-commit`: formata o que está staged (Prettier) e tenta aplicar `eslint --fix` em `.ts/.tsx` staged (não bloqueia o commit se o ESLint falhar).
+- `pre-push`: roda `npm run build` + `npm run validate`.
+
+### Pular hooks (quando necessário)
 
 ```bash
-git commit --no-verify -m "Message"
+git commit --no-verify -m "Mensagem"
+git push --no-verify
 ```
 
----
+### Troubleshooting
 
-## Prettier (code formatting)
+- Se aparecer `Permission denied` ao rodar `git config ...`, feche IDEs/terminais que estejam segurando o `.git/config` e rode novamente (ou execute o terminal como Admin).
+- Se os hooks estiverem “ligados”, mas não rodarem, confirme que você está usando o Git do próprio repositório (ex.: GitHub Desktop) e que `core.hooksPath` está setado no repo (não só global).
+- Se o hook der erro do tipo `/usr/bin/env: 'sh\r': No such file or directory`, é CRLF nos arquivos de hook. Rode `git add --renormalize frontend-gerentehorasextras/.husky` e faça commit (o repo já tem regra de `eol=lf` pra `.husky/`).
 
-### install
-
-```bash
-npm install --save-dev --save-exact prettier
-```
-
-### additionals
-
-Pre Commit Integration
-
-```bash
-npm install --save-dev eslint-config-prettier
-```
-
-Lint Integration
-
-```bash
-npm install --save-dev lint-staged
-```
-
----
 
 # Backend
 

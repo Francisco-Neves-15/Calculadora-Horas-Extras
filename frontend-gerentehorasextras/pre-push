@@ -1,7 +1,0 @@
-echo "Running validations before commit..."
-echo "To skip validation, use: git push --no-verify"
-
-npm run build || exit 1
-npm run validate || exit 1
-
-echo "All validations passed!"

@@ -9,11 +9,10 @@
     "lint": "eslint ./src --ext .ts,.tsx --max-warnings 100",
     "typecheck": "tsc --noEmit",
     "validate": "npm run typecheck && npm run lint",
-    "format": "xxx --norun-- prettier --write \"src/**/*.{ts,tsx,json,css,scss}\"",
-    "format:check": "xxx --norun-- prettier --check \"src/**/*.{ts,tsx,json,css,scss}\"",
+    "format": "prettier --write \"src/**/*.{ts,tsx,json,css,scss}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,json,css,scss}\"",
     "package:lock": "node scripts/operations/lock-packages.js",
-    "package:check": "node scripts/checks/check-locked-packages.js",
-    "prepare": "husky"
+    "package:check": "node scripts/checks/check-locked-packages.js"
   },
   "dependencies": {
     "next": "16.1.7",
@@ -31,7 +30,6 @@
     "eslint": "9",
     "eslint-config-next": "16.1.7",
     "eslint-config-prettier": "10.1.8",
-    "husky": "9.1.7",
     "lint-staged": "16.4.0",
     "prettier": "3.8.3",
     "tailwindcss": "4",
