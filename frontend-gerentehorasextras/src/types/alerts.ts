@@ -75,16 +75,16 @@ export type InternalItem =
 export interface InternalAlert extends IAlertsAlert {
   id: string;
   resolve: () => void;
-};
+}
 
 // Confirm
 export interface InternalConfirm extends IAlertsConfirm {
   id: string;
   resolve: (value: boolean) => void;
-};
+}
 
 // Input
 export interface InternalInput extends IAlertsInput {
   id: string;
   resolve: (value: string | null) => void;
-};
+}

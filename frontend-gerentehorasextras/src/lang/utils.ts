@@ -8,9 +8,7 @@ import {
 const FALLBACK_LANG: AVAILABLE_LANGCODE = "en-US";
 
 // ISO -> LANGCODE (ex: "BR" -> "pt-BR")
-export function isoToLangCode(
-  iso: AVAILABLE_ISOCODE
-): AVAILABLE_LANGCODE {
+export function isoToLangCode(iso: AVAILABLE_ISOCODE): AVAILABLE_LANGCODE {
   return ISO_LANG_MAP[iso];
 }
 
@@ -20,16 +18,12 @@ const LANG_TO_ISO = Object.fromEntries(
   Object.entries(ISO_LANG_MAP).map(([iso, lang]) => [lang, iso])
 ) as Record<AVAILABLE_LANGCODE, AVAILABLE_ISOCODE>;
 
-export function langCodeToISO(
-  lang: AVAILABLE_LANGCODE
-): AVAILABLE_ISOCODE {
+export function langCodeToISO(lang: AVAILABLE_LANGCODE): AVAILABLE_ISOCODE {
   return LANG_TO_ISO[lang];
 }
 
 // Generalize LANGCODE (ex: "pt-BR" -> "pt")
-export function generalizeLang(
-  lang: AVAILABLE_LANGCODE
-): AVAILABLE_LANGCODE_GENERIC {
+export function generalizeLang(lang: AVAILABLE_LANGCODE): AVAILABLE_LANGCODE_GENERIC {
   return lang.split("-")[0] as AVAILABLE_LANGCODE_GENERIC;
 }
 
@@ -45,9 +39,7 @@ export function resolveBrowserLang(): AVAILABLE_LANGCODE {
 
   const primary = browserLang.split("-")[0] as AVAILABLE_LANGCODE_GENERIC;
 
-  const found = Object.values(ISO_LANG_MAP).find((lang) =>
-    lang.startsWith(primary)
-  );
+  const found = Object.values(ISO_LANG_MAP).find((lang) => lang.startsWith(primary));
 
   if (found) return found;
 

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 // Fonts
-import localFont from "next/font/local"
+import localFont from "next/font/local";
 
 // Style
 import "../styles/_reset.scss";
@@ -14,10 +14,10 @@ import "../styles/details/scrollbar.scss";
 import "../styles/details/selection.scss";
 
 // Providers
-import { ThemeProvider } from "@/contexts/useThemeContext"
-import { LangProvider } from "@/contexts/useLangContext"
-import { AlertsProvider } from "@/contexts/useAlertsContext"
-import { ToastsProvider } from "@/contexts/useToastsContext"
+import { ThemeProvider } from "@/contexts/useThemeContext";
+import { LangProvider } from "@/contexts/useLangContext";
+import { AlertsProvider } from "@/contexts/useAlertsContext";
+import { ToastsProvider } from "@/contexts/useToastsContext";
 
 import { getThemeBootInlineScript } from "./theme-boot-script";
 
@@ -25,13 +25,13 @@ import { getThemeBootInlineScript } from "./theme-boot-script";
 
 const urbanist = localFont({
   src: "../../public/fonts/Urbanist/Urbanist-Regular.ttf",
-  variable: "--font-urbanist"
-})
+  variable: "--font-urbanist",
+});
 
 const sora = localFont({
   src: "../../public/fonts/Sora/Sora-Regular.ttf",
-  variable: "--font-sora"
-})
+  variable: "--font-sora",
+});
 
 const PATH_FAVICON_LIGHT: string = "favicon/favicon-v2/favicon-v2-black.ico";
 const PATH_FAVICON_DARK: string = "favicon/favicon-v2/favicon-v2-white.ico";
@@ -62,10 +62,8 @@ export default function RootLayout({
                 className={`${urbanist.variable} ${sora.variable} antialiased`}
                 suppressHydrationWarning
               >
-                <script dangerouslySetInnerHTML={{ __html: getThemeBootInlineScript() }}/>
-                <main>
-                  {children}
-                </main>
+                <script dangerouslySetInnerHTML={{ __html: getThemeBootInlineScript() }} />
+                <main>{children}</main>
               </body>
             </ToastsProvider>
           </AlertsProvider>

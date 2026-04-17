@@ -2,11 +2,11 @@
 
 import type { CSSProperties } from "react";
 
-// 
+//
 import { useLang } from "@/hooks/useLang";
 import { useTheme } from "@/hooks/useTheme";
 
-// 
+//
 import { useI18n } from "@/hooks/useI18n";
 
 // Lang
@@ -17,11 +17,9 @@ import { THEME_MODE_META, ThemeModeOptions } from "@/configs/theme-mode.metadata
 import { THEME_PALETTE_META, ThemePaletteOptions } from "@/configs/theme-palette.metadata";
 import { LANG_META, LangOptions } from "@/configs/lang.metadata";
 
-// 
+//
 const MODE_ORDER = Object.keys(THEME_MODE_META) as ThemeModeOptions[];
-const PALETTE_ORDER = Object.keys(
-  THEME_PALETTE_META
-) as ThemePaletteOptions[];
+const PALETTE_ORDER = Object.keys(THEME_PALETTE_META) as ThemePaletteOptions[];
 const LANG_ORDER: LangOptions[] = [
   "system",
   ...(Object.values(ISO_LANG_MAP) as AVAILABLE_LANGCODE[]),
@@ -39,7 +37,6 @@ const sectionStyle: CSSProperties = {
 };
 
 export default function Settings() {
-
   const { langOption, setLang } = useLang();
 
   const {
@@ -62,7 +59,6 @@ export default function Settings() {
 
   return (
     <div style={{ padding: 16 }}>
-
       <main className="bg-primary">
         <p className="text-primaryContrast">Teste Tailwind: fundo primary + texto contrast</p>
       </main>

@@ -4,6 +4,6 @@ const Card = () => {
       <p>card</p>
     </div>
   );
-}
+};
 
 export default Card;

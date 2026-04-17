@@ -16,9 +16,9 @@ export type ThemePrimaryColors = {
 };
 
 export const THEME_COLOR_DEFAULTS: ThemePrimaryColors = {
-// AUTO-GENERATED--PALETTE-COLORS START
+  // AUTO-GENERATED--PALETTE-COLORS START
   colorPrimary: "#27427F",
   colorPrimaryContrast: "#ffffff",
   colorPrimaryAlpha: "#27427f33",
-// AUTO-GENERATED--PALETTE-COLORS END
+  // AUTO-GENERATED--PALETTE-COLORS END
 };

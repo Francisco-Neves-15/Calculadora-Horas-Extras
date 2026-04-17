@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
 // Components
@@ -27,74 +20,79 @@ import {
 // Utils
 import useAlertsDefaultValues from "@/utils/values/alerts";
 
-
-
 export const AlertsContext = createContext<AlertsApi | null>(null);
 
 export function AlertsProvider({ children }: { children: React.ReactNode }) {
-
   const [queue, setQueue] = useState<InternalItem[]>([]);
 
-  const { DEFAULT_ALERT_VALUES, DEFAULT_CONFIRM_VALUES, DEFAULT_INPUT_VALUES } = useAlertsDefaultValues();
+  const { DEFAULT_ALERT_VALUES, DEFAULT_CONFIRM_VALUES, DEFAULT_INPUT_VALUES } =
+    useAlertsDefaultValues();
 
   // ALERT
-  const alert = useCallback((options: IAlertsAlert) => {
-    return new Promise<void>((resolve) => {
-      setQueue((q) => [
-        ...q,
-        {
-          id: crypto.randomUUID(),
-          type: "alert",
-          resolve,
-          // External
-          ...DEFAULT_ALERT_VALUES,
-          ...options,
-          btnOptions: { ...DEFAULT_ALERT_VALUES.btnOptions, ...options.btnOptions },
-          timeOptions: { ...DEFAULT_ALERT_VALUES.timeOptions, ...options.timeOptions },
-        },
-      ]);
-    });
-  }, [DEFAULT_ALERT_VALUES]);
+  const alert = useCallback(
+    (options: IAlertsAlert) => {
+      return new Promise<void>((resolve) => {
+        setQueue((q) => [
+          ...q,
+          {
+            id: crypto.randomUUID(),
+            type: "alert",
+            resolve,
+            // External
+            ...DEFAULT_ALERT_VALUES,
+            ...options,
+            btnOptions: { ...DEFAULT_ALERT_VALUES.btnOptions, ...options.btnOptions },
+            timeOptions: { ...DEFAULT_ALERT_VALUES.timeOptions, ...options.timeOptions },
+          },
+        ]);
+      });
+    },
+    [DEFAULT_ALERT_VALUES]
+  );
 
   // CONFIRM
-  const confirm = useCallback((options: IAlertsConfirm) => {
-    return new Promise<boolean>((resolve) => {
-      setQueue((q) => [
-        ...q,
-        {
-          type: "confirm",
-          id: crypto.randomUUID(),
-          resolve,
-          // External
-          ...DEFAULT_CONFIRM_VALUES,
-          ...options,
-          confirmOptions: { ...DEFAULT_CONFIRM_VALUES.confirmOptions, ...options.confirmOptions },
-          cancelOptions: { ...DEFAULT_CONFIRM_VALUES.cancelOptions, ...options.cancelOptions },
-        },
-      ]);
-    });
-  }, [DEFAULT_CONFIRM_VALUES]);
+  const confirm = useCallback(
+    (options: IAlertsConfirm) => {
+      return new Promise<boolean>((resolve) => {
+        setQueue((q) => [
+          ...q,
+          {
+            type: "confirm",
+            id: crypto.randomUUID(),
+            resolve,
+            // External
+            ...DEFAULT_CONFIRM_VALUES,
+            ...options,
+            confirmOptions: { ...DEFAULT_CONFIRM_VALUES.confirmOptions, ...options.confirmOptions },
+            cancelOptions: { ...DEFAULT_CONFIRM_VALUES.cancelOptions, ...options.cancelOptions },
+          },
+        ]);
+      });
+    },
+    [DEFAULT_CONFIRM_VALUES]
+  );
 
   // INPUT
-  const input = useCallback((options: IAlertsInput) => {
-    return new Promise<string | null>((resolve) => {
-      setQueue((q) => [
-        ...q,
-        {
-          type: "input",
-          id: crypto.randomUUID(),
-          resolve,
-          // External
-          ...DEFAULT_INPUT_VALUES,
-          ...options,
-          confirmOptions: { ...DEFAULT_INPUT_VALUES.confirmOptions, ...options.confirmOptions },
-          cancelOptions: { ...DEFAULT_INPUT_VALUES.cancelOptions, ...options.cancelOptions },
-        },
-      ]);
-    });
-  }, [DEFAULT_INPUT_VALUES]);
-
-
+  const input = useCallback(
+    (options: IAlertsInput) => {
+      return new Promise<string | null>((resolve) => {
+        setQueue((q) => [
+          ...q,
+          {
+            type: "input",
+            id: crypto.randomUUID(),
+            resolve,
+            // External
+            ...DEFAULT_INPUT_VALUES,
+            ...options,
+            confirmOptions: { ...DEFAULT_INPUT_VALUES.confirmOptions, ...options.confirmOptions },
+            cancelOptions: { ...DEFAULT_INPUT_VALUES.cancelOptions, ...options.cancelOptions },
+          },
+        ]);
+      });
+    },
+    [DEFAULT_INPUT_VALUES]
+  );
 
   const active = useMemo(() => queue[0] ?? null, [queue]);
   const activeRef = useRef<InternalItem | null>(null);
@@ -166,12 +164,12 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
   const resolveInput = useCallback((value: string | null) => {
     setQueue((q) => {
       if (q.length === 0) return q;
-      
+
       const current = q[0];
       if (current.type === "input") {
         if (!handledIdsRef.current.has(current.id)) {
           handledIdsRef.current.add(current.id);
-          current.resolve(value); 
+          current.resolve(value);
         }
         return q.slice(1);
       }
@@ -199,9 +197,7 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
     <AlertsContext.Provider value={{ alert, confirm, input, dismiss, clear }}>
       {children}
 
-      {active?.type === "alert" && (
-        <AlertsAlert {...active} onClose={close} />
-      )}
+      {active?.type === "alert" && <AlertsAlert {...active} onClose={close} />}
 
       {active?.type === "confirm" && (
         <AlertsConfirm
@@ -212,11 +208,7 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
       )}
 
       {active?.type === "input" && (
-        <AlertsInput
-          {...active}
-          onConfirm={resolveInput}
-          onCancel={() => resolveInput(null)}
-        />
+        <AlertsInput {...active} onConfirm={resolveInput} onCancel={() => resolveInput(null)} />
       )}
     </AlertsContext.Provider>
   );

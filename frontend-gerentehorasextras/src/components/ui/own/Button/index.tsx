@@ -3,11 +3,18 @@ import { ButtonHTMLAttributes, forwardRef } from "react";
 
 // Styles
 import useGlobalStyles from "@/hooks/useGlobalStyles";
-import fStyles from "./style.module.scss"
+import fStyles from "./style.module.scss";
 
 // Types
 export type TButtonVariants = "main" | "secondary" | "outline" | "ghost" | "bg-dark" | "bg-light";
-export type TButtonColors = "primary" | "info" | "warning" | "danger" | "success" | "neutral" | "theme";
+export type TButtonColors =
+  | "primary"
+  | "info"
+  | "warning"
+  | "danger"
+  | "success"
+  | "neutral"
+  | "theme";
 export type TButtonSize = "small" | "normal";
 
 import { getStyle, getVariantConfig, getSizeConfig } from "./button.style.utils";
@@ -25,25 +32,23 @@ interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const Button = forwardRef<HTMLButtonElement, IButtonProps>(
-  ({ 
-    variant = "main",
-    color = "primary",
-    size = "normal",
-    iconRound = false,
-    onClick,
-    disabled = false,
-    interaction = true,
-    children,
-    ...props 
-  }, ref) => {
-
+  (
+    {
+      variant = "main",
+      color = "primary",
+      size = "normal",
+      iconRound = false,
+      onClick,
+      disabled = false,
+      interaction = true,
+      children,
+      ...props
+    },
+    ref
+  ) => {
     const { gColors } = useGlobalStyles();
 
-    const {
-      className: userClassName,
-      style: userStyle,
-      ...restProps
-    } = props;
+    const { className: userClassName, style: userStyle, ...restProps } = props;
 
     // Styles
     const variantConfig = getVariantConfig(variant);
@@ -53,7 +58,7 @@ const Button = forwardRef<HTMLButtonElement, IButtonProps>(
     const resolvedChildren = resolveButtonChildren(children);
 
     return (
-      <button 
+      <button
         ref={ref}
         disabled={disabled}
         aria-disabled={disabled}

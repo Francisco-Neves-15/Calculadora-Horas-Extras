@@ -1,12 +1,6 @@
-import React, {
-  ReactNode,
-  ReactElement,
-  isValidElement,
-  cloneElement,
-  Children,
-} from "react";
+import React, { ReactNode, ReactElement, isValidElement, cloneElement, Children } from "react";
 
-import fStyles from "./style.module.scss"
+import fStyles from "./style.module.scss";
 
 const TEXT_TAGS = new Set([
   "p",

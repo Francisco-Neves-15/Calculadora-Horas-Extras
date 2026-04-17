@@ -4,5 +4,5 @@ export const pageSettingsStrings = {
   },
   "en-US": {
     "settings-btn-save": "Save Preference",
-  }
+  },
 };

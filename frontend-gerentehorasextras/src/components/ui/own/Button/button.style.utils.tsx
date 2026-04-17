@@ -1,7 +1,7 @@
 import { CSSProperties } from "react";
 
 // Types
-import { IPaletteColors } from "@/types/theme"
+import { IPaletteColors } from "@/types/theme";
 
 import { TButtonColors, TButtonSize, TButtonVariants } from ".";
 
@@ -17,7 +17,10 @@ interface ISizeConfig {
   class: string;
 }
 
-interface IVariantConfig { type: "uses-color" | "static"; class: string }
+interface IVariantConfig {
+  type: "uses-color" | "static";
+  class: string;
+}
 
 // ========== COLORS & VARIANT's ==========
 
@@ -60,16 +63,16 @@ const colorMap = (gColors: IPaletteColors): Record<TButtonColors, IColorConfig> 
 });
 
 const variantConfig: Record<TButtonVariants, IVariantConfig> = {
-  "main": { type: "uses-color", class: "btnVariantMain" },
-  "secondary": { type: "static", class: "btnVariantSecondary" },
-  "outline": { type: "uses-color", class: "btnVariantOutline" },
-  "ghost": { type: "uses-color", class: "btnVariantGhost" },
+  main: { type: "uses-color", class: "btnVariantMain" },
+  secondary: { type: "static", class: "btnVariantSecondary" },
+  outline: { type: "uses-color", class: "btnVariantOutline" },
+  ghost: { type: "uses-color", class: "btnVariantGhost" },
   "bg-light": { type: "static", class: "btnVariantBgLight" },
   "bg-dark": { type: "static", class: "btnVariantBgDark" },
 } as const;
 
-const resolveColors = (gColors: IPaletteColors, color: TButtonColors): IColorConfig => { 
-  return colorMap(gColors)[color]; 
+const resolveColors = (gColors: IPaletteColors, color: TButtonColors): IColorConfig => {
+  return colorMap(gColors)[color];
 };
 
 // ========== SIZE's ==========
@@ -81,7 +84,12 @@ const sizeConfig: Record<TButtonSize, ISizeConfig> = {
 
 // ========== EXPORT's ==========
 
-export const getStyle = (gColors: IPaletteColors, variant: TButtonVariants, color: TButtonColors, style: CSSProperties | undefined): CSSProperties => {
+export const getStyle = (
+  gColors: IPaletteColors,
+  variant: TButtonVariants,
+  color: TButtonColors,
+  style: CSSProperties | undefined
+): CSSProperties => {
   const config = variantConfig[variant];
 
   if (config.type === "static") return {};
@@ -92,7 +100,7 @@ export const getStyle = (gColors: IPaletteColors, variant: TButtonVariants, colo
     "--btn-base": c.base,
     "--btn-contrast": c.contrast ?? gColors.text,
     "--btn-alpha": c.alpha ?? gColors.mutedAlpha,
-    ...style
+    ...style,
   } as CSSProperties;
 };
 

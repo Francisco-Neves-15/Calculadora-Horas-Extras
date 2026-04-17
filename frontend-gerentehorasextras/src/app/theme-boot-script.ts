@@ -2,8 +2,8 @@ import { THEME_STORAGE_KEYS } from "@/configs/theme-storage";
 import { THEMES_PALETTES } from "@/configs/theme-palette.metadata";
 
 /**
- * Executa antes do React hidratar: lê localStorage e aplica atributos / variáveis
- * igual ao ThemeProvider, evitando flash de tema (light → dark).
+ * Runs before React hydrates: reads localStorage and applies attributes/variables
+ * same as ThemeProvider, avoiding theme flash (light → dark).
  */
 
 export function getThemeBootInlineScript(): string {

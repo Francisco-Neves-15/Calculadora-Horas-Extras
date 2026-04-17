@@ -29,5 +29,4 @@ export function useI18n(module: IModulesPages | IModulesGeral): ModuleStrings {
     default:
       return {};
   }
-
 }

@@ -14,12 +14,10 @@ import Button from "@/components/ui/own/Button";
 import AlertsContainer from "../AlertsContainer";
 
 // Types
-import { IAlertsConfirm } from "@/types/alerts"
+import { IAlertsConfirm } from "@/types/alerts";
 
 // Utils
 import useAlertsDefaultValues from "@/utils/values/alerts";
-
-
 
 export function AlertsConfirm({
   title,
@@ -29,7 +27,6 @@ export function AlertsConfirm({
   onConfirm,
   onCancel,
 }: IAlertsConfirm) {
-
   const { DEFAULT_CONFIRM_VALUES } = useAlertsDefaultValues();
 
   // Values
@@ -43,17 +40,19 @@ export function AlertsConfirm({
   return createPortal(
     <AlertsContainer>
       <View className={fStyles.alertsContainerAlert}>
+        {titleRes ? (
+          <Text size="h1" className="w-full text-center">
+            {titleRes}
+          </Text>
+        ) : null}
 
-        {titleRes ? <Text size="h1" className="w-full text-center">
-          {titleRes}
-        </Text> : null}
-
-        {messageRes ? <Text size="body" className="w-full text-left">
-          {messageRes}
-        </Text> : null}
+        {messageRes ? (
+          <Text size="body" className="w-full text-left">
+            {messageRes}
+          </Text>
+        ) : null}
 
         <View className={fStyles.alertsContainerAlertActions}>
-
           <Button
             variant={cancelOptionsRes?.variant}
             color={cancelOptionsRes?.color}
@@ -71,11 +70,8 @@ export function AlertsConfirm({
           >
             {confirmOptionsRes?.text}
           </Button>
-
         </View>
-
       </View>
-
     </AlertsContainer>,
     document.body
   );

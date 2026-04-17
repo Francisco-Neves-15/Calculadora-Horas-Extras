@@ -1,4 +1,4 @@
-import { getSystemThemeMode } from "@/utils/theme"
+import { getSystemThemeMode } from "@/utils/theme";
 
 // Availables themes modes
 export const THEMES_MODES = {
@@ -7,7 +7,7 @@ export const THEMES_MODES = {
   system: "system",
 } as const;
 
-export type ThemeModeOptions = keyof typeof THEMES_MODES; 
+export type ThemeModeOptions = keyof typeof THEMES_MODES;
 export type ThemeModeResolved = Exclude<ThemeModeOptions, "system">;
 
 type ThemeModeMeta = {

@@ -1,9 +1,4 @@
-export type ToastVariant =
-  | "default"
-  | "success"
-  | "danger"
-  | "warning"
-  | "info";
+export type ToastVariant = "default" | "success" | "danger" | "warning" | "info";
 
 export type ToastMode = "default" | "action";
 

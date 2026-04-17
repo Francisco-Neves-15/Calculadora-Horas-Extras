@@ -98,13 +98,7 @@ export function ToastsViewport({ items, onDismiss }: ToastsViewportProps) {
   );
 }
 
-function ToastItem({
-  item,
-  onDismiss,
-}: {
-  item: InternalToast;
-  onDismiss: (id: string) => void;
-}) {
+function ToastItem({ item, onDismiss }: { item: InternalToast; onDismiss: (id: string) => void }) {
   const tCommon = useI18n("common");
 
   const isInfinite = item.timeSec === "inf";
@@ -177,9 +171,7 @@ function ToastItem({
     >
       <div style={{ display: "flex", gap: 12, alignItems: "flex-start", backgroundColor: "blue" }}>
         <div style={{ flex: 1, minWidth: 0, backgroundColor: "green" }}>
-          {item.title ? (
-            <div style={{ fontWeight: 600 }}>{item.title}</div>
-          ) : null}
+          {item.title ? <div style={{ fontWeight: 600 }}>{item.title}</div> : null}
           {item.message ? <div>{item.message}</div> : null}
         </div>
 
@@ -222,7 +214,11 @@ function ToastItem({
       ) : null}
 
       {progress ? (
-        <progress style={{ marginTop: 8, width: "100%" }} value={progress.value} max={progress.max} />
+        <progress
+          style={{ marginTop: 8, width: "100%" }}
+          value={progress.value}
+          max={progress.max}
+        />
       ) : null}
     </SwipeableToastCard>
   );
@@ -266,13 +262,16 @@ function SwipeableToastCard({
     [enabled]
   );
 
-  const onPointerMove = useCallback((event: React.PointerEvent<HTMLDivElement>) => {
-    if (!enabled) return;
-    if (!dragging) return;
-    if (pointerIdRef.current !== event.pointerId) return;
-    if (startXRef.current == null) return;
-    setOffsetX(event.clientX - startXRef.current);
-  }, [enabled, dragging]);
+  const onPointerMove = useCallback(
+    (event: React.PointerEvent<HTMLDivElement>) => {
+      if (!enabled) return;
+      if (!dragging) return;
+      if (pointerIdRef.current !== event.pointerId) return;
+      if (startXRef.current == null) return;
+      setOffsetX(event.clientX - startXRef.current);
+    },
+    [enabled, dragging]
+  );
 
   const onPointerUp = useCallback(
     (event: React.PointerEvent<HTMLDivElement>) => {

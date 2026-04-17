@@ -11,4 +11,4 @@ export const useLang = () => {
   }
 
   return context;
-}
+};

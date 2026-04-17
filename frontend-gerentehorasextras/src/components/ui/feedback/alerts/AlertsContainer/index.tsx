@@ -9,20 +9,13 @@ interface IAlertsContainer {
   children: React.ReactNode;
 }
 
-const AlertsContainer = forwardRef<HTMLDivElement, IAlertsContainer>(
-  ({
-    children
-  }, ref) => {
-
-    return (
-      <div ref={ref} className={`${fStyles.alertsOverlay}`}>
-        <div className={`${fStyles.alertsPopover}`}>
-          {children}
-        </div>
-      </div>
-    );
-  }
-);
+const AlertsContainer = forwardRef<HTMLDivElement, IAlertsContainer>(({ children }, ref) => {
+  return (
+    <div ref={ref} className={`${fStyles.alertsOverlay}`}>
+      <div className={`${fStyles.alertsPopover}`}>{children}</div>
+    </div>
+  );
+});
 
 export default AlertsContainer;
 AlertsContainer.displayName = "AlertsContainer";

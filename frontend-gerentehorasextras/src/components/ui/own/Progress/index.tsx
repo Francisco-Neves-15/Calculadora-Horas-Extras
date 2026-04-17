@@ -87,10 +87,7 @@ const Progress = forwardRef<HTMLDivElement, ProgressProps>(
         style={computedStyle}
         {...props}
       >
-        <div
-          className="w-full h-full"
-          style={{ backgroundColor: finalWrapperColor }}
-        >
+        <div className="w-full h-full" style={{ backgroundColor: finalWrapperColor }}>
           <div
             className="h-full transition-[width] duration-100 ease-linear"
             style={{

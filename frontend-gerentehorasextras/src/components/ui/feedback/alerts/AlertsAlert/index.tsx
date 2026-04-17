@@ -17,31 +17,23 @@ import Progress from "@/components/ui/own/Progress";
 import AlertsContainer from "../AlertsContainer";
 
 // Types
-import { IAlertsAlert } from "@/types/alerts"
+import { IAlertsAlert } from "@/types/alerts";
 
 // Utils
 import useAlertsDefaultValues from "@/utils/values/alerts";
 
-
-
-export function AlertsAlert({
-  title,
-  message,
-  btnOptions,
-  timeOptions,
-  onClose,
-}: IAlertsAlert) {
+export function AlertsAlert({ title, message, btnOptions, timeOptions, onClose }: IAlertsAlert) {
   const { gColors } = useGlobalStyles();
 
   const { DEFAULT_ALERT_VALUES } = useAlertsDefaultValues();
-  
+
   // Values
   const titleRes = title ?? DEFAULT_ALERT_VALUES.title;
   const messageRes = message ?? DEFAULT_ALERT_VALUES.message;
   const btnOptionsRes = btnOptions ?? DEFAULT_ALERT_VALUES.btnOptions;
   const timeOptionsRes = timeOptions ?? DEFAULT_ALERT_VALUES.timeOptions;
   const onCloseRes = onClose ?? DEFAULT_ALERT_VALUES.onClose;
-  
+
   //
   const [mounted, setMounted] = useState(false);
   const [remaining, setRemaining] = useState(timeOptionsRes?.timeSec);
@@ -85,32 +77,36 @@ export function AlertsAlert({
 
   return createPortal(
     <AlertsContainer>
-      <View className={`${fStyles.alertsContainerAlert} ${(timeOptionsRes?.time && timeOptionsRes?.timeBar) ? fStyles.alertsContainerAlertTimed : "" }`}>
+      <View
+        className={`${fStyles.alertsContainerAlert} ${timeOptionsRes?.time && timeOptionsRes?.timeBar ? fStyles.alertsContainerAlertTimed : ""}`}
+      >
+        {titleRes ? (
+          <Text size="h1" className="w-full text-center">
+            {titleRes}
+          </Text>
+        ) : null}
 
-        {titleRes ? <Text size="h1" className="w-full text-center">
-          {titleRes}
-        </Text> : null}
-
-        {messageRes ? <Text size="body" className="w-full text-left">
-          {messageRes}
-        </Text> : null}
+        {messageRes ? (
+          <Text size="body" className="w-full text-left">
+            {messageRes}
+          </Text>
+        ) : null}
 
         <View className={fStyles.alertsContainerAlertActions}>
-          <Button 
-            variant={btnOptionsRes?.variant} 
-            color={btnOptionsRes?.color} 
-            size="normal" 
+          <Button
+            variant={btnOptionsRes?.variant}
+            color={btnOptionsRes?.color}
+            size="normal"
             onClick={requestClose}
           >
             {btnOptionsRes?.text}
           </Button>
         </View>
-
       </View>
 
       {timeOptionsRes?.time && timeOptionsRes?.timeBar ? (
         <div className={fStyles.areaTimeBar}>
-          <Progress 
+          <Progress
             width={"full"}
             value={remaining}
             max={timeOptionsRes?.timeSec}
@@ -119,7 +115,6 @@ export function AlertsAlert({
           />
         </div>
       ) : null}
-
     </AlertsContainer>,
     document.body
   );

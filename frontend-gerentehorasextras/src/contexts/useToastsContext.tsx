@@ -3,12 +3,7 @@
 import { createContext, useCallback, useMemo, useState } from "react";
 
 import { ToastsViewport } from "@/components/ui/feedback/toasts/ToastsViewport";
-import type {
-  InternalToast,
-  ToastOptions,
-  ToastPosition,
-  ToastsApi,
-} from "@/types/toasts";
+import type { InternalToast, ToastOptions, ToastPosition, ToastsApi } from "@/types/toasts";
 
 export const ToastsContext = createContext<ToastsApi | null>(null);
 
@@ -63,24 +58,30 @@ export function ToastsProvider({
     [defaultPosition]
   );
 
-  const dismiss = useCallback((id: string) => {
-    setState((prev) => {
-      const visible = prev.visible.filter((t) => t.id !== id);
-      const queued = prev.queued.filter((t) => t.id !== id);
-      return fillVisible({ visible, queued }, maxVisible);
-    });
-  }, [maxVisible]);
+  const dismiss = useCallback(
+    (id: string) => {
+      setState((prev) => {
+        const visible = prev.visible.filter((t) => t.id !== id);
+        const queued = prev.queued.filter((t) => t.id !== id);
+        return fillVisible({ visible, queued }, maxVisible);
+      });
+    },
+    [maxVisible]
+  );
 
-  const dismissGroup = useCallback((group: string) => {
-    const normalized = normalizeGroup(group);
-    if (!normalized) return;
+  const dismissGroup = useCallback(
+    (group: string) => {
+      const normalized = normalizeGroup(group);
+      if (!normalized) return;
 
-    setState((prev) => {
-      const visible = prev.visible.filter((t) => t.group !== normalized);
-      const queued = prev.queued.filter((t) => t.group !== normalized);
-      return fillVisible({ visible, queued }, maxVisible);
-    });
-  }, [maxVisible]);
+      setState((prev) => {
+        const visible = prev.visible.filter((t) => t.group !== normalized);
+        const queued = prev.queued.filter((t) => t.group !== normalized);
+        return fillVisible({ visible, queued }, maxVisible);
+      });
+    },
+    [maxVisible]
+  );
 
   const clear = useCallback(() => {
     setState({ visible: [], queued: [] });
@@ -91,8 +92,7 @@ export function ToastsProvider({
       const now = Date.now();
       const group = normalizeGroup(options.group);
       const stack = options.stack ?? DEFAULT_VALUES.stack;
-      const showDismissAction =
-        options.showDismissAction ?? DEFAULT_VALUES.showDismissAction;
+      const showDismissAction = options.showDismissAction ?? DEFAULT_VALUES.showDismissAction;
 
       setState((prev) => {
         const nextBase: Omit<InternalToast, "id" | "createdAt" | "updatedAt"> = {
@@ -103,9 +103,7 @@ export function ToastsProvider({
           position: options.position ?? DEFAULT_VALUES.position,
           title: options.title ?? DEFAULT_VALUES.title,
           message: options.message ?? DEFAULT_VALUES.message,
-          timeSec:
-            options.timeSec ??
-            (showDismissAction ? "inf" : DEFAULT_VALUES.timeSec),
+          timeSec: options.timeSec ?? (showDismissAction ? "inf" : DEFAULT_VALUES.timeSec),
           slide: options.slide ?? DEFAULT_VALUES.slide,
           showDismissAction,
           actions: options.actions ?? [...DEFAULT_VALUES.actions],

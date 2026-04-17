@@ -1,4 +1,4 @@
-import { getDefaultThemePalette } from "@/utils/theme"
+import { getDefaultThemePalette } from "@/utils/theme";
 
 // Availables themes palettes
 export const THEMES_PALETTES = {

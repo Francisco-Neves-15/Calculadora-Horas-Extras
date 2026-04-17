@@ -1,24 +1,17 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
+
+import { ThemeModeOptions, ThemeModeResolved } from "@/configs/theme-mode.metadata";
+
+import { ThemePaletteOptions, ThemePaletteResolved } from "@/configs/theme-palette.metadata";
 
 import {
-  ThemeModeOptions,
-  ThemeModeResolved,
-} from "@/configs/theme-mode.metadata";
-
-import {
-  ThemePaletteOptions,
-  ThemePaletteResolved,
-} from "@/configs/theme-palette.metadata";
-
-import { THEME_STORAGE_KEYS, THEME_COLOR_DEFAULTS, HTML_KEY_MODE, HTML_KEY_PALETTE } from "@/configs/theme-storage";
+  THEME_STORAGE_KEYS,
+  THEME_COLOR_DEFAULTS,
+  HTML_KEY_MODE,
+  HTML_KEY_PALETTE,
+} from "@/configs/theme-storage";
 import {
   readStoredPrimaryColors,
   readStoredThemeMode,
@@ -64,15 +57,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [themeMode, setThemeModeState] = useState<ThemeModeOptions>(() =>
     typeof window === "undefined" ? FALLBACK_MODE : readStoredThemeMode()
   );
-  const [themePalette, setThemePaletteState] = useState<ThemePaletteOptions>(
-    () =>
-      typeof window === "undefined" ? FALLBACK_PALETTE : readStoredThemePalette()
+  const [themePalette, setThemePaletteState] = useState<ThemePaletteOptions>(() =>
+    typeof window === "undefined" ? FALLBACK_PALETTE : readStoredThemePalette()
   );
 
   const initColors =
-    typeof window === "undefined"
-      ? { ...THEME_COLOR_DEFAULTS }
-      : readStoredPrimaryColors();
+    typeof window === "undefined" ? { ...THEME_COLOR_DEFAULTS } : readStoredPrimaryColors();
 
   const [colorPrimary, setColorPrimaryState] = useState<string>(initColors.colorPrimary);
   const [colorPrimaryContrast, setColorPrimaryContrastState] = useState<string>(

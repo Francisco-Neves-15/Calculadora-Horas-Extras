@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 import { AVAILABLE_LANGCODE, ISO_LANG_MAP } from "../lang/main";
 
@@ -32,21 +26,14 @@ type LangContextType = {
 
 // provider
 export function LangProvider({ children }: { children: React.ReactNode }) {
-  const [langOption, setLangOptionState] = useState<LangOptions>(
-    FALLBACK_LANG_OPTION
-  );
+  const [langOption, setLangOptionState] = useState<LangOptions>(FALLBACK_LANG_OPTION);
   const [browserLangNonce, setBrowserLangNonce] = useState(0);
 
-  const resolvedLang = useMemo(
-    () => getResolvedLang(langOption),
-    [langOption, browserLangNonce]
-  );
+  const resolvedLang = useMemo(() => getResolvedLang(langOption), [langOption, browserLangNonce]);
 
   // initial load (localStorage -> system default)
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY_LANG) as
-      | AVAILABLE_LANGCODE
-      | null;
+    const saved = localStorage.getItem(STORAGE_KEY_LANG) as AVAILABLE_LANGCODE | null;
 
     if (saved && Object.values(ISO_LANG_MAP).includes(saved)) {
       setLangOptionState(saved as LangOptions);
@@ -62,8 +49,7 @@ export function LangProvider({ children }: { children: React.ReactNode }) {
 
     const onLanguageChange = () => setBrowserLangNonce((n) => n + 1);
     window.addEventListener("languagechange", onLanguageChange);
-    return () =>
-      window.removeEventListener("languagechange", onLanguageChange);
+    return () => window.removeEventListener("languagechange", onLanguageChange);
   }, [langOption]);
 
   // sync attribute
@@ -72,7 +58,6 @@ export function LangProvider({ children }: { children: React.ReactNode }) {
     root.setAttribute(HTML_KEY_LANG, resolvedLang);
 
     // API POINT
-
   }, [resolvedLang]);
 
   // setter

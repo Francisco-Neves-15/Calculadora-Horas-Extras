@@ -1,17 +1,25 @@
-"use client"
+"use client";
 
 import { forwardRef, useState } from "react";
 
 // Styles
 import useGlobalStyles from "@/hooks/useGlobalStyles";
-import fStyles from "./style.module.scss"
+import fStyles from "./style.module.scss";
 
 // Icons
-import { LuEye, LuEyeClosed, LuSearch, LuCalendar, LuClock, LuCalendarClock } from "react-icons/lu"
+import { LuEye, LuEyeClosed, LuSearch, LuCalendar, LuClock, LuCalendarClock } from "react-icons/lu";
 import Button from "../Button";
 import View from "../View";
 
-type TInputVariant = "text" | "number" | "date" | "time" | "datetime" | "password" | "search" | "email";
+type TInputVariant =
+  | "text"
+  | "number"
+  | "date"
+  | "time"
+  | "datetime"
+  | "password"
+  | "search"
+  | "email";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   variant?: TInputVariant;
@@ -21,7 +29,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     showPasswordToggle?: boolean;
     showSearchButton?: boolean;
     showSearchCancelButton?: boolean;
-  }
+  };
 
   containerClassName?: string;
   containerStyle?: React.CSSProperties;
@@ -31,27 +39,29 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({
-    variant = "text",
-    variantsConfigs = {
-      showNumberSpinner: false,
-      showDatePicker: true,
-      showPasswordToggle: true,
-      showSearchButton: true,
-      showSearchCancelButton: false,
+  (
+    {
+      variant = "text",
+      variantsConfigs = {
+        showNumberSpinner: false,
+        showDatePicker: true,
+        showPasswordToggle: true,
+        showSearchButton: true,
+        showSearchCancelButton: false,
+      },
+
+      placeholder,
+
+      containerClassName,
+      containerStyle,
+
+      className,
+      style,
+
+      ...props
     },
-
-    placeholder,
-
-    containerClassName,
-    containerStyle,
-
-    className,
-    style,
-
-    ...props 
-  }, ref) => {
-
+    ref
+  ) => {
     const { gColors } = useGlobalStyles();
 
     const [focused, setFocused] = useState(false);
@@ -84,9 +94,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       email: `${fStyles.inputContainerEmail}`,
     } as const;
 
-    const getClassContainerConfig = (variant: TInputVariant) => { return classContainerConfig[variant]; };
-    const getClassInputConfig = (variant: TInputVariant) => { return classInputConfig[variant]; };
-      
+    const getClassContainerConfig = (variant: TInputVariant) => {
+      return classContainerConfig[variant];
+    };
+    const getClassInputConfig = (variant: TInputVariant) => {
+      return classInputConfig[variant];
+    };
+
     return (
       <div
         className={`
@@ -97,7 +111,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         `}
         style={containerStyle}
       >
-
         {variant === "text" && (
           <input
             ref={ref}
@@ -198,7 +211,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               className={`${getClassInputConfig(variant)} ${className}`}
               style={{
                 ...style,
-                ...(variantsConfigs.showPasswordToggle ? { marginRight: 20 + 12 } : {})
+                ...(variantsConfigs.showPasswordToggle ? { marginRight: 20 + 12 } : {}),
               }}
               onFocus={() => setFocused(true)}
               onBlur={() => setFocused(false)}
@@ -206,14 +219,17 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             />
             {variantsConfigs.showPasswordToggle && (
               <Button
-                size="small"              
+                size="small"
                 variant="ghost"
                 color="theme"
-                onClick={() => setVisiblePassword(prev => !prev)}
+                onClick={() => setVisiblePassword((prev) => !prev)}
                 style={{ aspectRatio: 1, padding: 4, right: 12 }}
                 className={`${fStyles.inputBtnInternal}`}
               >
-                <View className="flex justify-center items-center" style={{ aspectRatio: 1, width: 20 }}>
+                <View
+                  className="flex justify-center items-center"
+                  style={{ aspectRatio: 1, width: 20 }}
+                >
                   {isVisiblePassword ? <LuEye size={20} /> : <LuEyeClosed size={20} />}
                 </View>
               </Button>
@@ -231,7 +247,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               className={`${getClassInputConfig(variant)} ${className}`}
               style={{
                 ...style,
-                ...(variantsConfigs.showSearchButton ? { marginRight: 20 + 12 } : {})
+                ...(variantsConfigs.showSearchButton ? { marginRight: 20 + 12 } : {}),
               }}
               onFocus={() => setFocused(true)}
               onBlur={() => setFocused(false)}
@@ -239,14 +255,17 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             />
             {variantsConfigs.showSearchButton && (
               <Button
-                size="small"              
+                size="small"
                 variant="ghost"
                 color="theme"
-                onClick={() => setVisiblePassword(prev => !prev)}
+                onClick={() => setVisiblePassword((prev) => !prev)}
                 style={{ aspectRatio: 1, padding: 4, right: 12 }}
                 className={`${fStyles.inputBtnInternal}`}
               >
-                <View className="flex justify-center items-center" style={{ aspectRatio: 1, width: 20 }}>
+                <View
+                  className="flex justify-center items-center"
+                  style={{ aspectRatio: 1, width: 20 }}
+                >
                   <LuSearch size={20} />
                 </View>
               </Button>
@@ -267,9 +286,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             {...props}
           />
         )}
-
       </div>
-    )
+    );
   }
 );
 
