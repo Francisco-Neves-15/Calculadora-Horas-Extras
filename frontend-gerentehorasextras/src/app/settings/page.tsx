@@ -2,11 +2,11 @@
 
 import type { CSSProperties } from "react";
 
-//
+import Text from "@/components/ui/own/Text";
+
+// Hooks
 import { useLang } from "@/hooks/useLang";
 import { useTheme } from "@/hooks/useTheme";
-
-//
 import { useI18n } from "@/hooks/useI18n";
 
 // Lang
@@ -16,6 +16,7 @@ import { AVAILABLE_LANGCODE, ISO_LANG_MAP } from "@/lang/main";
 import { THEME_MODE_META, ThemeModeOptions } from "@/configs/theme-mode.metadata";
 import { THEME_PALETTE_META, ThemePaletteOptions } from "@/configs/theme-palette.metadata";
 import { LANG_META, LangOptions } from "@/configs/lang.metadata";
+import View from "@/components/ui/own/View";
 
 //
 const MODE_ORDER = Object.keys(THEME_MODE_META) as ThemeModeOptions[];
@@ -44,9 +45,9 @@ export default function Settings() {
     setThemeMode,
     themePalette,
     setThemePalette,
-    setColorPrimary,
-    setColorPrimaryContrast,
-    setColorPrimaryAlpha,
+    // setColorPrimary,
+    // setColorPrimaryContrast,
+    // setColorPrimaryAlpha,
   } = useTheme();
 
   // const tPage = useI18n("pag-settings");
@@ -98,12 +99,21 @@ export default function Settings() {
         </div>
       </section>
 
-      <section style={sectionStyle}>
+      {/* <section style={sectionStyle}>
         <h2 style={{ fontSize: "1rem", marginBottom: 8 }}>Color Primary</h2>
-        <div>
-          <button onClick={() => setColorPrimary("#ff0000")}>Aaaaa</button>
-        </div>
-      </section>
+        <View className="gap-4">
+          <Text size="h3" ></Text>
+          <input type="color" onChange={(c) => setColorPrimary(String(c))} />
+        </View>
+        <View className="gap-4">
+          <Text size="h3" ></Text>
+          <input type="color" onChange={(c) => setColorPrimaryContrast(String(c))} />
+        </View>
+        <View className="gap-4">
+          <Text size="h3" ></Text>
+          <input type="color" onChange={(c) => setColorPrimaryAlpha(String(c))} />
+        </View>
+      </section> */}
 
       <section style={sectionStyle}>
         <h2 style={{ fontSize: "1rem", marginBottom: 8 }}>Idioma</h2>

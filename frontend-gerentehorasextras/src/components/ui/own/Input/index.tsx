@@ -3,7 +3,6 @@
 import { forwardRef, useState } from "react";
 
 // Styles
-import useGlobalStyles from "@/hooks/useGlobalStyles";
 import fStyles from "./style.module.scss";
 
 // Icons
@@ -62,7 +61,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
-    const { gColors } = useGlobalStyles();
 
     const [focused, setFocused] = useState(false);
     const [isVisiblePassword, setVisiblePassword] = useState(false);

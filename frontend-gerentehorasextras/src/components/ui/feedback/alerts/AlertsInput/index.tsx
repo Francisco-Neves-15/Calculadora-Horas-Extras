@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 
 // Styles
-import useGlobalStyles from "@/hooks/useGlobalStyles";
 import fStyles from "../style.module.scss";
 
 // Components
@@ -48,7 +47,7 @@ export function AlertsInput({
       if (value.length <= 0) return false;
       else return true;
     } else return true;
-  }, [value]);
+  }, [value, requiredRes]);
 
   return createPortal(
     <AlertsContainer>

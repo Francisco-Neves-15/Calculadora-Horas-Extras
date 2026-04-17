@@ -94,7 +94,7 @@ export default function Home() {
   useEffect(() => {
     console.log(isValid);
     console.log(valueInput);
-  }, [valueInput]);
+  }, [valueInput, isValid]);
 
   return (
     <div className="">

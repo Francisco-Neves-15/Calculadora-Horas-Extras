@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 
 import { ThemeModeOptions, ThemeModeResolved } from "@/configs/theme-mode.metadata";
 
