@@ -2,8 +2,6 @@
 
 import type { CSSProperties } from "react";
 
-import Text from "@/components/ui/own/Text";
-
 // Hooks
 import { useLang } from "@/hooks/useLang";
 import { useTheme } from "@/hooks/useTheme";
@@ -16,7 +14,6 @@ import { AVAILABLE_LANGCODE, ISO_LANG_MAP } from "@/lang/main";
 import { THEME_MODE_META, ThemeModeOptions } from "@/configs/theme-mode.metadata";
 import { THEME_PALETTE_META, ThemePaletteOptions } from "@/configs/theme-palette.metadata";
 import { LANG_META, LangOptions } from "@/configs/lang.metadata";
-import View from "@/components/ui/own/View";
 
 //
 const MODE_ORDER = Object.keys(THEME_MODE_META) as ThemeModeOptions[];

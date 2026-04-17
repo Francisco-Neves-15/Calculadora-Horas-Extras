@@ -28,6 +28,31 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
   const { DEFAULT_ALERT_VALUES, DEFAULT_CONFIRM_VALUES, DEFAULT_INPUT_VALUES } =
     useAlertsDefaultValues();
 
+  const pathname = usePathname();
+
+  const handledIdsRef = useRef<Set<string>>(new Set());
+
+  const handleItem = useCallback((item: InternalItem) => {
+    if (handledIdsRef.current.has(item.id)) return;
+    handledIdsRef.current.add(item.id);
+
+    if (item.type === "alert") {
+      item.resolve();
+      item.onClose?.();
+      return;
+    }
+
+    if (item.type === "confirm") {
+      item.resolve(false);
+      return;
+    }
+
+    if (item.type === "input") {
+      item.resolve(null);
+      return;
+    }
+  }, []);
+
   // ALERT
   const alert = useCallback(
     (options: IAlertsAlert) => {
@@ -96,33 +121,10 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
 
   const active = useMemo(() => queue[0] ?? null, [queue]);
   const activeRef = useRef<InternalItem | null>(null);
-  const handledIdsRef = useRef<Set<string>>(new Set());
-  const pathname = usePathname();
 
   useEffect(() => {
     activeRef.current = active;
   }, [active]);
-
-  const handleItem = useCallback((item: InternalItem) => {
-    if (handledIdsRef.current.has(item.id)) return;
-    handledIdsRef.current.add(item.id);
-
-    if (item.type === "alert") {
-      item.resolve();
-      item.onClose?.();
-      return;
-    }
-
-    if (item.type === "confirm") {
-      item.resolve(false);
-      return;
-    }
-
-    if (item.type === "input") {
-      item.resolve(null);
-      return;
-    }
-  }, []);
 
   const close = useCallback(() => {
     const current = activeRef.current;
@@ -178,29 +180,19 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     clear();
   }, [pathname, clear]);
-
-  // useEffect(() => {
-  //   globalThis.alerts = { alert, confirm, input, dismiss, clear };
-
-  //   // const api: AlertsApi = { alert };
-  //   // return () => {
-  //   //   if (globalThis.alerts === api) {
-  //   //     delete globalThis.alerts;
-  //   //   }
-  //   // };
-
-  // }, [alert, confirm, input, dismiss, clear]);
 
   return (
     <AlertsContext.Provider value={{ alert, confirm, input, dismiss, clear }}>
       {children}
 
-      {active?.type === "alert" && <AlertsAlert {...active} onClose={close} />}
+      {active?.type === "alert" && <AlertsAlert key={active.id} {...active} onClose={close} />}
 
       {active?.type === "confirm" && (
         <AlertsConfirm
+          key={active.id}
           {...active}
           onConfirm={() => resolveConfirm(true)}
           onCancel={() => resolveConfirm(false)}
@@ -208,7 +200,7 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
       )}
 
       {active?.type === "input" && (
-        <AlertsInput {...active} onConfirm={resolveInput} onCancel={() => resolveInput(null)} />
+        <AlertsInput key={active.id} {...active} onConfirm={resolveInput} onCancel={() => resolveInput(null)} />
       )}
     </AlertsContext.Provider>
   );

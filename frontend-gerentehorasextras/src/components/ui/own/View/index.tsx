@@ -2,7 +2,7 @@
 
 import { forwardRef } from "react";
 
-interface ViewProps extends React.HTMLAttributes<HTMLDivElement> {}
+type ViewProps = React.HTMLAttributes<HTMLDivElement>;
 
 const View = forwardRef<HTMLDivElement, ViewProps>(({ className, children, ...props }, ref) => {
   return (

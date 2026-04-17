@@ -19,6 +19,11 @@ const TEXT_TAGS = new Set([
   "h6",
 ]);
 
+type ButtonChildProps = {
+  children?: ReactNode;
+  className?: string;
+};
+
 // Safely merge className
 const mergeClassName = (existing?: string) => {
   if (!existing) return fStyles.buttonText;
@@ -39,7 +44,7 @@ export const resolveButtonChildren = (children: ReactNode): ReactNode => {
     // Case: not a valid React element
     if (!isValidElement(child)) return child;
 
-    const element = child as ReactElement<any>;
+    const element = child as ReactElement<ButtonChildProps>;
     const { type, props } = element;
 
     // Case: native HTML element

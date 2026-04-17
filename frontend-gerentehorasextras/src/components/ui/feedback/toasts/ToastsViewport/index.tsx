@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 
 import type { InternalToast, ToastAction, ToastPosition } from "@/types/toasts";
@@ -61,14 +61,6 @@ function getViewportStyle(position: ToastPosition): React.CSSProperties {
 }
 
 export function ToastsViewport({ items, onDismiss }: ToastsViewportProps) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
-
   const byPosition = useMemo(() => {
     const map = new Map<ToastPosition, InternalToast[]>();
     for (const pos of POSITIONS) map.set(pos, []);
@@ -78,6 +70,14 @@ export function ToastsViewport({ items, onDismiss }: ToastsViewportProps) {
     }
     return map;
   }, [items]);
+
+  const canUseDOM = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
+
+  if (!canUseDOM) return null;
 
   return createPortal(
     <>
@@ -121,12 +121,17 @@ function ToastItem({ item, onDismiss }: { item: InternalToast; onDismiss: (id: s
     if (isInfinite) return;
     if (!timeMs) return;
 
-    setRemaining(timeMs);
     const startedAt = Date.now();
 
-    const intervalId = window.setInterval(() => {
+    const tick = () => {
       const elapsed = Date.now() - startedAt;
       setRemaining(Math.max(0, timeMs - elapsed));
+    };
+
+    tick();
+
+    const intervalId = window.setInterval(() => {
+      tick();
     }, 50);
 
     const timeoutId = window.setTimeout(() => {

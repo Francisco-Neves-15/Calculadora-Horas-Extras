@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 
 // Style
@@ -34,10 +34,13 @@ export function AlertsAlert({ title, message, btnOptions, timeOptions, onClose }
   const timeOptionsRes = timeOptions ?? DEFAULT_ALERT_VALUES.timeOptions;
   const onCloseRes = onClose ?? DEFAULT_ALERT_VALUES.onClose;
 
-  //
-  const [mounted, setMounted] = useState(false);
   const [remaining, setRemaining] = useState(timeOptionsRes?.timeSec);
   const closedRef = useRef(false);
+  const canUseDOM = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
   const requestClose = useCallback(() => {
     if (closedRef.current) return;
@@ -46,13 +49,8 @@ export function AlertsAlert({ title, message, btnOptions, timeOptions, onClose }
   }, [onCloseRes]);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
     if (!timeOptionsRes?.time) return;
 
-    setRemaining(timeOptionsRes?.timeSec);
     closedRef.current = false;
 
     const startedAt = Date.now();
@@ -73,7 +71,7 @@ export function AlertsAlert({ title, message, btnOptions, timeOptions, onClose }
     };
   }, [timeOptionsRes?.time, timeOptionsRes?.timeSec, requestClose]);
 
-  if (!mounted) return null;
+  if (!canUseDOM) return null;
 
   return createPortal(
     <AlertsContainer>
