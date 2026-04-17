@@ -1,1 +1,1 @@
----
+Este diretorio foi reservado para o app React, mas nao inclui instalacao nem scaffold nesta etapa.

@@ -1,65 +1,42 @@
 # Frontend (Next.js / React)
 
-Pasta do frontend: `frontend-gerentehorasextras/`
+---
 
-## Rodar o projeto
+## RUN BEFORE
 
 ```bash
-cd frontend-gerentehorasextras
-npm install
+npm run install
+```
+
+```bash
+npm run build
+```
+
+## RUN
+
+```bash
 npm run dev
 ```
 
-## Scripts úteis
+---
+
+## Prettier (code formatting)
+
+### Install
 
 ```bash
-npm run format
-npm run lint
-npm run typecheck
-npm run validate
+npm install --save-dev --save-exact prettier
 ```
 
-## Husky (hooks do Git)
+### Additionals
 
-### Por que não funcionava aqui
-
-O repositório Git (`.git/`) fica na raiz do projeto, mas o frontend fica em `frontend-gerentehorasextras/`.
-Se você roda `npx husky init` dentro do `frontend-gerentehorasextras/`, o Husky tenta achar `.git` ali e falha (ex.: “.git can't be found”).
-
-### Como habilitar os hooks (uma vez por clone)
-
-Rode este comando na raiz do repositório:
+Lint Integration
 
 ```bash
-git config core.hooksPath frontend-gerentehorasextras/.husky
+npm install --save-dev eslint-config-prettier
 ```
 
-Verifique:
-
-```bash
-git config --get core.hooksPath
-```
-
-Deve imprimir: `frontend-gerentehorasextras/.husky`
-
-### Hooks configurados
-
-- `pre-commit`: formata o que está staged (Prettier) e tenta aplicar `eslint --fix` em `.ts/.tsx` staged (não bloqueia o commit se o ESLint falhar).
-- `pre-push`: roda `npm run build` + `npm run validate`.
-
-### Pular hooks (quando necessário)
-
-```bash
-git commit --no-verify -m "Mensagem"
-git push --no-verify
-```
-
-### Troubleshooting
-
-- Se aparecer `Permission denied` ao rodar `git config ...`, feche IDEs/terminais que estejam segurando o `.git/config` e rode novamente (ou execute o terminal como Admin).
-- Se os hooks estiverem “ligados”, mas não rodarem, confirme que você está usando o Git do próprio repositório (ex.: GitHub Desktop) e que `core.hooksPath` está setado no repo (não só global).
-- Se o hook der erro do tipo `/usr/bin/env: 'sh\r': No such file or directory`, é CRLF nos arquivos de hook. Rode `git add --renormalize frontend-gerentehorasextras/.husky` e faça commit (o repo já tem regra de `eol=lf` pra `.husky/`).
-
+---
 
 # Backend
 
@@ -69,7 +46,7 @@ git push --no-verify
 - Swagger: `http://localhost:5000/api/docs/` (dev)
 - Spec JSON: `http://localhost:5000/api/swagger.json` (dev)
 
-## Fluxo de autenticacao (session + CSRF)
+## Fluxo de autenticação (session + CSRF)
 
 1. Fazer `GET /api/v1/auth/me` para bootstrap.
 2. Ler token no header `X-CSRF-Token`.
