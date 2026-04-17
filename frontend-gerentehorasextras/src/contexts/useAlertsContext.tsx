@@ -25,6 +25,7 @@ export const AlertsContext = createContext<AlertsApi | null>(null);
 export function AlertsProvider({ children }: { children: React.ReactNode }) {
   const [queue, setQueue] = useState<InternalItem[]>([]);
 
+  // prettier-ignore
   const {
     DEFAULT_ALERT_VALUES,
     DEFAULT_CONFIRM_VALUES,
@@ -203,7 +204,12 @@ export function AlertsProvider({ children }: { children: React.ReactNode }) {
       )}
 
       {active?.type === "input" && (
-        <AlertsInput key={active.id} {...active} onConfirm={resolveInput} onCancel={() => resolveInput(null)} />
+        <AlertsInput
+          key={active.id}
+          {...active}
+          onConfirm={resolveInput}
+          onCancel={() => resolveInput(null)}
+        />
       )}
     </AlertsContext.Provider>
   );

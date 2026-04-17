@@ -58,8 +58,18 @@ function subscribeBrowserLanguage(onStoreChange: () => void) {
 
 // provider
 export function LangProvider({ children }: { children: React.ReactNode }) {
-  const langOption = useSyncExternalStore(subscribeLangOption, getLangOptionSnapshot, () => FALLBACK_LANG_OPTION);
-  const browserLanguage = useSyncExternalStore(subscribeBrowserLanguage, () => navigator.language, () => "");
+
+  const langOption = useSyncExternalStore(
+    subscribeLangOption,
+    getLangOptionSnapshot,
+    () => FALLBACK_LANG_OPTION
+  );
+
+  const browserLanguage = useSyncExternalStore(
+    subscribeBrowserLanguage,
+    () => navigator.language,
+    () => ""
+  );
 
   const resolvedLang = useMemo(() => {
     void browserLanguage;

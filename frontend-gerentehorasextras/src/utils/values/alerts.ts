@@ -54,8 +54,7 @@ const useAlertsDefaultValues = () => {
       title: "title",
       message: "message",
       inputVariant: "text",
-      inputVariantsConfigs: 
-      {
+      inputVariantsConfigs: {
         showNumberSpinner: false,
         showDatePicker: true,
         showPasswordToggle: true,

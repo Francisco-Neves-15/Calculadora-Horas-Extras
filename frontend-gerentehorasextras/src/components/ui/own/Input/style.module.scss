@@ -46,6 +46,26 @@
   transform: translateX(0%) translateY(-50%);
 }
 
+// Extras Slots
+
+.leftSlot,
+.rightSlot {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.leftSlot {
+  left: 12px;
+}
+
+.rightSlot {
+  right: 12px;
+}
+
 // Text
 
 .inputText {
