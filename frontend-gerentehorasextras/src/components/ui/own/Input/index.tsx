@@ -10,7 +10,7 @@ import { LuEye, LuEyeClosed, LuSearch, LuCalendar, LuClock, LuCalendarClock } fr
 import Button from "../Button";
 import View from "../View";
 
-type TInputVariant =
+export type TInputVariant =
   | "text"
   | "number"
   | "date"
@@ -20,15 +20,18 @@ type TInputVariant =
   | "search"
   | "email";
 
+export interface IInputVariantConfigs {
+  showNumberSpinner?: boolean;
+  showDatePicker?: boolean;
+  showPasswordToggle?: boolean;
+  showSearchButton?: boolean;
+  showSearchCancelButton?: boolean;
+}
+
+
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   variant?: TInputVariant;
-  variantsConfigs?: {
-    showNumberSpinner?: boolean;
-    showDatePicker?: boolean;
-    showPasswordToggle?: boolean;
-    showSearchButton?: boolean;
-    showSearchCancelButton?: boolean;
-  };
+  variantsConfigs?: IInputVariantConfigs;
 
   containerClassName?: string;
   containerStyle?: React.CSSProperties;

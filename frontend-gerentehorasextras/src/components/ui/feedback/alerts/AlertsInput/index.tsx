@@ -25,6 +25,8 @@ export function AlertsInput({
   title,
   message,
   placeholder,
+  inputVariant,
+  inputVariantsConfigs,
   confirmOptions,
   cancelOptions,
   onConfirm,
@@ -68,7 +70,8 @@ export function AlertsInput({
           <Input
             containerClassName="w-full"
             className="text-center"
-            variant="text"
+            variant={inputVariant}
+            variantsConfigs={inputVariantsConfigs}
             value={value}
             placeholder={placeholder}
             onChange={(e) => setValue(e.target.value)}

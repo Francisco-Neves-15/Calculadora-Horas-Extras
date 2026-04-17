@@ -53,6 +53,15 @@ const useAlertsDefaultValues = () => {
     () => ({
       title: "title",
       message: "message",
+      inputVariant: "text",
+      inputVariantsConfigs: 
+      {
+        showNumberSpinner: false,
+        showDatePicker: true,
+        showPasswordToggle: true,
+        showSearchButton: true,
+        showSearchCancelButton: false,
+      },
       placeholder: tCommon["common-typeHere"],
       confirmOptions: {
         text: tCommon["common-confirm"],

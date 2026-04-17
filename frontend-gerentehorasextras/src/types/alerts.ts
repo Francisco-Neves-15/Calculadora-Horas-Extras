@@ -1,4 +1,5 @@
 import { TButtonColors, TButtonVariants } from "@/components/ui/own/Button";
+import { IInputVariantConfigs, TInputVariant } from "@/components/ui/own/Input";
 
 // Alert
 export type IAlertsAlert = {
@@ -40,6 +41,8 @@ export interface IAlertsInput {
   title?: string;
   message?: string;
   placeholder?: string;
+  inputVariant?: TInputVariant;
+  inputVariantsConfigs?: IInputVariantConfigs;
   confirmOptions?: {
     text?: string;
     variant?: TButtonVariants;

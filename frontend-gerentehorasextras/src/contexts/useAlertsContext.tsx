@@ -25,8 +25,11 @@ export const AlertsContext = createContext<AlertsApi | null>(null);
 export function AlertsProvider({ children }: { children: React.ReactNode }) {
   const [queue, setQueue] = useState<InternalItem[]>([]);
 
-  const { DEFAULT_ALERT_VALUES, DEFAULT_CONFIRM_VALUES, DEFAULT_INPUT_VALUES } =
-    useAlertsDefaultValues();
+  const {
+    DEFAULT_ALERT_VALUES,
+    DEFAULT_CONFIRM_VALUES,
+    DEFAULT_INPUT_VALUES,
+  } = useAlertsDefaultValues();
 
   const pathname = usePathname();
 
