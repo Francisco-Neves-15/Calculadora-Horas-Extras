@@ -23,6 +23,7 @@
 
   color: var(--color-text);
   font-size: 1rem;
+
   & > input {
     width: 100%;
     border: none;
@@ -40,10 +41,8 @@
 // Buttons Inside
 
 .inputBtnInternal {
-  // aspect-ratio: 1;
-  position: absolute;
-  top: 50%;
-  transform: translateX(0%) translateY(-50%);
+  aspect-ratio: 1;
+  padding: 4;
 }
 
 // Extras Slots
@@ -54,7 +53,7 @@
   top: 50%;
   transform: translateY(-50%);
   display: flex;
-  align-items: center;
+  flex-direction: row;
   gap: 4px;
 }
 
@@ -137,7 +136,7 @@
   background-color: transparent;
 }
 
-.noSearchCancel::-webkit-search-cancel-button {
+.inputSearch::-webkit-search-cancel-button {
   display: none;
   -webkit-appearance: none;
 }

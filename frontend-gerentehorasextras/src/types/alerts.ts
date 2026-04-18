@@ -43,6 +43,8 @@ export interface IAlertsInput {
   placeholder?: string;
   inputVariant?: TInputVariant;
   inputVariantsConfigs?: IInputVariantConfigs;
+  showClear?: boolean;
+  clearFunction?: () => void;
   confirmOptions?: {
     text?: string;
     variant?: TButtonVariants;

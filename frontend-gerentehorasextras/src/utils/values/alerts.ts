@@ -59,9 +59,12 @@ const useAlertsDefaultValues = () => {
         showDatePicker: true,
         showPasswordToggle: true,
         showSearchButton: true,
-        showSearchCancelButton: false,
+        searchButtonPosition: "right",
+        searchButtonFunction: () => {},
       },
       placeholder: tCommon["common-typeHere"],
+      showClear: false,
+      clearFunction: () => {},
       confirmOptions: {
         text: tCommon["common-confirm"],
         variant: "main",

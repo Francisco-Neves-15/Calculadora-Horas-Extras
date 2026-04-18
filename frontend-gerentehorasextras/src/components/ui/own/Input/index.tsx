@@ -25,8 +25,8 @@ export interface IInputVariantConfigs {
   showDatePicker?: boolean;
   showPasswordToggle?: boolean;
   showSearchButton?: boolean;
-  showSearchButtonPosition?: "left" | "right";
-  showSearchCancelButton?: boolean;
+  searchButtonPosition?: "left" | "right";
+  searchButtonFunction?: () => void;
 }
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -40,6 +40,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   style?: React.CSSProperties;
 
   showClear?: boolean;
+  clearFunction?: () => void;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -51,7 +52,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         showDatePicker: true,
         showPasswordToggle: true,
         showSearchButton: true,
-        showSearchCancelButton: false,
+        searchButtonPosition: "right",
+        searchButtonFunction: () => {},
       },
 
       placeholder,
@@ -63,13 +65,19 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       style,
 
       showClear = false,
+      clearFunction,
 
       ...props
     },
     ref
   ) => {
+
     const [focused, setFocused] = useState(false);
     const [isVisiblePassword, setVisiblePassword] = useState(false);
+
+    const isControlled = props.value !== undefined;
+    const currentValue = isControlled ? props.value : undefined;
+    const hasValue = String(currentValue ?? props.defaultValue ?? "").length > 0;
 
     // Container
     const classContainerConfig: Record<TInputVariant, string> = {
@@ -91,10 +99,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       time: `${fStyles.inputDateOrTime} ${variantsConfigs.showDatePicker ? undefined : fStyles.noDatePicker}`,
       datetime: `${fStyles.inputDateOrTime} ${variantsConfigs.showDatePicker ? undefined : fStyles.noDatePicker}`,
       password: `${fStyles.inputPassword}`,
-      search: `
-        ${fStyles.inputSearch}
-        ${variantsConfigs.showSearchCancelButton ? undefined : fStyles.noSearchCancel}
-      `,
+      search: `${fStyles.inputSearch}`,
       email: `${fStyles.inputContainerEmail}`,
     } as const;
 
@@ -106,14 +111,41 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     };
 
     // Handle's
-    const handleClear = () => {
-      if (!ref || typeof ref === "function") return;
 
-      if (ref.current) {
+    const handleClear = () => {
+
+      if (clearFunction) {
+        clearFunction();
+        return;
+      }
+
+      if (props.onChange) {
+        props.onChange({
+          target: { value: "" },
+        } as React.ChangeEvent<HTMLInputElement>);
+        return;
+      }
+
+      if (ref && typeof ref !== "function" && ref.current) {
         ref.current.value = "";
         ref.current.dispatchEvent(new Event("input", { bubbles: true }));
+        return;
       }
+
+      if (process.env.NODE_ENV !== "production") {
+        alert("Input: clearFunction not provided");
+      }
+
     };
+
+    const handleInput = (el: HTMLInputElement) => {
+      if (showClear && !props.onChange && !props.value && process.env.NODE_ENV !== "production") {
+        console.warn(
+          `[Input] showClear enabled but component is uncontrolled and no value/onChange provided. Clear behavior may be limited.\nElement: ${el}`
+        );
+      }
+
+    }
 
     // Extras Items
 
@@ -122,33 +154,43 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 
     // Clear Icon
 
-    if (showClear && (props.value ?? "").toString().length > 0) {
-      leftItems.push(
-        <Button
-          key="clear"
-          size="small"
-          variant="ghost"
-          color="theme"
-          onClick={handleClear}
-          className={fStyles.inputBtnInternal}
-          style={{ aspectRatio: 1, padding: 4 }}
-        >
-          <LuX size={16} />
-        </Button>
-      );
-    }
+    if (showClear && hasValue) {
+
+      if (!(variant === "date" || variant === "time" || variant === "datetime")) {
+
+        const clearBtn = (
+          <Button
+            key="btn-inputClear"
+            size="small"
+            variant="ghost"
+            color="theme"
+            onClick={handleClear}
+            className={fStyles.inputBtnInternal}
+          >
+            <View className="flex justify-center items-center" style={{ width: 20 }}>
+              <LuX size={20} />
+            </View>
+          </Button>
+        );
+  
+        rightItems.push(clearBtn);
+
+      };
+
+    };
 
     // Search
 
     if (variant === "search" && variantsConfigs.showSearchButton) {
+
       const searchBtn = (
         <Button
-          key="search"
+          key="btn-inputSearch"
           size="small"
           variant="ghost"
           color="theme"
+          onClick={variantsConfigs.searchButtonFunction}
           className={fStyles.inputBtnInternal}
-          style={{ aspectRatio: 1, padding: 4 }}
         >
           <View className="flex justify-center items-center" style={{ width: 20 }}>
             <LuSearch size={20} />
@@ -156,11 +198,31 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         </Button>
       );
 
-      if (variantsConfigs.showSearchButtonPosition === "left") {
+      if (variantsConfigs.searchButtonPosition === "left") {
         leftItems.push(searchBtn);
       } else {
         rightItems.push(searchBtn);
       }
+
+    } else if (variant === "password" && variantsConfigs.showPasswordToggle) {
+
+      const passwordToggleBtn = (
+        <Button
+          key="btn-togglePassword"
+          size="small"
+          variant="ghost"
+          color="theme"
+          onClick={() => setVisiblePassword((prev) => !prev)}
+          className={`${fStyles.inputBtnInternal}`}
+        >
+          <View className="flex justify-center items-center" style={{ aspectRatio: 1, width: 20 }}>
+            {isVisiblePassword ? <LuEye size={20} /> : <LuEyeClosed size={20} />}
+          </View>
+        </Button>
+      );
+
+      rightItems.push(passwordToggleBtn);
+
     }
 
     // Slots
@@ -173,10 +235,26 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       <div className={fStyles.rightSlot}>{rightItems}</div>
     ) : null;
 
+    // Math on spacing:
+    // if you have leftItems/rightItems, add a spacing of 24 (icon size + padding in .inputBtnInternal);
+    // plus a default space (4);
+    // plus the gap in .leftSlot and .rightSlot (4 * number of items).
+
+    const iconsFullSize = 24; // icon size + padding in .inputBtnInternal
+    const gapBetween = 8; // gap between icon's and input field
+    const gapsPerItems = 4; // gap in .leftSlot and .rightSlot
+
+    const leftSpace1 = (iconsFullSize * leftItems.length);
+    const leftSpace2 = (gapBetween * leftItems.length);
+    const leftSpace3 = (leftItems.length > 1 ? gapsPerItems * leftItems.length : 0);
+    const rightSpace1 = ( iconsFullSize * rightItems.length);
+    const rightSpace2 = (gapBetween * rightItems.length);
+    const rightSpace3 = (rightItems.length > 1 ? gapsPerItems * rightItems.length : 0);
+
     const inputStyle = {
       ...style,
-      ...(leftItems.length && { paddingLeft: 12 + leftItems.length * 28 }),
-      ...(rightItems.length && { paddingRight: 12 + rightItems.length * 28 }),
+      ...(leftItems.length > 0 && { marginLeft: leftSpace1 + leftSpace2 + leftSpace3 }),
+      ...(rightItems.length > 0 && { marginRight: rightSpace1 + rightSpace2 + rightSpace3 }),
     };
 
     return (
@@ -189,6 +267,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         `}
         style={containerStyle}
       >
+
+        {leftSlot}
+
         {variant === "text" && (
           <input
             ref={ref}
@@ -199,6 +280,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             style={inputStyle}
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
+            onChange={(e) => props.onChange?.(e)}
+            onInput={(e) => handleInput(e.currentTarget)}
             {...props}
           />
         )}
@@ -214,6 +297,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
             onWheel={(e) => (e.target as HTMLInputElement).blur()}
+            onChange={(e) => props.onChange?.(e)}
+            onInput={(e) => handleInput(e.currentTarget)}
             {...props}
           />
         )}
@@ -229,6 +314,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               onFocus={() => setFocused(true)}
               onBlur={() => setFocused(false)}
               onWheel={(e) => (e.target as HTMLInputElement).blur()}
+              onChange={(e) => props.onChange?.(e)}
               {...props}
             />
             {variantsConfigs.showDatePicker && (
@@ -249,6 +335,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               onFocus={() => setFocused(true)}
               onBlur={() => setFocused(false)}
               onWheel={(e) => (e.target as HTMLInputElement).blur()}
+              onChange={(e) => props.onChange?.(e)}
               {...props}
             />
             {variantsConfigs.showDatePicker && (
@@ -269,6 +356,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               onFocus={() => setFocused(true)}
               onBlur={() => setFocused(false)}
               onWheel={(e) => (e.target as HTMLInputElement).blur()}
+              onChange={(e) => props.onChange?.(e)}
               {...props}
             />
             {variantsConfigs.showDatePicker && (
@@ -287,31 +375,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               inputMode="text"
               placeholder={placeholder}
               className={`${getClassInputConfig(variant)} ${className}`}
-              style={{
-                ...style,
-                ...(variantsConfigs.showPasswordToggle ? { marginRight: 20 + 12 } : {}),
-              }}
+              style={inputStyle}
               onFocus={() => setFocused(true)}
               onBlur={() => setFocused(false)}
+              onChange={(e) => props.onChange?.(e)}
+              onInput={(e) => handleInput(e.currentTarget)}
               {...props}
             />
-            {variantsConfigs.showPasswordToggle && (
-              <Button
-                size="small"
-                variant="ghost"
-                color="theme"
-                onClick={() => setVisiblePassword((prev) => !prev)}
-                style={{ aspectRatio: 1, padding: 4, right: 12 }}
-                className={`${fStyles.inputBtnInternal}`}
-              >
-                <View
-                  className="flex justify-center items-center"
-                  style={{ aspectRatio: 1, width: 20 }}
-                >
-                  {isVisiblePassword ? <LuEye size={20} /> : <LuEyeClosed size={20} />}
-                </View>
-              </Button>
-            )}
           </>
         )}
 
@@ -323,31 +393,13 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               inputMode="search"
               placeholder={placeholder}
               className={`${getClassInputConfig(variant)} ${className}`}
-              style={{
-                ...style,
-                ...(variantsConfigs.showSearchButton ? { marginRight: 20 + 12 } : {}),
-              }}
+              style={inputStyle}
               onFocus={() => setFocused(true)}
               onBlur={() => setFocused(false)}
+              onChange={(e) => props.onChange?.(e)}
+              onInput={(e) => handleInput(e.currentTarget)}
               {...props}
             />
-            {variantsConfigs.showSearchButton && (
-              <Button
-                size="small"
-                variant="ghost"
-                color="theme"
-                onClick={() => setVisiblePassword((prev) => !prev)}
-                style={{ aspectRatio: 1, padding: 4, right: 12 }}
-                className={`${fStyles.inputBtnInternal}`}
-              >
-                <View
-                  className="flex justify-center items-center"
-                  style={{ aspectRatio: 1, width: 20 }}
-                >
-                  <LuSearch size={20} />
-                </View>
-              </Button>
-            )}
           </>
         )}
 
@@ -361,9 +413,14 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             style={inputStyle}
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
+            onChange={(e) => props.onChange?.(e)}
+            onInput={(e) => handleInput(e.currentTarget)}
             {...props}
           />
         )}
+
+        {rightSlot}
+
       </div>
     );
   }

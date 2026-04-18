@@ -108,19 +108,21 @@ export default function Home() {
         <Button>{tHome["home-button-click"]}</Button>
       </div>
 
-      <div className="flex flex-row justify-start align-center flex-wrap">
-        <Input variant="text" value={valueInput} onChange={(e) => setValueInput(e.target.value)} />
+      <div className="flex flex-col justify-start align-center flex-wrap">
+        <Input variant="text" value={valueInput} onChange={(e) => setValueInput(e.target.value)} showClear clearFunction={() => { setValueInput(""); console.log("V") }} />
         <Input variant="text" type="color" />
         <Input variant="number" containerStyle={{ width: 100 }} style={{ textAlign: "center" }} />
-        <Input variant="date" variantsConfigs={{ showDatePicker: true }} />
+        <Input variant="date" variantsConfigs={{ showDatePicker: true }} showClear />
         <Input variant="date" />
         <Input variant="time" variantsConfigs={{ showDatePicker: true }} />
         <Input variant="datetime" variantsConfigs={{ showDatePicker: true }} />
         <Input variant="password" variantsConfigs={{ showPasswordToggle: true }} />
         <Input variant="password" variantsConfigs={{ showPasswordToggle: false }} />
-        <Input variant="search" variantsConfigs={{ showSearchButton: true }} />
-        <Input variant="search" variantsConfigs={{ showSearchButton: false }} />
         <Input variant="email" />
+        <Input variant="search" variantsConfigs={{ showSearchButton: false }} />
+        <Input variant="search" variantsConfigs={{ showSearchButton: true, searchButtonPosition: "left" }} showClear />
+        <Input variant="search" variantsConfigs={{ showSearchButton: true, searchButtonFunction: () => alert({ message: "Teste!" }) }} showClear />
+        <Input variant="text" showClear />
       </div>
 
       <div className="flex flex-row justify-start align-center">
@@ -129,34 +131,17 @@ export default function Home() {
         <Button variant="bg-light">Btn bg-light</Button>
       </div>
 
+      {/* prettier-ignore */}
       <div className="flex flex-row justify-start items-center">
-        <Button variant="main" color="primary">
-          Btn primary
-        </Button>
-        <Button variant="main" color="info">
-          Btn info
-        </Button>
-        <Button variant="main" color="warning">
-          Btn warning
-        </Button>
-        <Button variant="main" color="danger">
-          Btn danger
-        </Button>
-        <Button variant="main" color="success">
-          Btn success
-        </Button>
-        <Button variant="main" color="neutral">
-          Btn neutral
-        </Button>
-        <Button variant="main" color="theme">
-          Btn theme
-        </Button>
-        <Button variant="main" color="theme">
-          <LuHouse size={24} />
-        </Button>
-        <Button variant="main" color="theme" iconRound>
-          <LuHouse size={24} />
-        </Button>
+        <Button variant="main" color="primary">Btn primary</Button>
+        <Button variant="main" color="info">Btn info</Button>
+        <Button variant="main" color="warning">Btn warning</Button>
+        <Button variant="main" color="danger">Btn danger</Button>
+        <Button variant="main" color="success">Btn success</Button>
+        <Button variant="main" color="neutral">Btn neutral</Button>
+        <Button variant="main" color="theme">Btn theme</Button>
+        <Button variant="main" color="theme"><LuHouse size={24} /></Button>
+        <Button variant="main" color="theme" iconRound><LuHouse size={24} /></Button>
       </div>
 
       <div className="flex flex-row justify-start items-center">
@@ -294,6 +279,7 @@ export default function Home() {
           Text
         </Text>
       </View>
+
     </div>
   );
 }
