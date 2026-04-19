@@ -20,14 +20,30 @@ if not errorlevel 1 (
       exit /b 1
   )
 
+  echo "> Check: Await's..."
+  call npm run check:awaits
+  if errorlevel 1 (
+      echo "Check: Await's failed!"
+      exit /b 1
+  )
+
+  echo "> Check: Locked Packages..."
+  call npm run package:check
+  if errorlevel 1 (
+      echo "Check: Await's failed!"
+      exit /b 1
+  )
+
+  echo "> Validate Project's (custom's)..."
+  call npm run validate:project
+  if errorlevel 1 (
+      echo "Validate Project's failed!"
+      exit /b 1
+  )
+
   echo "All validations in valid.bat passed!"
 
 ) else (
   echo "Version of node is not 22"
   exit /b 1  
 )
-
-@REM NOTES
-
-@REM call files:
-@REM call file.bat

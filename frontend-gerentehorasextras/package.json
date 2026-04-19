@@ -9,10 +9,12 @@
     "lint": "eslint ./src --ext .ts,.tsx --max-warnings 100",
     "typecheck": "tsc --noEmit",
     "validate": "npm run typecheck && npm run lint",
+    "validate:project": "node scripts/checks/validate-project.js",
     "format": "prettier --write \"src/**/*.{ts,tsx,json,css,scss}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,json,css,scss}\"",
     "package:lock": "node scripts/operations/lock-packages.js",
-    "package:check": "node scripts/checks/check-locked-packages.js"
+    "package:check": "node scripts/checks/check-locked-packages.js",
+    "check:awaits": "node scripts/checks/check-needed-await.js"
   },
   "dependencies": {
     "next": "16.2.4",

@@ -121,7 +121,7 @@ export default function Home() {
         <Input variant="email" />
         <Input variant="search" variantsConfigs={{ showSearchButton: false }} />
         <Input variant="search" variantsConfigs={{ showSearchButton: true, searchButtonPosition: "left" }} showClear />
-        <Input variant="search" variantsConfigs={{ showSearchButton: true, searchButtonFunction: () => alert({ message: "Teste!" }) }} showClear />
+        <Input variant="search" variantsConfigs={{ showSearchButton: true, searchButtonFunction: async () => { await alert({ message: "Teste!" }) } }} showClear />
         <Input variant="text" showClear />
       </div>
 

@@ -112,9 +112,9 @@ walkDir(SRC_DIR, (filePath) => {
 ========================= */
 
 if (hasError) {
-  console.error("\n✖ Project validation failed.");
+  console.error("\n✖ Project validation failed.\n");
   process.exit(1);
 }
 
-console.log("✔ Custom validations passed successfully");
+console.log("\n✔ Custom validations passed successfully\n");
 process.exit(0);

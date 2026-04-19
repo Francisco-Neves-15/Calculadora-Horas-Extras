@@ -16,5 +16,5 @@ styles dos:
   - [] refazer "toast" e seprar funcionalidade de "snacks";
 
 checks:
-- uso de "useAlerts" sem await
+- [x] uso de "useAlerts" sem await
 - check de starting relacinado ao tema (verificar com o theme-boot e outros)

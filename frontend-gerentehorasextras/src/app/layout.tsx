@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 
 // Fonts
 import localFont from "next/font/local";
@@ -54,21 +55,28 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en-US" dir="ltr" suppressHydrationWarning>
-      <LangProvider>
-        <ThemeProvider>
-          <AlertsProvider>
-            <ToastsProvider>
-              <body
-                className={`${urbanist.variable} ${sora.variable} antialiased`}
-                suppressHydrationWarning
-              >
-                <script dangerouslySetInnerHTML={{ __html: getThemeBootInlineScript() }} />
+      <head>
+        <Script
+          id="theme-boot"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: getThemeBootInlineScript() }}
+        />
+      </head>
+
+      <body
+        className={`${urbanist.variable} ${sora.variable} antialiased`}
+        suppressHydrationWarning
+      >
+        <LangProvider>
+          <ThemeProvider>
+            <AlertsProvider>
+              <ToastsProvider>
                 <main>{children}</main>
-              </body>
-            </ToastsProvider>
-          </AlertsProvider>
-        </ThemeProvider>
-      </LangProvider>
+              </ToastsProvider>
+            </AlertsProvider>
+          </ThemeProvider>
+        </LangProvider>
+      </body>
     </html>
   );
 }

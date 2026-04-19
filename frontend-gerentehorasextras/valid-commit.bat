@@ -7,23 +7,9 @@ if not errorlevel 1 (
   echo "Starting validation's validations in valid-commit..."
 
   echo "Starting typecheck..."
-  call npm run typecheck
+  call ./valid-full.bat
   if errorlevel 1 (
     echo "Typecheck failed!"
-    exit /b 1
-  )
-
-  echo "Starting lint..."
-  call npm run lint
-  if errorlevel 1 (
-    echo "lint failed!"
-    exit /b 1
-  )
-
-  echo "Starting package:check..."
-  call npm run package:check
-  if errorlevel 1 (
-    echo "package:check failed!"
     exit /b 1
   )
 

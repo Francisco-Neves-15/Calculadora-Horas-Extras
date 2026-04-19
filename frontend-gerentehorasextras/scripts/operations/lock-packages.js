@@ -33,7 +33,7 @@ if (changed) {
     JSON.stringify(packageJson, null, 2) + "\n"
   );
 
-  console.log("pass: package.json updated: locked versions");
+  console.log("\n✔: package.json updated: locked versions\n");
 } else {
-  console.log("pass: No version with ^ or ~ found.");
+  console.log("\n▲ No version with ^ or ~ found.\n");
 }
