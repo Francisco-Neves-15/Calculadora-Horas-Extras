@@ -96,6 +96,8 @@ export function AlertsAlert({ title, message, btnOptions, timeOptions, onClose }
             color={btnOptionsRes?.color}
             size="normal"
             onClick={requestClose}
+            autoFocus
+            data-alert-autofocus="true"
           >
             {btnOptionsRes?.text}
           </Button>

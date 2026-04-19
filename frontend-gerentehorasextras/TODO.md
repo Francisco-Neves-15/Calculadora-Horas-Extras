@@ -2,15 +2,15 @@ styles dos:
 - [x] Buttons
 - [x] View
 - [x] Text
-- [x] Input (search glasses & "x" icon) (organizar melhor, talvez dinamicamente)
+- [x] Input
 
 - [x] Alert Base
 - [x] Alert Normal
 - [X] Alert Confirm
 - [X] Alert Input
-- [] Fazer Alerts quando aberto:
-  - [] não rolar a tela;
-  - [] tabindex funcionar nos botões com prioridade;
+- [x] Fazer Alerts quando aberto:
+  - [x] não rolar a tela;
+  - [x] tabindex funcionar nos botões dos alerts com prioridade;
 
 - [] Após finalizar boa parte:
   - [] refazer "toast" e seprar funcionalidade de "snacks";

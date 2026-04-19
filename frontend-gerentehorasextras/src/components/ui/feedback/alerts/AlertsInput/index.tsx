@@ -66,15 +66,17 @@ export function AlertsInput({
           </Text>
         ) : null}
 
-        <View className="w-full justify-center items-start">
+        <View className="w-full flex-col justify-center items-start">
           <Input
             containerClassName="w-full"
-            className="text-center"
+            className=""
             variant={inputVariant}
             variantsConfigs={inputVariantsConfigs}
             value={value}
             placeholder={placeholder}
             onChange={(e) => setValue(e.target.value)}
+            autoFocus
+            data-alert-autofocus="true"
           />
         </View>
 

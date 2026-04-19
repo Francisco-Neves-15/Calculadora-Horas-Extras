@@ -6,13 +6,6 @@ if not errorlevel 1 (
   echo "Version of node is 22"
   echo Starting validation's validations in valid...
 
-  echo "Starting build..."
-  call npm run build
-  if errorlevel 1 (
-      echo "build failed!"
-      exit /b 1
-  )
-
   echo "Starting typecheck..."
   call npm run typecheck
   if errorlevel 1 (

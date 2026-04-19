@@ -108,7 +108,7 @@ export default function Home() {
         <Button>{tHome["home-button-click"]}</Button>
       </div>
 
-      <div className="flex flex-col justify-start align-center flex-wrap">
+      <div className="flex flex-col justify-start align-center">
         <Input variant="text" value={valueInput} onChange={(e) => setValueInput(e.target.value)} showClear clearFunction={() => { setValueInput(""); console.log("V") }} />
         <Input variant="text" type="color" />
         <Input variant="number" containerStyle={{ width: 100 }} style={{ textAlign: "center" }} />

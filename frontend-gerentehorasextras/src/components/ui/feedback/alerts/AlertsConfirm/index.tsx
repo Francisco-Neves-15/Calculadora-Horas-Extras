@@ -67,6 +67,8 @@ export function AlertsConfirm({
             color={confirmOptionsRes?.color}
             onClick={onConfirmRes}
             size="normal"
+            autoFocus
+            data-alert-autofocus="true"
           >
             {confirmOptionsRes?.text}
           </Button>
