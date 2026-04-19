@@ -56,8 +56,15 @@ function subscribeBrowserLanguage(onStoreChange: () => void) {
   return () => window.removeEventListener("languagechange", onStoreChange);
 }
 
-// provider
-export function LangProvider({ children }: { children: React.ReactNode }) {
+// main
+
+export function LangProvider({
+  children,
+  initialResolvedLang,
+}: {
+  children: React.ReactNode;
+  initialResolvedLang: AVAILABLE_LANGCODE;
+}) {
 
   const langOption = useSyncExternalStore(
     subscribeLangOption,
@@ -73,8 +80,11 @@ export function LangProvider({ children }: { children: React.ReactNode }) {
 
   const resolvedLang = useMemo(() => {
     void browserLanguage;
+    // In SSR there is no "browser language". We use the server-resolved language
+    // (derived from Accept-Language) to avoid hydration incompatibility.
+    if (typeof window === "undefined") return initialResolvedLang;
     return getResolvedLang(langOption);
-  }, [langOption, browserLanguage]);
+  }, [langOption, browserLanguage, initialResolvedLang]);
 
   // sync attribute
   useEffect(() => {

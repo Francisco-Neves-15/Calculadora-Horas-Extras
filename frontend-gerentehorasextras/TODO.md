@@ -18,3 +18,5 @@ styles dos:
 checks:
 - [x] uso de "useAlerts" sem await
 - check de starting relacinado ao tema (verificar com o theme-boot e outros)
+
+- não para este projeto: "configuração do tema, cor primaria, e palette", revisar, e definir entre "simples, primary based & complex"
