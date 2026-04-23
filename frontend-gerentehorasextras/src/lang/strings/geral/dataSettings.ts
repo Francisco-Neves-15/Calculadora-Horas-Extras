@@ -1,4 +1,4 @@
-export const dataSettingsStrings = {
+export const data_settings_str = {
   "pt-BR": {
     "th-mode-opt-light": "Claro",
     "th-mode-opt-dark": "Escuro",

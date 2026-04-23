@@ -1,4 +1,4 @@
-export const commonStrings = {
+export const common_str = {
   "pt-BR": {
     "common-cancel": "Cancelar",
     "common-confirm": "Confirmar",

@@ -1,4 +1,4 @@
-export const pageSettingsStrings = {
+export const page_str_settings = {
   "pt-BR": {
     "settings-btn-save": "Salvar Preferência",
   },

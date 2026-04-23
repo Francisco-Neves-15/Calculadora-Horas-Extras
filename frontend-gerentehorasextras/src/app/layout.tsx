@@ -112,7 +112,7 @@ export default async function RootLayout({
           <ThemeProvider>
             <AlertsProvider>
               <ToastsProvider>
-                <main>{children}</main>
+                <main className="min-h-dvh min-w-dvw flex flex-col">{children}</main>
               </ToastsProvider>
             </AlertsProvider>
           </ThemeProvider>

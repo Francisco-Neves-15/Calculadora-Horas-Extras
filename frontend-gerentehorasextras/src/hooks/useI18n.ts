@@ -3,15 +3,16 @@
 import { useLang } from "@/hooks/useLang";
 
 // Strings
-import { pageHomeStrings } from "../lang/strings/pages/home";
-import { pageSettingsStrings } from "../lang/strings/pages/settings";
+import { page_str_layoutTest } from "../lang/strings/pages/layout_test";
+import { page_str_home } from "../lang/strings/pages/home";
+import { page_str_settings } from "../lang/strings/pages/settings";
 
-import { commonStrings } from "../lang/strings/geral/common";
-import { dataSettingsStrings } from "../lang/strings/geral/dataSettings";
+import { common_str } from "../lang/strings/geral/common";
+import { data_settings_str } from "../lang/strings/geral/dataSettings";
 
 type ModuleStrings = Record<string, string>;
 
-type IModulesPages = "pag-home" | "pag-settings";
+type IModulesPages = "pag-home" | "pag-settings" | "pag-layout_test";
 type IModulesGeral = "common" | "data-settings";
 
 export function useI18n(module: IModulesPages | IModulesGeral): ModuleStrings {
@@ -19,13 +20,15 @@ export function useI18n(module: IModulesPages | IModulesGeral): ModuleStrings {
 
   switch (module) {
     case "common":
-      return commonStrings[resolvedLang];
+      return common_str[resolvedLang];
     case "data-settings":
-      return dataSettingsStrings[resolvedLang];
+      return data_settings_str[resolvedLang];
+    case "pag-layout_test":
+      return page_str_layoutTest[resolvedLang];
     case "pag-home":
-      return pageHomeStrings[resolvedLang];
+      return page_str_home[resolvedLang];
     case "pag-settings":
-      return pageSettingsStrings[resolvedLang];
+      return page_str_settings[resolvedLang];
     default:
       return {};
   }
