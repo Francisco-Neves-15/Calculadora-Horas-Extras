@@ -12,9 +12,9 @@ import { useToasts } from "@/hooks/useToasts";
 
 // Components
 import Container from "@/components/ui/own/Container";
+import View from "@/components/ui/own/View";
 import Input from "@/components/ui/own/Input";
 import Button from "@/components/ui/own/Button";
-import View from "@/components/ui/own/View";
 import Text from "@/components/ui/own/Text";
 
 // Icons
@@ -27,7 +27,11 @@ export default function Home() {
 
   return (
     <Container padding>
-      sdasd
+      <View>
+        Test
+        <Link href={"/layout_test/"}>Teste</Link>
+        <Link href={"/settings/"}>Setting</Link>
+      </View>
     </Container>
   );
 }

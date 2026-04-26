@@ -95,7 +95,12 @@ export default async function RootLayout({
   const initialResolvedLang = resolveRequestLang(hdrs.get("accept-language"));
 
   return (
-    <html lang={initialResolvedLang} dir="ltr" suppressHydrationWarning>
+    <html 
+      dir="ltr" 
+      lang={initialResolvedLang} 
+      suppressHydrationWarning
+      className={`${urbanist.variable} ${sora.variable} antialiased`}
+    >
       <head>
         <Script
           id="theme-boot"
@@ -104,15 +109,12 @@ export default async function RootLayout({
         />
       </head>
 
-      <body
-        className={`${urbanist.variable} ${sora.variable} antialiased`}
-        suppressHydrationWarning
-      >
+      <body className={`min-h-dvh min-w-dvw flex flex-col`}>
         <LangProvider initialResolvedLang={initialResolvedLang as AVAILABLE_LANGCODE}>
           <ThemeProvider>
             <AlertsProvider>
               <ToastsProvider>
-                <main className="min-h-dvh min-w-dvw flex flex-col">{children}</main>
+                <main className="w-full h-full flex flex-col">{children}</main>
               </ToastsProvider>
             </AlertsProvider>
           </ThemeProvider>
