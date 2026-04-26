@@ -1,6 +1,7 @@
 .textBase {
-  color: var(--color-text);
+  color: inherit;
   font-weight: 400;
+  font-family: var(--font-urbanist);
 }
 
 .textDisplay {
