@@ -1,36 +1,66 @@
 @use "@vars" as var;
 
-// ===== Responsive;
+// ===== Responsive (Size);
 
-@mixin responsive_small {
-  @media screen and (max-width: var.$breakpoint-small) {
-    @content;
+@mixin screen_small {
+  @if & {
+    html[data-screen-type="small"] & {
+      @content;
+    }
+  } @else {
+    html[data-screen-type="small"] {
+      @content;
+    }
   }
 }
 
-@mixin responsive_medium {
-  @media screen and (min-width: (var.$breakpoint-small + 1)) and (max-width: var.$breakpoint-large) {
-    @content;
+@mixin screen_medium {
+  @if & {
+    html[data-screen-type="medium"] & {
+      @content;
+    }
+  } @else {
+    html[data-screen-type="medium"] {
+      @content;
+    }
   }
 }
 
-@mixin responsive_large {
-  @media screen and (min-width: (var.$breakpoint-large + 1)) {
-    @content;
+@mixin screen_large {
+  @if & {
+    html[data-screen-type="large"] & {
+      @content;
+    }
+  } @else {
+    html[data-screen-type="large"] {
+      @content;
+    }
   }
 }
 
 // ===== Responsive (Layout);
 
 @mixin layout_compact {
-  @media screen and (max-width: var.$breakpoint-medium) {
-    @content;
+  @if & {
+    html[data-layout-type="compact"] & {
+      @content;
+    }
+  } @else {
+    html[data-layout-type="compact"] {
+      @content;
+    }
   }
 }
 
 @mixin layout_expanded {
-  @media screen and (min-width: (var.$breakpoint-medium + 1)) {
-    @content;
+  @if & {
+    html[data-layout-type="expanded"] & {
+      @content;
+    }
+  } @else {
+    html[data-layout-type="expanded"] {
+      @content;
+    }
   }
 }
 
