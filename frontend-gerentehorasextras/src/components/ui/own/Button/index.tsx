@@ -25,6 +25,7 @@ interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: TButtonVariants;
   color?: TButtonColors;
   size?: TButtonSize;
+  underline?: boolean;
   iconRound?: boolean;
   onClick?: () => void;
   disabled?: boolean;
@@ -37,6 +38,7 @@ const Button = forwardRef<HTMLButtonElement, IButtonProps>(
       variant = "main",
       color = "primary",
       size = "normal",
+      underline = false,
       iconRound = false,
       onClick,
       disabled = false,
@@ -55,7 +57,7 @@ const Button = forwardRef<HTMLButtonElement, IButtonProps>(
     const sizeConfig = getSizeConfig(size);
 
     // Child
-    const resolvedChildren = resolveButtonChildren(children);
+    const resolvedChildren = resolveButtonChildren(children, { underline });
 
     return (
       <button
