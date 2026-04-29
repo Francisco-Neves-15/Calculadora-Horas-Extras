@@ -5,18 +5,27 @@ import { forwardRef } from "react";
 // Styles
 import fStyles from "./style.module.scss";
 
+type TTextFonts = "urbanist" | "sora";
 type TTextSizes = "display" | "h1" | "h2" | "h3" | "body" | "caption" | "micro" | "nano" | "button";
 
 interface TextProps extends React.HTMLAttributes<HTMLParagraphElement> {
   size: TTextSizes;
+  font?: TTextFonts;
   color?: string | undefined;
   span?: boolean;
 }
 
-const Text = forwardRef<HTMLDivElement, TextProps>(
-  ({ size, color = null, span = false, className, children, ...props }, ref) => {
+const Text = forwardRef<HTMLDivElement, TextProps>(({
+  size,
+  font = "urbanist", 
+  color = null, 
+  span = false, 
+  className, 
+  children, 
+  ...props 
+}, ref) => {
 
-    const classConfig: Record<TTextSizes, string> = {
+    const sizeConfig: Record<TTextSizes, string> = {
       display: "textDisplay",
       h1: "textH1",
       h2: "textH2",
@@ -28,8 +37,17 @@ const Text = forwardRef<HTMLDivElement, TextProps>(
       button: "textButton",
     } as const;
 
-    const getClassConfig = (size: TTextSizes) => {
-      return classConfig[size];
+    const getSize = (size: TTextSizes) => {
+      return sizeConfig[size];
+    };
+    
+    const fontConfig: Record<TTextFonts, string> = {
+      sora: "fontSora",
+      urbanist: "fontUrbanist",
+    } as const;
+
+    const getFont = (font: TTextFonts) => {
+      return fontConfig[font];
     };
 
     return (
@@ -37,7 +55,8 @@ const Text = forwardRef<HTMLDivElement, TextProps>(
         ref={ref}
         className={`
           ${fStyles.textBase}
-          ${fStyles[getClassConfig(size)]}
+          ${fStyles[getSize(size)]}
+          ${fStyles[getFont(font)]}
           ${span ? fStyles.textSpan : ""}
           ${className ?? ""}
         `}
