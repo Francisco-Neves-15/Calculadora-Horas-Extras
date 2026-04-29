@@ -16,13 +16,15 @@ import "../styles/details/scrollbar.scss";
 import "../styles/details/selection.scss";
 
 // Providers
-import { ThemeProvider } from "@/contexts/useThemeContext";
 import { LangProvider } from "@/contexts/useLangContext";
+import { ThemeProvider } from "@/contexts/useThemeContext";
+import { MediaProvider } from "@/contexts/useMediaContext";
 import { AlertsProvider } from "@/contexts/useAlertsContext";
 import { ToastsProvider } from "@/contexts/useToastsContext";
 
 // Script
-import { getThemeBootInlineScript } from "./theme-boot-script";
+import { getThemeBootInlineScript } from "../../scripts/boot_scripts/theme-boot-script";
+import { getMediaBootInlineScript } from "../../scripts/boot_scripts/media-boot-script";
 
 // Using
 import { AVAILABLE_LANGCODE, ISO_LANG_MAP } from "@/lang/main";
@@ -95,26 +97,35 @@ export default async function RootLayout({
   const initialResolvedLang = resolveRequestLang(hdrs.get("accept-language"));
 
   return (
-    <html lang={initialResolvedLang} dir="ltr" suppressHydrationWarning>
+    <html 
+      dir="ltr" 
+      lang={initialResolvedLang} 
+      suppressHydrationWarning
+      className={`${urbanist.variable} ${sora.variable} antialiased`}
+    >
       <head>
         <Script
           id="theme-boot"
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: getThemeBootInlineScript() }}
         />
+        <Script
+          id="media-boot"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: getMediaBootInlineScript() }}
+        />
       </head>
 
-      <body
-        className={`${urbanist.variable} ${sora.variable} antialiased`}
-        suppressHydrationWarning
-      >
+      <body className={`min-h-dvh min-w-dvw flex flex-col`}>
         <LangProvider initialResolvedLang={initialResolvedLang as AVAILABLE_LANGCODE}>
           <ThemeProvider>
-            <AlertsProvider>
-              <ToastsProvider>
-                <main className="min-h-dvh min-w-dvw flex flex-col">{children}</main>
-              </ToastsProvider>
-            </AlertsProvider>
+            <MediaProvider>
+              <AlertsProvider>
+                <ToastsProvider>
+                  <main className="w-full h-full flex flex-col">{children}</main>
+                </ToastsProvider>
+              </AlertsProvider>
+            </MediaProvider>
           </ThemeProvider>
         </LangProvider>
       </body>

@@ -4,6 +4,10 @@
   @include mix.flex_center;
   gap: 8px;
 
+  color: inherit;
+  text-decoration: none;
+  text-decoration-color: currentColor;
+
   border: none;
   border-radius: 64px;
 
@@ -128,8 +132,13 @@
 // Wrapper
 
 .buttonText {
-  font-size: 1rem;
-  font-weight: 500;
+  color: inherit;
+  text-decoration: none;
+}
+
+.buttonTextUnderline {
+  text-decoration: underline;
+  text-decoration-color: currentColor;
 }
 
 // Proportion

@@ -21,6 +21,8 @@ body {
 
 a {
   cursor: pointer;
+  text-decoration: underline;
+  color: var(--color-link);
 }
 
 button {
@@ -41,19 +43,35 @@ span {
 
 /* 
 // Importing
-@use "@mixins" as mixs;
+@use "@mixins" as mix;
+
+// Tag
 
 tag {
-  @include mixs.flex_center;
+
+  // Simple
+
+  @include mix.flex_center;
   
-  @include mixs.theme_light("&") {
+  @include mix.theme_light("&") {
     background-color: white;
     color: black;
   } 
   
-  @include mixs.responsive_large {
+  @include mix.screen_large {
     background-color: yellow;
   }
+  
+  @include mix.layout_expanded {
+    background-color: green;
+  }
+
+}
+
+// Global Variables
+
+@include mix.layout_compact {
+  --ui-border-width: 2px;
 }
 
 */

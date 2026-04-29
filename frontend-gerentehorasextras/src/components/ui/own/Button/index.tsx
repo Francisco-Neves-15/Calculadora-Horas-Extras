@@ -60,7 +60,7 @@ const Button = forwardRef<HTMLButtonElement, IButtonProps>(
     const sizeConfig = getSizeConfig(size);
 
     // Child
-    const resolvedChildren = resolveButtonChildren(children);
+    const resolvedChildren = resolveButtonChildren(children, { underline });
 
     return (
       <button

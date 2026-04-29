@@ -1,5 +1,4 @@
-import { THEME_STORAGE_KEYS } from "@/configs/theme-storage";
-import { THEMES_PALETTES } from "@/configs/theme-palette.metadata";
+import { THEME_STORAGE_KEYS, HTML_KEY_MODE } from "@/configs/theme-storage";
 
 /**
  * Runs before React hydrates: reads localStorage and applies attributes/variables
@@ -8,24 +7,18 @@ import { THEMES_PALETTES } from "@/configs/theme-palette.metadata";
 
 export function getThemeBootInlineScript(): string {
   const keysJson = JSON.stringify(THEME_STORAGE_KEYS);
-  const palettesJson = JSON.stringify(Object.keys(THEMES_PALETTES));
 
   return `
 (function () {
   try {
     var K = ${keysJson};
-    var PALETTES = ${palettesJson};
     var html = document.documentElement;
     var storedMode = localStorage.getItem(K.mode);
     var resolved =
       storedMode === "light" || storedMode === "dark"
         ? storedMode
         : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-    html.setAttribute("data-theme-mode", resolved);
-
-    var palRaw = localStorage.getItem(K.palette);
-    var palette = PALETTES.indexOf(palRaw) !== -1 ? palRaw : "default";
-    html.setAttribute("data-theme-palette", palette);
+    html.setAttribute(${JSON.stringify(HTML_KEY_MODE)}, resolved);
 
     var cp = localStorage.getItem(K.colorPrimary);
     var cc = localStorage.getItem(K.colorPrimaryContrast);

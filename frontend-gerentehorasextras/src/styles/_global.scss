@@ -1,11 +1,12 @@
 // @use "@vars" as var;
 @use "@mixins" as mix;
 
-:root {
-  @include mix.layout_compact {
-    --ui-border-width: 2px;
-  }
-  @include mix.layout_expanded {
-    --ui-border-width: 1px;
-  }
+// Global
+
+@include mix.layout_compact {
+  --ui-border-width: 2px;
+}
+
+@include mix.layout_expanded {
+  --ui-border-width: 1px;
 }
