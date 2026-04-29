@@ -118,11 +118,11 @@
 // ========== SIZE's ==========
 
 .btnSizeSmall {
-  padding: 4px 8px;
+  padding: var(--btn-padding, 4px 8px);
 }
 
 .btnSizeNormal {
-  padding: 8px 16px;
+  padding: var(--btn-padding, 8px 16px);
 }
 
 // Wrapper
@@ -132,8 +132,8 @@
   font-weight: 500;
 }
 
-// Others
+// Proportion
 
-.iconRound {
+.square {
   aspect-ratio: 1;
 }

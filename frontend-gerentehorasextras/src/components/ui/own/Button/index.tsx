@@ -16,6 +16,7 @@ export type TButtonColors =
   | "neutral"
   | "theme";
 export type TButtonSize = "small" | "normal";
+export type TButtonProportion = "normal" | "square";
 
 import { getStyle, getVariantConfig, getSizeConfig } from "./button.style.utils";
 import { resolveButtonChildren } from "./button.children.utils";
@@ -25,7 +26,9 @@ interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: TButtonVariants;
   color?: TButtonColors;
   size?: TButtonSize;
-  iconRound?: boolean;
+  proportion?: TButtonProportion;
+  underline?: boolean;
+  icon?: boolean;
   onClick?: () => void;
   disabled?: boolean;
   interaction?: boolean;
@@ -37,7 +40,9 @@ const Button = forwardRef<HTMLButtonElement, IButtonProps>(
       variant = "main",
       color = "primary",
       size = "normal",
-      iconRound = false,
+      proportion = "normal",
+      underline = false,
+      icon = false,
       onClick,
       disabled = false,
       interaction = true,
@@ -64,12 +69,12 @@ const Button = forwardRef<HTMLButtonElement, IButtonProps>(
         aria-disabled={disabled}
         inert={disabled || !interaction}
         onClick={onClick}
-        style={getStyle(gColors, variant, color, userStyle)}
+        style={getStyle(gColors, variant, color, icon, userStyle)}
         className={`
           ${fStyles.btnBase}
           ${fStyles[variantConfig.class]}
           ${fStyles[sizeConfig.class]}
-          ${iconRound ? fStyles.iconRound : ""}
+          ${proportion === "square" ? fStyles.square : ""}
           ${fStyles.btnBaseEffects}
           ${!interaction ? fStyles.btnNoInteraction : ""}
           ${disabled ? fStyles.btnDisable : ""}

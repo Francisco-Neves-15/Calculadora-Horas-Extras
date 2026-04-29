@@ -88,6 +88,7 @@ export const getStyle = (
   gColors: IPaletteColors,
   variant: TButtonVariants,
   color: TButtonColors,
+  icon: boolean,
   style: CSSProperties | undefined
 ): CSSProperties => {
   const config = variantConfig[variant];
@@ -100,6 +101,7 @@ export const getStyle = (
     "--btn-base": c.base,
     "--btn-contrast": c.contrast ?? gColors.text,
     "--btn-alpha": c.alpha ?? gColors.mutedAlpha,
+    ...(icon ? { "--btn-padding": "4px" } : {}),
     ...style,
   } as CSSProperties;
 };
