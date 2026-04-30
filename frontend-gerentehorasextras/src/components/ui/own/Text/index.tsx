@@ -11,16 +11,13 @@ type TTextSizes = "display" | "h1" | "h2" | "h3" | "body" | "caption" | "micro" 
 interface TextProps extends React.HTMLAttributes<HTMLParagraphElement> {
   size: TTextSizes;
   font?: TTextFonts;
-  color?: string | undefined;
   span?: boolean;
 }
 
 const Text = forwardRef<HTMLDivElement, TextProps>(({
   size,
   font = "urbanist", 
-  color = null, 
   span = false, 
-  className, 
   children, 
   ...props 
 }, ref) => {
@@ -58,9 +55,9 @@ const Text = forwardRef<HTMLDivElement, TextProps>(({
           ${fStyles[getSize(size)]}
           ${fStyles[getFont(font)]}
           ${span ? fStyles.textSpan : ""}
-          ${className ?? ""}
+          ${props.className}
         `}
-        style={color ? { color } : undefined}
+        style={props.style}
         {...props}
       >
         {children}
