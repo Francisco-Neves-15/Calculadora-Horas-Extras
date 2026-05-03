@@ -1,0 +1,55 @@
+@use "@mixins" as mix;
+
+.header {
+  height: var(--header-size);
+  z-index: 1000;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  // background-color: var(--color-bgSecondary);
+  // border-radius: 0 0 16px 16px;
+  // border-bottom: var(--color-border) 1px solid;
+  // box-shadow: 0 -2px 16px var(--color-border);
+}
+
+.headerLogo {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 16px;
+}
+
+// Abs
+
+.headerLogoAbs {
+  display: none;
+  aspect-ratio: 1;
+};
+.headerLogoAbsDark{ display: none; };
+.headerLogoAbsLight{ display: none; };
+
+@include mix.theme_light(".headerLogoAbsDark") {
+  display: flex;
+}
+@include mix.theme_dark(".headerLogoAbsLight") {
+  display: flex;
+}
+
+// Word
+
+.headerLogoWord {
+  display: none;
+}
+.headerLogoWordDark{ display: none; };
+.headerLogoWordLight{ display: none; };
+
+@include mix.theme_light(".headerLogoWordDark") {
+  display: flex;
+}
+@include mix.theme_dark(".headerLogoWordLight") {
+  display: flex;
+}

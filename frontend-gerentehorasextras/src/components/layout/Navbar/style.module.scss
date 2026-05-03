@@ -1,0 +1,78 @@
+@use "@mixins" as mix;
+@use "@vars" as var;
+
+.navbarOverlay {
+  z-index: 1002;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: var.$color-overlay-dark;
+  width: 100dvw;
+  height: 100dvh;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+.navbarOverlay.open {
+  opacity: 1;
+}
+
+.navbar {
+  z-index: 1001;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+}
+
+.navbarCompactedContent {
+  z-index: 1003;
+  @include mix.screen_small { width: clamp(160px, 90dvw, 360px); }
+  @include mix.screen_medium { width: clamp(240px, 50dvw, 520px); }
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+  padding: 16px;
+  padding-top: 0;
+  border-radius: 16px 0 0 16px;
+  background-color: var(--color-bgSecondary);
+  //
+  position: fixed;
+  top: 0;
+  right: 0;
+  transform: translateX(100%);
+  transition: transform 200ms ease;
+}
+.navbarCompactedContent.open {
+  transform: translateX(0);
+}
+
+.navbarHeader {
+  width: 100%;
+  height: var(--header-size);
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  padding-top: 16px 0;
+}
+
+//
+
+.navbarListCol {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.navbarListRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+}
