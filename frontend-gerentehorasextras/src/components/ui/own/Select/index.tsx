@@ -17,11 +17,11 @@ import useGlobalStyles from "@/hooks/useGlobalStyles";
 import fStyles from "./style.module.scss"
 
 // Components
-import View from "@/components/ui/View"
-import Text from "@/components/ui/Text"
-import Button, { TButtonVariants } from "@/components/ui/Button"
-import Input from "@/components/ui/Input"
-import DivisorLine from "@/components/ui/DivisorLine"
+import View from "@/components/ui/own/View"
+import Text from "@/components/ui/own/Text"
+import Button, { TButtonVariants } from "@/components/ui/own/Button"
+import Input from "@/components/ui/own/Input"
+import DivisorLine from "@/components/ui/own/DivisorLine"
 
 // Hooks
 import { useI18n } from "@/hooks/useI18n";
@@ -29,6 +29,7 @@ import { useMedia } from "@/hooks/useMedia";
 
 // Utils
 import { throttle } from "@/utils/geral";
+import { extractTextFromNode, normalizeSearchText } from "@/utils/strings";
 
 // Dropdown
 import { calculateDropdown } from "./select.dropdown.calcs";
@@ -118,13 +119,14 @@ export const Select = forwardRef<ISelectRef, ISelect>(({
   items = [],
   value,
   onChangeValue,
+  search = false,
   defaultValueIdOrIndex = null,
   placeholder,
   behavoir = "adapt",
   dropdownPosition = "adapt",
   fixTexts,
   // Styles
-  boxVariant = "sub",
+  boxVariant = "outline",
   boxStyles,
   modalStyles,
   dropdownStyles,
@@ -138,7 +140,8 @@ export const Select = forwardRef<ISelectRef, ISelect>(({
   const { mediaScreenType } = useMedia();
 
   // For Select
-  
+  const [searchQuery, setSearchQuery] = useState("");
+
   const [state, setState] = useState<TState>({
     open: false,
     mounted: false,
@@ -221,6 +224,7 @@ export const Select = forwardRef<ISelectRef, ISelect>(({
       open: false,
       runtimeBehavior: null
     }));
+    setSearchQuery("");
   };
 
   const toggle = (options?: TShowOptions) => {
@@ -334,20 +338,38 @@ export const Select = forwardRef<ISelectRef, ISelect>(({
     return String(final);
   }, [value]);
 
+  // Filtred Items
+  const filteredItems = useMemo(() => {
+    const normalizedQuery = normalizeSearchText(searchQuery);
+
+    if (!normalizedQuery) return items;
+
+    return items.filter((item) => {
+      if (selectValueIsPrimitive(item)) {
+        return normalizeSearchText(item).includes(normalizedQuery);
+      }
+
+      const labelAsText = extractTextFromNode(item.labelList);
+      // const fallbackValue = item.value;
+
+      return (
+        normalizeSearchText(labelAsText).includes(normalizedQuery)
+      );
+      // to include "item.value" on search
+      // normalizeSearchText(fallbackValue).includes(normalizedQuery)
+    });
+  }, [items, searchQuery]);
+
   // On Select Hidden
   const onSelectValue = (value: TSelectItems) => {
     onChangeValue(value);
     close();
     // DEBUG
-    selectValueIsPrimitive(value) ?
-      console.log(value)
-      :
-      console.log(`${value.id} ${value.labelBox} ${value.labelList} ${value.value}`)
+    // selectValueIsPrimitive(value) ?
+    //   console.log(value)
+    //   :
+    //   console.log(`${value.id} ${value.labelBox} ${value.labelList} ${value.value}`)
   }
-
-  useEffect(() => {
-    console.log(state.open)
-  }, [state.open]);
 
   // Render
   return (
@@ -385,11 +407,38 @@ export const Select = forwardRef<ISelectRef, ISelect>(({
                 className={`${fStyles.modalContent} ${modalStyles?.className} ${state.open ? fStyles.open : ""}`} 
                 style={{ ...modalStyles?.style }}
               >
+                <Button
+                  ref={closeButtonRef}
+                  icon
+                  proportion="square"
+                  variant={"main"}
+                  color="danger"
+                  onClick={close}
+                  className={`${fStyles.modalCloseButton}`}
+                >
+                  <LuX size={24} color={gColors.light} />
+                </Button>
                 <View className={`${fStyles.modalContentList}`}>
-                  {items.map((value, index, array) => (
-                    <>
+                  {search && (
+                    <View className="w-full" style={{ marginBottom: 4 }}>
+                      <Input
+                        variant="search"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder={tCommon["common-search"]}
+                        showClear
+                        clearFunction={() => setSearchQuery("")}
+                        variantsConfigs={{
+                          showSearchButton: false,
+                          searchButtonPosition: "left"
+                        }}
+                        containerClassName="w-full"
+                      />
+                    </View>
+                  )}
+                  {filteredItems.map((value, index, array) => (
+                    <React.Fragment key={`${index}-modal-list-item`}>
                       <button
-                        key={`${index}-list-item-button`}
                         className={`${fStyles.modalContentListItem} ${modalStyles?.listItemClassName}`}
                         style={{ ...modalStyles?.listItemStyle }}
                         onClick={() => onSelectValue(value)}
@@ -402,9 +451,15 @@ export const Select = forwardRef<ISelectRef, ISelect>(({
                           value.labelList
                         )}
                       </button>
-                      <DivisorLine key={`${index}-list-item-dl`} show={(index + 1) !== array.length} />
-                    </>
+                      <DivisorLine show={(index + 1) !== array.length} />
+                      {array.length === 0 && (
+                        <Text size="body">{tCommon["common-search-empty"]}</Text>
+                      )}
+                    </React.Fragment>
                   ))}
+                  {filteredItems.length === 0 && (
+                    <Text size="body" style={{ marginTop: 8 }} >{tCommon["common-search-empty"]}</Text>
+                  )}
                 </View>
               </View>
             </>
@@ -425,10 +480,28 @@ export const Select = forwardRef<ISelectRef, ISelect>(({
               }}
             >
               <View className={`${fStyles.dropdownContentList}`}>
-                {items.map((value, index, array) => (
-                  <>
+                {search && (
+                  <View className="w-full" style={{ marginBottom: 4 }}>
+                    <Input
+                      variant="search"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder={tCommon["common-search"]}
+                      showClear
+                      clearFunction={() => setSearchQuery("")}
+                      variantsConfigs={{
+                        showSearchButton: true,
+                        searchButtonPosition: "left"
+                      }}
+                      containerClassName="w-full"
+                      containerStyle={{ marginBottom: 8 }}
+                      style={{ fontSize: 14 }}
+                    />
+                  </View>
+                )}
+                {filteredItems.map((value, index, array) => (
+                  <React.Fragment key={`${index}-dropdown-list-item`}>
                     <button
-                      key={`${index}-list-item-button`}
                       className={`${fStyles.dropdownContentListItem} ${dropdownStyles?.listItemClassName}`}
                       style={{ ...dropdownStyles?.listItemStyle }}
                       onClick={() => onSelectValue(value)}
@@ -441,9 +514,12 @@ export const Select = forwardRef<ISelectRef, ISelect>(({
                         value.labelList
                       )}
                     </button>
-                    <DivisorLine key={`${index}-list-item-dl`} show={(index + 1) !== array.length} />
-                  </>
+                    <DivisorLine show={(index + 1) !== array.length} />
+                  </React.Fragment>
                 ))}
+                {filteredItems.length === 0 && (
+                  <Text size="caption">{tCommon["common-search-empty"]}</Text>
+                )}
               </View>
             </View>
           )}

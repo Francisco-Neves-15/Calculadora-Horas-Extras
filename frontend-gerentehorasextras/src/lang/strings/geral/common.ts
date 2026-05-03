@@ -7,6 +7,9 @@ export const common_str = {
     "common-ok": "OK",
     "common-save": "Salvar",
     "common-typeHere": "Digite aqui",
+    "common-search": "Pesquise aqui...",
+    "common-search-empty": "Nenhum resultado encontrado.",
+    "common-select": "Selecione",
   },
   "en-US": {
     "common-cancel": "Cancel",
@@ -16,5 +19,8 @@ export const common_str = {
     "common-ok": "OK",
     "common-save": "Save",
     "common-typeHere": "Type here",
+    "common-search": "Search here...",
+    "common-search-empty": "No results found.",
+    "common-select": "Select",
   },
 };

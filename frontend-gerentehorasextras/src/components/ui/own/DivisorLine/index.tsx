@@ -26,7 +26,7 @@ const DivisorLine = ({
 }: IDivisorLine) => {
   const { gColors } = useGlobalStyles();
 
-  if (!show) return;
+  if (!show) return null;
 
   const resolvedColor = color ?? gColors.border;
 
@@ -34,7 +34,11 @@ const DivisorLine = ({
     <div 
       style={{ 
         width: direction === "horizontal" ? "100%" : thickness, 
+        minWidth: direction === "vertical" ? thickness : undefined,
         height: direction === "vertical" ? "100%" : thickness, 
+        minHeight: direction === "horizontal" ? thickness : undefined,
+        flexShrink: 0,
+        alignSelf: direction === "horizontal" ? "stretch" : "auto",
         backgroundColor: resolvedColor, 
         borderRadius: 4, 
         ...style 

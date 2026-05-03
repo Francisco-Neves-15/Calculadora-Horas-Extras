@@ -93,7 +93,7 @@ export const getStyle = (
 ): CSSProperties => {
   const config = variantConfig[variant];
 
-  if (config.type === "static") return {};
+  if (config.type === "static") return { ...style };
 
   const c = resolveColors(gColors, color);
 
