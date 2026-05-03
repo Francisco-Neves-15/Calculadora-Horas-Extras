@@ -79,8 +79,8 @@ export function MediaProvider({ children }: { children: React.ReactNode }) {
       root.style.setProperty("--breakpoint-small", `${BREAKPOINTS.small}px`);
       root.style.setProperty("--breakpoint-large", `${BREAKPOINTS.large}px`);
 
-      root.style.setProperty("--window-width", `${wWidth}px`);
-      root.style.setProperty("--window-height", `${wHeight}px`);
+      // root.style.setProperty("--window-width", `${wWidth}px`);
+      // root.style.setProperty("--window-height", `${wHeight}px`);
     };
 
     update();
