@@ -426,11 +426,9 @@ export const Select = forwardRef<ISelectRef, ISelect>(({
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder={tCommon["common-search"]}
-                        showClear
                         clearFunction={() => setSearchQuery("")}
                         variantsConfigs={{
                           showSearchButton: false,
-                          searchButtonPosition: "left"
                         }}
                         containerClassName="w-full"
                       />
@@ -487,11 +485,9 @@ export const Select = forwardRef<ISelectRef, ISelect>(({
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder={tCommon["common-search"]}
-                      showClear
                       clearFunction={() => setSearchQuery("")}
                       variantsConfigs={{
-                        showSearchButton: true,
-                        searchButtonPosition: "left"
+                        showSearchButton: false,
                       }}
                       containerClassName="w-full"
                       containerStyle={{ marginBottom: 8 }}
