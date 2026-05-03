@@ -14,6 +14,7 @@ import "../styles/_mixins.scss";
 import "../styles/_global.scss";
 import "../styles/details/scrollbar.scss";
 import "../styles/details/selection.scss";
+import "../styles/details/focus.scss";
 
 // Providers
 import { LangProvider } from "@/contexts/useLangContext";

@@ -1,0 +1,6 @@
+:focus {
+  outline-width: 4px;
+  outline-color: var(--color-info);
+  outline-style: solid;
+  outline-offset: calc(var(--ui-border-width) * -1);
+}
