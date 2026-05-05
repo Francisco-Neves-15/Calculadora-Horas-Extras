@@ -1,0 +1,165 @@
+@use "@mixins" as mix;
+@use "@vars" as var;
+
+.modalOverlay {
+  z-index: 1001;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: var.$color-overlay-dark;
+  width: 100dvw;
+  height: 100dvh;
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+.modalOverlay.open {
+  opacity: 1;
+}
+
+// Box
+.boxContainer {
+  @include mix.flex_center;
+  @include mix.flex_row;
+  gap: 4px;
+}
+
+.dropdownAnchor {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 100%;
+}
+
+// Modal
+.modalContent {
+  z-index: 1002;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  background-color: var(--color-bgSecondary);
+  border: var(--ui-border-width) var(--color-border) solid;
+  border-radius: 16px;
+  @include mix.screen_small { 
+    width: 80dvw;
+    min-height: 80dvh;
+    height: 80dvh;
+    max-height: 80dvh;
+  }
+  @include mix.screen_medium { 
+    width: clamp(360px, 50dvw, 720px);
+    height: clamp(360px, 50dvh, 720px);
+  }
+  @include mix.screen_large { 
+    width: clamp(360px, 50dvw, 720px); 
+    height: clamp(360px, 50dvh, 720px);
+  }
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+.modalContent.open {
+  opacity: 1;
+}
+
+.modalContentList {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 16px;
+}
+
+.modalContentListItem {
+  @include mix.flex_center;
+  justify-content: flex-start;
+  width: 100%;
+  height: auto;
+  padding: 16px 8px;
+  transition: opacity 250ms ease-in-out;
+  // Adding "..." in overflow's texts
+  & p, span, h1, h2, h3, h4, h5, h6 {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  &:active {
+    opacity: 0.5;
+  }
+  @include mix.layout_expanded {
+    &:hover {
+      background-color: var(--color-neutralAlpha);
+    }
+  }
+}
+
+.modalCloseButton {
+  z-index: 1005;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translateX(50%) translateY(-50%);
+}
+
+// Dropdown
+.dropdownContent {
+  z-index: 1001;
+  position: absolute;
+  background-color: var(--color-bgSecondary);
+  border: var(--ui-border-width) var(--color-border) solid;
+  border-radius: 8px;
+  min-width: 240px;
+  width: auto;
+  @include mix.screen_small { max-width: 320px; };
+  @include mix.screen_medium { max-width: 512px; };
+  @include mix.screen_large { max-width: 512px; };
+  height: auto;
+  max-height: 360px;
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+.dropdownContent.open {
+  opacity: 1;
+}
+
+.dropdownContentList {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 8px;
+  // gap: 4px;
+}
+
+.dropdownContentListItem {
+  @include mix.flex_center;
+  justify-content: flex-start;
+  width: 100%;
+  height: auto;
+  @include mix.screen_small { padding: 12px 8px; }
+  @include mix.screen_medium { padding: 12px 8px; }
+  @include mix.screen_large { padding: 8px 8px; }
+  transition: opacity 250ms ease-in-out;
+  // Adding "..." in overflow's texts
+  & p, span, h1, h2, h3, h4, h5, h6 {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  &:active {
+    opacity: 0.5;
+  }
+  @include mix.layout_expanded {
+    &:hover {
+      background-color: var(--color-neutralAlpha);
+    }
+  }
+}

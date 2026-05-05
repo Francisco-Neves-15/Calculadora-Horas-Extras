@@ -11,7 +11,7 @@ import { useAlerts } from "@/hooks/useAlerts";
 import { useToasts } from "@/hooks/useToasts";
 
 // Components
-import Container from "@/components/ui/own/Container";
+import Container from "@/components/layout/Container";
 import View from "@/components/ui/own/View";
 import Input from "@/components/ui/own/Input";
 import Button from "@/components/ui/own/Button";

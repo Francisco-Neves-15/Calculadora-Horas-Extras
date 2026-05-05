@@ -9,9 +9,9 @@ import { LuMenu, LuX, LuSun, LuMoon, LuMonitorSmartphone } from "react-icons/lu"
 import fStyles from "./style.module.scss"
 
 // Components
-import View from "@/components/ui/View"
-import Text from "@/components/ui/Text"
-import Button from "@/components/ui/Button"
+import View from "@/components/ui/own/View"
+import Text from "@/components/ui/own/Text"
+import Button from "@/components/ui/own/Button"
 
 // Hooks
 // Hooks

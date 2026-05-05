@@ -6,7 +6,7 @@ import Image from "next/image";
 import fStyles from "./style.module.scss"
 
 // Components
-import View from "@/components/ui/View"
+import View from "@/components/ui/own/View";
 
 // Hooks
 import { useMedia } from "@/hooks/useMedia";

@@ -142,7 +142,7 @@ export default function LayoutTest() {
         <Button variant="main" color="neutral">Btn neutral</Button>
         <Button variant="main" color="theme">Btn theme</Button>
         <Button variant="main" color="theme"><LuHouse size={24} /></Button>
-        <Button variant="main" color="theme" iconRound><LuHouse size={24} /></Button>
+        <Button variant="main" color="theme" icon proportion="square"><LuHouse size={24} /></Button>
       </div>
 
       <div className="flex flex-row justify-start items-center">
@@ -170,7 +170,7 @@ export default function LayoutTest() {
         <Button variant="outline" color="theme">
           <LuHouse size={24} />
         </Button>
-        <Button variant="outline" color="theme" iconRound>
+        <Button variant="outline" color="theme" icon proportion="square">
           <LuHouse size={24} />
         </Button>
       </div>
@@ -200,7 +200,7 @@ export default function LayoutTest() {
         <Button variant="ghost" color="theme">
           <LuHouse size={24} />
         </Button>
-        <Button variant="ghost" color="theme" iconRound>
+        <Button variant="ghost" color="theme" icon proportion="square">
           <LuHouse size={24} />
         </Button>
       </div>
