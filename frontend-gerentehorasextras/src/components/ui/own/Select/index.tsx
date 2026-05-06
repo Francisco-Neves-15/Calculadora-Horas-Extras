@@ -18,11 +18,11 @@ import useGlobalStyles from "@/hooks/useGlobalStyles";
 import fStyles from "./style.module.scss"
 
 // Components
-import View from "@/components/ui/own/View"
-import Text from "@/components/ui/own/Text"
-import Button, { TButtonColors, TButtonProportion, TButtonSize, TButtonVariants } from "@/components/ui/own/Button"
-import Input from "@/components/ui/own/Input"
-import DivisorLine from "@/components/ui/own/DivisorLine"
+import { View } from "@/components/ui/own/View"
+import { Text } from "@/components/ui/own/Text"
+import { Button, TButtonColors, TButtonProportion, TButtonSize, TButtonVariants } from "@/components/ui/own/Button"
+import { Input } from "@/components/ui/own/Input"
+import { DivisorLine } from "@/components/ui/own/DivisorLine"
 
 // Hooks
 import { useI18n } from "@/hooks/useI18n";
@@ -124,7 +124,7 @@ export function selectValueIsPrimitive(item: TSelectItems): item is string | num
   return typeof item === "string" || typeof item === "number";
 }
 
-const Select = forwardRef<ISelectRef, ISelect>(({
+export const Select = forwardRef<ISelectRef, ISelect>(({
   items = [],
   value,
   onChangeValue,
@@ -138,13 +138,7 @@ const Select = forwardRef<ISelectRef, ISelect>(({
   dropdownPosition = "adapt",
   fixTexts,
   // Styles
-  boxStyles = {
-    boxVariant: "secondary",
-    boxColor: "theme",
-    boxSize: "normal",
-    boxProportion: "normal",
-    icon: true
-  },
+  boxStyles,
   modalStyles,
   dropdownStyles,
 }, ref) => {
@@ -254,12 +248,13 @@ const Select = forwardRef<ISelectRef, ISelect>(({
 
   // Autofocus on buttons
   useEffect(() => {
-    if (state.open && isModal) {
+    if (!isModal) return;
+    if (state.open) {
       closeButtonRef.current?.focus();
     } else {
       openButtonRef.current?.focus();
     };
-  }, [state.open]);
+  }, [state.open, isModal]);
 
   // Auto Select if "defaultValue"
   useEffect(() => {
@@ -323,7 +318,7 @@ const Select = forwardRef<ISelectRef, ISelect>(({
     };
   }, [state.open]);
 
-  // Click's Controls
+  // Controls (when dropdown)
   useEffect(() => {
     if (!state.open || isModal || !isDropdown) return;
 
@@ -347,6 +342,21 @@ const Select = forwardRef<ISelectRef, ISelect>(({
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [state.open, isDropdown, isModal]);
+
+  // Controls (when modal)
+  useEffect(() => {
+    if (!state.open || isDropdown || !isModal) return;
+
+    const handlePressEsc = (event: globalThis.KeyboardEvent) => {
+      if (event.code === "Escape") close();
+    };
+
+    document.addEventListener("keydown", handlePressEsc);
+
+    return () => {
+      document.removeEventListener("keydown", handlePressEsc);
     };
   }, [state.open, isDropdown, isModal]);
 
@@ -424,11 +434,11 @@ const Select = forwardRef<ISelectRef, ISelect>(({
         <div className={fStyles.dropdownAnchor}>
           <Button
             ref={openButtonRef}
-            variant={boxStyles.boxVariant}
-            color={boxStyles.boxColor}
-            size={boxStyles.boxSize}
-            proportion={boxStyles.boxProportion}
-            icon={boxStyles.icon}
+            variant={boxStyles?.boxVariant ?? "secondary"}
+            color={boxStyles?.boxColor ?? "theme"}
+            size={boxStyles?.boxSize ?? "normal"}
+            proportion={boxStyles?.boxProportion ?? "normal"}
+            icon={boxStyles?.icon ?? false}
             className={`${fStyles.boxContainer} ${boxStyles?.className}`} 
             style={{ ...boxStyles?.style }}
             onClick={toggle}
@@ -447,7 +457,7 @@ const Select = forwardRef<ISelectRef, ISelect>(({
               <View
                 className={`transform transition-transform ${!state.open ? "rotate-0" : "-rotate-180"}`} 
               >
-                <LuChevronDown size={24} color={gColors.text} />
+                <LuChevronDown size={24} />
               </View>
             )}
           </Button>
@@ -467,7 +477,7 @@ const Select = forwardRef<ISelectRef, ISelect>(({
             >
               <View className={`${fStyles.dropdownContentList}`}>
                 {search && (
-                  <View className="w-full" style={{ marginBottom: 4 }}>
+                  <View className="w-full" style={{ marginBottom: 8 }}>
                     <Input
                       variant="search"
                       value={searchQuery}
@@ -478,7 +488,6 @@ const Select = forwardRef<ISelectRef, ISelect>(({
                         showSearchButton: false,
                       }}
                       containerClassName="w-full"
-                      containerStyle={{ marginBottom: 8 }}
                       style={{ fontSize: 14 }}
                     />
                   </View>
@@ -502,10 +511,10 @@ const Select = forwardRef<ISelectRef, ISelect>(({
                   </React.Fragment>
                 ))}
                 {(filteredItems.length === 0 && search) && (
-                  <Text size="caption">{tCommon["common-search-empty"]}</Text>
+                  <Text size="caption" style={{ marginTop: 8, marginBottom: 8 }}>{tCommon["common-search-empty"]}</Text>
                 )}
                 {items.length === 0 && (
-                  <Text size="caption">{tCommon["common-list-empty"]}</Text>
+                  <Text size="caption" style={{ marginTop: 8, marginBottom: 8 }}>{tCommon["common-list-empty"]}</Text>
                 )}
               </View>
             </View>
@@ -571,10 +580,10 @@ const Select = forwardRef<ISelectRef, ISelect>(({
                       </React.Fragment>
                     ))}
                     {(filteredItems.length === 0 && search) && (
-                      <Text size="body">{tCommon["common-search-empty"]}</Text>
+                      <Text size="body" style={{ marginTop: 8 }}>{tCommon["common-search-empty"]}</Text>
                     )}
                     {items.length === 0 && (
-                      <Text size="body">{tCommon["common-list-empty"]}</Text>
+                      <Text size="body" style={{ marginTop: 8 }}>{tCommon["common-list-empty"]}</Text>
                     )}
                   </View>
                 </View>
@@ -588,6 +597,3 @@ const Select = forwardRef<ISelectRef, ISelect>(({
     </>
   )
 });
-
-Select.displayName = "Select";
-export default Select;

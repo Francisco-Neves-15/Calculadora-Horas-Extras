@@ -2,8 +2,8 @@
 import { CSSProperties } from "react";
 
 // Components
-import Header from "@/components/layout/Header";
-import View from "@/components/ui/own/View";
+import { Header } from "@/components/layout/Header";
+import { View } from "@/components/ui/own/View";
 
 
 
@@ -16,7 +16,7 @@ interface IContainer {
   footer?: boolean;
 }
 
-const Container = ({
+export const Container = ({
   children,
   style,
   className,
@@ -41,7 +41,4 @@ const Container = ({
       )}
     </View>
   )
-}
-
-export default Container;
-Container.displayName = "Container";
+};

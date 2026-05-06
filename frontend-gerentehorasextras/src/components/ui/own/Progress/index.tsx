@@ -15,91 +15,84 @@ interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
   height?: number | "full";
 }
 
-const Progress = forwardRef<HTMLDivElement, ProgressProps>(
-  (
-    {
-      barColor = null,
-      wrapperColor = null,
-      value,
-      max = 100,
-      duration,
-      autoStart = true,
-      onComplete,
-      width = 160,
-      height = 16,
-      className,
-      style,
-      ...props
-    },
-    ref
-  ) => {
-    const { gColors } = useGlobalStyles();
+export const Progress = forwardRef<HTMLDivElement, ProgressProps>(({
+  barColor = null,
+  wrapperColor = null,
+  value,
+  max = 100,
+  duration,
+  autoStart = true,
+  onComplete,
+  width = 160,
+  height = 16,
+  className,
+  style,
+  ...props
+}, ref ) => {  
 
-    const [internalValue, setInternalValue] = useState(0);
-    const rafRef = useRef<number | null>(null);
-    const startTimeRef = useRef<number | null>(null);
+  const { gColors } = useGlobalStyles();
 
-    const isControlled = value !== undefined;
-    const currentValue = isControlled ? value : internalValue;
+  const [internalValue, setInternalValue] = useState(0);
+  const rafRef = useRef<number | null>(null);
+  const startTimeRef = useRef<number | null>(null);
 
-    useEffect(() => {
-      if (!duration || !autoStart || isControlled) return;
+  const isControlled = value !== undefined;
+  const currentValue = isControlled ? value : internalValue;
 
-      const step = (timestamp: number) => {
-        if (!startTimeRef.current) startTimeRef.current = timestamp;
+  useEffect(() => {
+    if (!duration || !autoStart || isControlled) return;
 
-        const elapsed = timestamp - startTimeRef.current;
-        const progress = Math.min(elapsed / duration, 1);
+    const step = (timestamp: number) => {
+      if (!startTimeRef.current) startTimeRef.current = timestamp;
 
-        setInternalValue(progress * max);
+      const elapsed = timestamp - startTimeRef.current;
+      const progress = Math.min(elapsed / duration, 1);
 
-        if (progress < 1) {
-          rafRef.current = requestAnimationFrame(step);
-        } else {
-          onComplete?.();
-        }
-      };
+      setInternalValue(progress * max);
 
-      rafRef.current = requestAnimationFrame(step);
-
-      return () => {
-        if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      };
-    }, [duration, autoStart, isControlled, max, onComplete]);
-
-    const percent = Math.min((currentValue / max) * 100, 100);
-
-    // Colors
-    const finalBarColor = barColor ?? gColors.success;
-    const finalWrapperColor = wrapperColor ?? gColors.bgBaseInverted;
-
-    // Size
-    const computedStyle: React.CSSProperties = {
-      width: width === "full" ? "100%" : width,
-      height: height === "full" ? "100%" : height,
-      ...style,
+      if (progress < 1) {
+        rafRef.current = requestAnimationFrame(step);
+      } else {
+        onComplete?.();
+      }
     };
 
-    return (
-      <div
-        ref={ref}
-        className={`relative overflow-hidden ${className ?? ""}`}
-        style={computedStyle}
-        {...props}
-      >
-        <div className="w-full h-full" style={{ backgroundColor: finalWrapperColor }}>
-          <div
-            className="h-full transition-[width] duration-100 ease-linear"
-            style={{
-              width: `${percent}%`,
-              backgroundColor: finalBarColor,
-            }}
-          />
-        </div>
-      </div>
-    );
-  }
-);
+    rafRef.current = requestAnimationFrame(step);
 
-Progress.displayName = "Progress";
-export default Progress;
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [duration, autoStart, isControlled, max, onComplete]);
+
+  const percent = Math.min((currentValue / max) * 100, 100);
+
+  // Colors
+  const finalBarColor = barColor ?? gColors.success;
+  const finalWrapperColor = wrapperColor ?? gColors.bgBaseInverted;
+
+  // Size
+  const computedStyle: React.CSSProperties = {
+    width: width === "full" ? "100%" : width,
+    height: height === "full" ? "100%" : height,
+    ...style,
+  };
+
+  return (
+    <div
+      ref={ref}
+      className={`relative overflow-hidden ${className ?? ""}`}
+      style={computedStyle}
+      {...props}
+    >
+      <div className="w-full h-full" style={{ backgroundColor: finalWrapperColor }}>
+        <div
+          className="h-full transition-[width] duration-100 ease-linear"
+          style={{
+            width: `${percent}%`,
+            backgroundColor: finalBarColor,
+          }}
+        />
+      </div>
+    </div>
+  );
+});

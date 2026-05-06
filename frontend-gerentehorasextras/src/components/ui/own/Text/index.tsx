@@ -13,7 +13,7 @@ interface TextProps extends React.HTMLAttributes<HTMLParagraphElement> {
   span?: boolean;
 }
 
-const Text = forwardRef<HTMLDivElement, TextProps>(({
+export const Text = forwardRef<HTMLDivElement, TextProps>(({
   size,
   font = "urbanist",
   span = false, 
@@ -64,6 +64,3 @@ const Text = forwardRef<HTMLDivElement, TextProps>(({
     );
   }
 );
-
-export default Text;
-Text.displayName = "Text";

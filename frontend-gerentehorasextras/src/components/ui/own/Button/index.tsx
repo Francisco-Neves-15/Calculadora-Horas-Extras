@@ -34,7 +34,7 @@ interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   interaction?: boolean;
 }
 
-const Button = forwardRef<HTMLButtonElement, IButtonProps>(
+export const Button = forwardRef<HTMLButtonElement, IButtonProps>(
   (
     {
       variant = "outline",
@@ -87,6 +87,3 @@ const Button = forwardRef<HTMLButtonElement, IButtonProps>(
     );
   }
 );
-
-export default Button;
-Button.displayName = "Button";

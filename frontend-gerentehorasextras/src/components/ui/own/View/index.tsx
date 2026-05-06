@@ -4,7 +4,7 @@ import { forwardRef } from "react";
 
 type ViewProps = React.HTMLAttributes<HTMLDivElement>;
 
-const View = forwardRef<HTMLDivElement, ViewProps>(({ className, children, ...props }, ref) => {
+export const View = forwardRef<HTMLDivElement, ViewProps>(({ className, children, ...props }, ref) => {
   return (
     <div
       ref={ref}
@@ -18,6 +18,3 @@ const View = forwardRef<HTMLDivElement, ViewProps>(({ className, children, ...pr
     </div>
   );
 });
-
-export default View;
-View.displayName = "View";

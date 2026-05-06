@@ -6,7 +6,7 @@ import Image from "next/image";
 import fStyles from "./style.module.scss"
 
 // Components
-import View from "@/components/ui/own/View";
+import { View } from "@/components/ui/own/View";
 
 // Hooks
 import { useMedia } from "@/hooks/useMedia";
@@ -20,7 +20,7 @@ interface IHeader {
   className?: string;
 }
 
-const Header = ({
+export const Header = ({
   style,
   className,
 }: IHeader) => {
@@ -82,7 +82,4 @@ const Header = ({
       <Navbar/>
     </header>
   )
-}
-
-export default Header;
-Header.displayName = "Header";
+};

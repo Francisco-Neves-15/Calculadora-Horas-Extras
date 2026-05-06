@@ -43,8 +43,8 @@
   border-radius: 16px;
   @include mix.screen_small { 
     width: 80dvw;
-    min-height: 60px;
-    max-height: 80dvh;
+    height: 75dvh;
+    max-height: 75dvh;
   }
   @include mix.screen_medium { 
     width: clamp(360px, 50dvw, 720px);

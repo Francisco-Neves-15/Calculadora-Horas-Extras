@@ -7,8 +7,8 @@ import fStyles from "./style.module.scss";
 
 // Icons
 import { LuX, LuEye, LuEyeClosed, LuSearch, LuCalendar, LuClock, LuCalendarClock } from "react-icons/lu";
-import Button from "../Button";
-import View from "../View";
+import { Button } from "../Button";
+import { View } from "../View";
 
 export type TInputVariant =
   | "text"
@@ -27,7 +27,7 @@ export interface IInputVariantConfigs {
   showSearchButton?: boolean;
   searchButtonPosition?: "left" | "right";
   searchButtonFunction?: () => void;
-}
+};
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   variant?: TInputVariant;
@@ -43,7 +43,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   clearFunction?: () => void;
 }
 
-const Input = forwardRef<HTMLInputElement, InputProps>(
+export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
       variant = "text",
@@ -425,6 +425,3 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     );
   }
 );
-
-export default Input;
-Input.displayName = "Input";

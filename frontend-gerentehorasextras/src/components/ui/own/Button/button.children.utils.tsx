@@ -1,7 +1,7 @@
 import { ReactNode, isValidElement, Children } from "react";
 
 import fStyles from "./style.module.scss";
-import Text from "@/components/ui/own/Text";
+import { Text } from "@/components/ui/own/Text";
 
 type ResolveChildrenOptions = {
   underline?: boolean;

@@ -1,52 +1,58 @@
 "use client";
 
 import useGlobalStyles from "@/hooks/useGlobalStyles";
-import { CSSProperties } from "react";
+import { CSSProperties, forwardRef } from "react";
 
 type TLineDirection =
   | "horizontal"
-  | "vertical"
+  | "vertical";
 
-interface IDivisorLine {
+
+interface DivisorProps extends React.HTMLAttributes<HTMLDivElement> {
   show?: boolean;
   direction?: TLineDirection;
   thickness?: number;
-  color?: string | null;
+  color?: string;
   className?: string;
   style?: CSSProperties;
-}
+};
 
-const DivisorLine = ({
-  show = true,
-  direction = "horizontal",
-  thickness = 1,
-  color = null,
-  className,
-  style
-}: IDivisorLine) => {
-  const { gColors } = useGlobalStyles();
 
-  if (!show) return null;
 
-  const resolvedColor = color ?? gColors.border;
+export const DivisorLine = forwardRef<HTMLDivElement, DivisorProps>(
+  (
+    {
+    show = true,
+    direction = "horizontal",
+    thickness = 1,
+    color = undefined,
+    className,
+    style
+    },
+    ref
+  ) => {  
+    const { gColors } = useGlobalStyles();
 
-  return (
-    <div 
-      style={{ 
-        width: direction === "horizontal" ? "100%" : thickness, 
-        minWidth: direction === "vertical" ? thickness : undefined,
-        height: direction === "vertical" ? "100%" : thickness, 
-        minHeight: direction === "horizontal" ? thickness : undefined,
-        flexShrink: 0,
-        alignSelf: direction === "horizontal" ? "stretch" : "auto",
-        backgroundColor: resolvedColor, 
-        borderRadius: 4, 
-        ...style 
-      }} 
-      className={`${className}`}
-    />
-  )
-}
+    if (!show) return null;
 
-export default DivisorLine;
-DivisorLine.displayName = "DivisorLine";
+    const resolvedColor = color ?? gColors.border;
+
+    return (
+      <div 
+        ref={ref}
+        style={{ 
+          width: direction === "horizontal" ? "100%" : thickness, 
+          minWidth: direction === "vertical" ? thickness : undefined,
+          height: direction === "vertical" ? "100%" : thickness, 
+          minHeight: direction === "horizontal" ? thickness : undefined,
+          flexShrink: 0,
+          alignSelf: direction === "horizontal" ? "stretch" : "auto",
+          backgroundColor: resolvedColor, 
+          borderRadius: 4, 
+          ...style 
+        }} 
+        className={`${className}`}
+      />
+    )
+  }
+);
