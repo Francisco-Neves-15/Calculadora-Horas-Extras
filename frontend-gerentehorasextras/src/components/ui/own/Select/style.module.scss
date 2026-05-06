@@ -80,12 +80,6 @@
   height: auto;
   padding: 16px 8px;
   transition: opacity 250ms ease-in-out;
-  // Adding "..." in overflow's texts
-  & p, span, h1, h2, h3, h4, h5, h6 {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
   &:active {
     opacity: 0.5;
   }
@@ -113,9 +107,9 @@
   border-radius: 8px;
   min-width: 240px;
   width: auto;
-  @include mix.screen_small { max-width: 320px; };
-  @include mix.screen_medium { max-width: 512px; };
-  @include mix.screen_large { max-width: 512px; };
+  @include mix.screen_small { width: 320px; };
+  @include mix.screen_medium { width: 260px; };
+  @include mix.screen_large { width: 260px; };
   height: auto;
   max-height: 360px;
   opacity: 0;
@@ -134,7 +128,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding: 8px;
+  padding: 16px 8px 8px 8px;
   // gap: 4px;
 }
 
@@ -147,12 +141,6 @@
   @include mix.screen_medium { padding: 12px 8px; }
   @include mix.screen_large { padding: 8px 8px; }
   transition: opacity 250ms ease-in-out;
-  // Adding "..." in overflow's texts
-  & p, span, h1, h2, h3, h4, h5, h6 {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
   &:active {
     opacity: 0.5;
   }
