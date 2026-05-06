@@ -36,25 +36,22 @@ const Header = ({
 
   // Logo
 
-  const PATH_ABS_LOGO_WHITE: string = "/logo/abs/tmtc-logo-white.png";
-  const PATH_ABS_LOGO_BLACK: string = "/logo/abs/tmtc-logo-black.png";
-  const PATH_WORD_LOGO_WHITE: string = "/logo/word/tmtc-word-white.png";
-  const PATH_WORD_LOGO_BLACK: string = "/logo/word/tmtc-word-black.png";
+  const PATH_LOGO_WHITE: string = "/logo/hx-logos-v2/Logo-v2-EX-White.png";
+  const PATH_LOGO_BLACK: string = "/logo/hx-logos-v2/Logo-v2-EX-Black.png";
 
   // Size
 
   const getLogosSize = useMemo(() => {
     if (mediaScreenType === "large") {
-      return { abs: headerSize - 20, word: 320 }
+      return { abs: headerSize - 20 }
     } else if (mediaScreenType === "medium") {
-      return { abs: headerSize - 20, word: 240 }
+      return { abs: headerSize - 20 }
     } else {
-      return { abs: headerSize - 12, word: 0 }
+      return { abs: headerSize - 12 }
     }
   }, [mediaScreenType])
 
   const logoAbsDimensions: number = getLogosSize.abs; 
-  const logoWordDimensions: number = getLogosSize.word;
 
   return (
     <header 
@@ -68,37 +65,19 @@ const Header = ({
         <>
           <Image
             className={`${fStyles.headerLogoAbs} ${fStyles.headerLogoAbsLight}`}
-            src={PATH_ABS_LOGO_WHITE}
+            src={PATH_LOGO_WHITE}
             alt="Site Logo White in Header (Abstract 1:1 Logo)"
             width={logoAbsDimensions}
             height={logoAbsDimensions}
           />
           <Image
             className={`${fStyles.headerLogoAbs} ${fStyles.headerLogoAbsDark}`}
-            src={PATH_ABS_LOGO_BLACK}
+            src={PATH_LOGO_BLACK}
             alt="Site Logo Black in Header (Abstract 1:1 Logo)"
             width={logoAbsDimensions}
             height={logoAbsDimensions}
           />
         </>
-        {mediaScreenType !== "small" && (
-          <>
-            <Image
-              className={`${fStyles.headerLogoWord} ${fStyles.headerLogoWordLight}`}
-              src={PATH_WORD_LOGO_WHITE}
-              alt="Site Logo White in Header (Word/Letter Logo)"
-              width={logoWordDimensions}
-              height={logoWordDimensions}
-            />
-            <Image
-              className={`${fStyles.headerLogoWord} ${fStyles.headerLogoWordDark}`}
-              src={PATH_WORD_LOGO_BLACK}
-              alt="Site Logo Black in Header (Word/Letter Logo)"
-              width={logoWordDimensions}
-              height={logoWordDimensions}
-            />
-          </>
-        )}
       </View>
       <Navbar/>
     </header>

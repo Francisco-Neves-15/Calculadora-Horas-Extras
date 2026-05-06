@@ -38,18 +38,3 @@
 @include mix.theme_dark(".headerLogoAbsLight") {
   display: flex;
 }
-
-// Word
-
-.headerLogoWord {
-  display: none;
-}
-.headerLogoWordDark{ display: none; };
-.headerLogoWordLight{ display: none; };
-
-@include mix.theme_light(".headerLogoWordDark") {
-  display: flex;
-}
-@include mix.theme_dark(".headerLogoWordLight") {
-  display: flex;
-}

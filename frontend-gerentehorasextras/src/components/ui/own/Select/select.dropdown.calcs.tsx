@@ -7,7 +7,6 @@ function resolveDropdownPosition({
 }: {
   openButtonRef: RefObject<HTMLButtonElement | null>;
   preferred: TDropdownPosition;
-  // spaces: { top: number; bottom: number; left: number; right: number },
 }): TResolvedPosition {
   if (!openButtonRef) return "bottom-right";
 

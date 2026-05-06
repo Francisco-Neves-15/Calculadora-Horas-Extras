@@ -24,18 +24,18 @@ import { LayoutTypeOptions } from "@/configs/media.metadata";
 
 
 
-type INavbarDir = "horizontal" | "vertical";
+type INavbarOrigin = "right" | "left";
 
 interface INavbar {
   style?: CSSProperties;
   className?: string;
-  direction?: INavbarDir | null;
+  origin?: INavbarOrigin | null;
 }
 
 export const Navbar = ({
   style,
   className,
-  direction = null,
+  origin = "right",
 }: INavbar) => {
 
   // const pathname = usePathname();
@@ -55,7 +55,7 @@ export const Navbar = ({
 
   // Layout
   const isCompact = currentLayout === "compact";
-  const resolvedListDirectionClassName = direction ? direction : isCompact ? fStyles.navbarListCol : fStyles.navbarListRow;
+  const resolvedListDirectionClassName = isCompact ? fStyles.navbarListCol : fStyles.navbarListRow;
 
   // Toggle
   const openNavbar = () => {
@@ -152,7 +152,11 @@ export const Navbar = ({
               className={`${fStyles.navbarOverlay} ${navbarExpanded ? fStyles.open : ""}`} 
             />
             <View
-              className={`${fStyles.navbarCompactedContent} ${navbarExpanded ? fStyles.open : ""}`}
+              className={`
+                ${fStyles.navbarCompactedContent} 
+                ${origin === "right" ? fStyles.right : fStyles.left} 
+                ${navbarExpanded ? fStyles.open : ""}
+              `}
             >
               <View className={`${fStyles.navbarHeader}`}>
                 <Button
