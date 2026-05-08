@@ -8,10 +8,10 @@ import useGlobalStyles from "@/hooks/useGlobalStyles";
 import fStyles from "../style.module.scss";
 
 // Components
-import Text from "@/components/ui/own/Text";
-import View from "@/components/ui/own/View";
-import Button from "@/components/ui/own/Button";
-import Progress from "@/components/ui/own/Progress";
+import { Text } from "@/components/ui/own/Text";
+import { View } from "@/components/ui/own/View";
+import { Button } from "@/components/ui/own/Button";
+import { Progress } from "@/components/ui/own/Progress";
 
 // Alerts
 import AlertsContainer from "../AlertsContainer";

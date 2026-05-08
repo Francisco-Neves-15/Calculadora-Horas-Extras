@@ -6,9 +6,9 @@ import { createPortal } from "react-dom";
 import fStyles from "../style.module.scss";
 
 // Components
-import Text from "@/components/ui/own/Text";
-import View from "@/components/ui/own/View";
-import Button from "@/components/ui/own/Button";
+import { Text } from "@/components/ui/own/Text";
+import { View } from "@/components/ui/own/View";
+import { Button } from "@/components/ui/own/Button";
 
 // Alerts
 import AlertsContainer from "../AlertsContainer";
